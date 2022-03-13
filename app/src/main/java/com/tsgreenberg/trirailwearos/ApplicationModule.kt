@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tsgreenberg.station_info.EtaInteractors
 import com.tsgreenberg.station_info.EtaService
+import com.tsgreenberg.station_info.testing.MockEtaService
 import com.tsgreenberg.station_list.StationInteractors
 import com.tsgreenberg.station_list.StationsService
 import dagger.Module

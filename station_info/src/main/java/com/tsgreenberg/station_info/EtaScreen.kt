@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.CircularProgressIndicator
@@ -48,9 +50,7 @@ fun EtaScreen(
                 }
             }
             is DataState.Success -> {
-                Log.d("TRI RAIL", "state is ${state.data}")
                 val enRouteMap = state.data[0].enRoute.getNextTrains()
-                Log.d("TRI RAIL", "enroute $enRouteMap")
 
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     val pagerState = rememberPagerState()
@@ -60,26 +60,56 @@ fun EtaScreen(
                         modifier = Modifier
                             .fillMaxSize()
                     ) { page ->
-                        val key = if(page == 0) "South" else "North"
+                        val key = if (page == 0) "South" else "North"
                         enRouteMap[key]?.let { it[0] }?.let {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = it.direction, style = TextStyle(
-                                        color = Color.White
+                            Column {
+                                Spacer(modifier = Modifier.padding(16.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.SpaceBetween
+                                ) {
+
+                                    val directionText = "${it.direction}bound"
+
+                                    Text(
+                                        modifier = Modifier
+                                            .background(Color(0xFF4E90A6))
+                                            .fillMaxWidth(),
+                                        text = directionText,
+                                        style = TextStyle(
+                                            color = Color.White,
+                                            textAlign = TextAlign.Center
+                                        )
                                     )
-                                )
-                                Text(
-                                    text = "ETA: ${it.minutes}", style = TextStyle(
-                                        color = Color.White
-                                    )
-                                )
+
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                    ) {
+                                        Spacer(modifier = Modifier.padding(16.dp))
+                                        Text(
+                                            text = "ETA", style = TextStyle(
+                                                color = Color.White,
+                                                fontSize = 14.sp
+                                            )
+                                        )
+                                        Text(
+                                            text = "${it.minutes} mins", style = TextStyle(
+                                                color = Color.White,
+                                                fontSize = 32.sp
+                                            )
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.fillMaxWidth())
+                                }
                             }
                         }
                     }
 
-                    if(pagerState.pageCount > 0){
+                    if (pagerState.pageCount > 0) {
                         HorizontalPagerIndicator(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
