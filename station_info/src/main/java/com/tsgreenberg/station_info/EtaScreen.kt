@@ -48,7 +48,9 @@ fun EtaScreen(
                 }
             }
             is DataState.Success -> {
-//                val time = state.data[0].enRoute[0].time
+                Log.d("TRI RAIL", "state is ${state.data}")
+                val enRouteMap = state.data[0].enRoute.getNextTrains()
+                Log.d("TRI RAIL", "enroute $enRouteMap")
 
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     val pagerState = rememberPagerState()
@@ -58,11 +60,23 @@ fun EtaScreen(
                         modifier = Modifier
                             .fillMaxSize()
                     ) { page ->
-                        Text(
-                            text = "$page", style = TextStyle(
-                                color = Color.White
-                            )
-                        )
+                        val key = if(page == 0) "South" else "North"
+                        enRouteMap[key]?.let { it[0] }?.let {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = it.direction, style = TextStyle(
+                                        color = Color.White
+                                    )
+                                )
+                                Text(
+                                    text = "ETA: ${it.minutes}", style = TextStyle(
+                                        color = Color.White
+                                    )
+                                )
+                            }
+                        }
                     }
 
                     if(pagerState.pageCount > 0){

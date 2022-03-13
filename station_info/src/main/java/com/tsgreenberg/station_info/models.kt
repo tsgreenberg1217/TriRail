@@ -1,5 +1,6 @@
 package com.tsgreenberg.station_info
 
+import android.util.Log
 import com.google.gson.annotations.SerializedName
 
 data class GetVehicleResponse(
@@ -53,6 +54,30 @@ data class StopEtaInfo(
     val id: String,
     val enRoute: List<EnRouteInfo>
 )
+
+fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
+    Log.d("TRI RAIL", "list $this")
+    val southBound = mutableListOf<EnRouteInfo>()
+    val northBound = mutableListOf<EnRouteInfo>()
+
+    forEach { enRoute ->
+        with(if(enRoute.isNorthBound()) southBound else northBound){ add(enRoute) }
+    }
+
+
+
+    southBound.sortBy { it.minutes }
+    northBound.sortBy { it.minutes }
+
+    return mutableMapOf<String, List<EnRouteInfo>>().apply {
+        put("North", northBound)
+        put("South", southBound)
+    }
+}
+
+fun EnRouteInfo.isNorthBound():Boolean = direction == "North"
+fun EnRouteInfo.isSouthBound():Boolean = direction == "South"
+
 
 data class EnRouteInfo(
     val blockID: Int,
