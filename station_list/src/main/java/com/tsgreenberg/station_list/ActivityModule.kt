@@ -1,0 +1,19 @@
+package com.tsgreenberg.station_list
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+
+@Module
+@InstallIn(SingletonComponent::class)
+class ActivityModule {
+
+    @Provides
+    fun getGetStops(
+        interactors: StationInteractors
+    ): GetStops = interactors.getStops
+
+
+}
