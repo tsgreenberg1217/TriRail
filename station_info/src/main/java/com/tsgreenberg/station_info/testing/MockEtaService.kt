@@ -16,7 +16,7 @@ class MockEtaService : EtaService {
     override suspend fun getStopEtas(stopId: Int, token: String): GetStopEtaResponse {
         return GetStopEtaResponse(
             listOf(
-                StopEtaInfo(
+                StopEtaInfoDTO(
                     "1",
                     listOf(
                         EnRouteInfo(

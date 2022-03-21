@@ -1,11 +1,8 @@
 package com.tsgreenberg.trirailwearos
 
-import android.annotation.SuppressLint
-import android.util.Log
+import androidx.compose.runtime.remember
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.core.navigation.TriRailNav
@@ -24,7 +21,6 @@ fun NavGraphBuilder.getStationList(triRailNav: TriRailNav) {
 }
 
 
-@SuppressLint("UnrememberedGetBackStackEntry")
 fun NavGraphBuilder.getStationDetail(triRailNav: TriRailNavImp) {
     navigation(
         startDestination = NavConstants.ETA,
@@ -34,9 +30,10 @@ fun NavGraphBuilder.getStationDetail(triRailNav: TriRailNavImp) {
         composable(
             route = NavConstants.ETA,
         ) {
-
-            val id = triRailNav.navController.getBackStackEntry(NavConstants.STATION_INFO_ROUTE).arguments?.getString("station_id") ?: "0"
-            Log.d("TRI RAIL", "id from arg is $id")
+            val entry = remember{
+                triRailNav.navController.getBackStackEntry(NavConstants.STATION_INFO_ROUTE)
+            }
+            val id = entry.arguments?.getString("station_id") ?: "0"
             EtaScreen(triRailNav = triRailNav, id.toInt())
         }
     }

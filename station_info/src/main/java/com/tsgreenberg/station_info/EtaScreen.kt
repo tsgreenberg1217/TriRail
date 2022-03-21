@@ -1,5 +1,6 @@
 package com.tsgreenberg.station_info
 
+import android.net.RouteInfo
 import android.util.Log
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
@@ -31,7 +32,8 @@ import kotlin.math.absoluteValue
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun EtaScreen(
-    triRailNav: TriRailNav, id: Int
+    triRailNav: TriRailNav,
+    id: Int
 ) {
     val viewModel: StationDetailViewModel = hiltViewModel()
     viewModel.setStationEta(id)
@@ -50,62 +52,47 @@ fun EtaScreen(
                 }
             }
             is DataState.Success -> {
-                val enRouteMap = state.data[0].enRoute.getNextTrains()
+                val enRouteMap = state.data.etaMap
 
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     val pagerState = rememberPagerState()
                     HorizontalPager(
-                        2,
+                        enRouteMap.size,
                         state = pagerState,
-                        modifier = Modifier
-                            .fillMaxSize()
+                        modifier = Modifier.fillMaxSize()
                     ) { page ->
                         val key = if (page == 0) "South" else "North"
-                        enRouteMap[key]?.let { it[0] }?.let {
-                            Column {
-                                Spacer(modifier = Modifier.padding(16.dp))
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.SpaceBetween
-                                ) {
+                        Column {
+                            Spacer(modifier = Modifier.padding(16.dp))
+                            Text(
+                                modifier = Modifier
+                                    .background(Color(0xFF4E90A6))
+                                    .fillMaxWidth(),
+                                text = "${key}bound",
+                                style = TextStyle(
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                            )
 
-                                    val directionText = "${it.direction}bound"
-
-                                    Text(
-                                        modifier = Modifier
-                                            .background(Color(0xFF4E90A6))
-                                            .fillMaxWidth(),
-                                        text = directionText,
-                                        style = TextStyle(
-                                            color = Color.White,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    )
-
+//                            Spacer(modifier = Modifier.padding(16.dp))
+                            enRouteMap[key]?.let {
+                                if (it.isEmpty()) {
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+
                                     ) {
-                                        Spacer(modifier = Modifier.padding(16.dp))
-                                        Text(
-                                            text = "ETA", style = TextStyle(
-                                                color = Color.White,
-                                                fontSize = 14.sp
-                                            )
-                                        )
-                                        Text(
-                                            text = "${it.minutes} mins", style = TextStyle(
-                                                color = Color.White,
-                                                fontSize = 32.sp
-                                            )
-                                        )
+                                        Text(text = "No upcoming trains for today.")
+                                        Spacer(modifier = Modifier.padding(10.dp))
                                     }
-                                    Spacer(modifier = Modifier.fillMaxWidth())
+                                } else {
+                                    RouteInfoScreen(info = it.first())
                                 }
                             }
+
                         }
                     }
 
@@ -120,6 +107,35 @@ fun EtaScreen(
                     }
                 }
             }
+
+            is DataState.Error -> {
+
+            }
         }
     }
+}
+
+@Composable
+fun RouteInfoScreen(info: EnRouteInfo) {
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.padding(16.dp))
+        Text(
+            text = "ETA", style = TextStyle(
+                color = Color.White,
+                fontSize = 14.sp
+            )
+        )
+        Text(
+            text = "${info.minutes} mins", style = TextStyle(
+                color = Color.White,
+                fontSize = 32.sp
+            )
+        )
+    }
+    Spacer(modifier = Modifier.fillMaxWidth())
+
 }

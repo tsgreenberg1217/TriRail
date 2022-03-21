@@ -30,7 +30,7 @@ data class Vehicle(
     val deadHead: String,
     val aID: String,
     @SerializedName("directionAbbr") val direction: String,
-    val minutesToNextStops: List<StopEtaInfo>
+    val minutesToNextStopDTOS: List<StopEtaInfoDTO>
 )
 
 
@@ -50,10 +50,28 @@ data class Vehicle(
 //    val routeID: Int
 //)
 
-data class StopEtaInfo(
+data class StopEtaInfoDTO(
     val id: String,
     val enRoute: List<EnRouteInfo>
 )
+
+data class UiStopEtaInfo(
+    val etaMap: Map<String, List<EnRouteInfo>>
+)
+
+
+fun GetStopEtaResponse.toUIStopEta(): UiStopEtaInfo = UiStopEtaInfo(
+    etaMap = if (etaDTOS.isEmpty()) mapOf(
+        "North" to listOf(),
+        "South" to listOf()
+    ) else etaDTOS.first().toUIMap()
+)
+
+
+fun StopEtaInfoDTO.toUIMap(): Map<String, List<EnRouteInfo>> = if (enRoute.isEmpty()) mapOf(
+    "North" to listOf(),
+    "South" to listOf()
+) else enRoute.getNextTrains()
 
 fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
     Log.d("TRI RAIL", "list $this")
@@ -61,22 +79,21 @@ fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
     val northBound = mutableListOf<EnRouteInfo>()
 
     forEach { enRoute ->
-        with(if(enRoute.isNorthBound()) southBound else northBound){ add(enRoute) }
+        with(if (enRoute.isNorthBound()) southBound else northBound) { add(enRoute) }
     }
-
-
-
     southBound.sortBy { it.minutes }
     northBound.sortBy { it.minutes }
+    val northForMap = if (northBound.isEmpty()) listOf() else northBound.toList()
+    val southForMap = if (southBound.isEmpty()) listOf() else northBound.toList()
 
     return mutableMapOf<String, List<EnRouteInfo>>().apply {
-        put("North", northBound)
-        put("South", southBound)
+        put("North", northForMap)
+        put("South", southForMap)
     }
 }
 
-fun EnRouteInfo.isNorthBound():Boolean = direction == "North"
-fun EnRouteInfo.isSouthBound():Boolean = direction == "South"
+fun EnRouteInfo.isNorthBound(): Boolean = direction == "North"
+fun EnRouteInfo.isSouthBound(): Boolean = direction == "South"
 
 
 data class EnRouteInfo(
@@ -98,5 +115,5 @@ data class EnRouteInfo(
 )
 
 data class GetStopEtaResponse(
-    @SerializedName("get_stop_etas") val etas: List<StopEtaInfo>
+    @SerializedName("get_stop_etas") val etaDTOS: List<StopEtaInfoDTO>
 )

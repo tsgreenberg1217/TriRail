@@ -1,6 +1,5 @@
 package com.tsgreenberg.station_info
 
-import android.util.Log
 import com.tsgreenberg.core.DataState
 import kotlinx.coroutines.flow.flow
 
@@ -23,7 +22,7 @@ class GetEtaForStation(
             val response = etaService.getStopEtas(id)
 //            Log.d("TRI RAIL", "data from flow is $response")
             emit(
-                DataState.Success(response.etas)
+                DataState.Success(response.toUIStopEta())
             )
         } catch (e: Exception) {
             emit(
