@@ -78,17 +78,15 @@ fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
     val southBound = mutableListOf<EnRouteInfo>()
     val northBound = mutableListOf<EnRouteInfo>()
 
-    forEach { enRoute ->
-        with(if (enRoute.isNorthBound()) southBound else northBound) { add(enRoute) }
+    forEach {
+        with(if (it.isNorthBound()) northBound else southBound) { add(it) }
     }
     southBound.sortBy { it.minutes }
     northBound.sortBy { it.minutes }
-    val northForMap = if (northBound.isEmpty()) listOf() else northBound.toList()
-    val southForMap = if (southBound.isEmpty()) listOf() else northBound.toList()
 
     return mutableMapOf<String, List<EnRouteInfo>>().apply {
-        put("North", northForMap)
-        put("South", southForMap)
+        put("North", northBound.toList())
+        put("South", southBound.toList())
     }
 }
 
