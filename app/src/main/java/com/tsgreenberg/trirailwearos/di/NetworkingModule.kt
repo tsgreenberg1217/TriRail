@@ -1,10 +1,9 @@
-package com.tsgreenberg.trirailwearos
+package com.tsgreenberg.trirailwearos.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tsgreenberg.station_info.EtaInteractors
 import com.tsgreenberg.station_info.EtaService
-import com.tsgreenberg.station_info.testing.MockEtaService
 import com.tsgreenberg.station_list.StationInteractors
 import com.tsgreenberg.station_list.StationsService
 import dagger.Module
@@ -17,10 +16,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 @Module
 @InstallIn(SingletonComponent::class)
-object ApplicationModule {
-
+object NetworkingModule {
     @Provides
     fun getGson(): Gson = GsonBuilder().setLenient().create()
 
@@ -72,6 +71,4 @@ object ApplicationModule {
     ): EtaInteractors {
         return EtaInteractors.build(etaService)
     }
-
-
 }

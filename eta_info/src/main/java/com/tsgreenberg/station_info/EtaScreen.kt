@@ -1,12 +1,8 @@
 package com.tsgreenberg.station_info
 
-import android.net.RouteInfo
-import android.util.Log
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +11,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.rememberScalingLazyListState
@@ -25,9 +20,8 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.navigation.TriRailNav
+import com.tsgreenberg.station_list.TrackArrow
 import com.tsgreenberg.ui_components.TriRailScaffold
-import java.util.*
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -64,6 +58,7 @@ fun EtaScreen(
                         val key = if (page == 0) "South" else "North"
                         Column {
                             Spacer(modifier = Modifier.padding(16.dp))
+
                             Text(
                                 modifier = Modifier
                                     .background(Color(0xFF4E90A6))
@@ -84,7 +79,7 @@ fun EtaScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.Center,
 
-                                    ) {
+                                        ) {
                                         Text(text = "No upcoming trains for today.")
                                         Spacer(modifier = Modifier.padding(10.dp))
                                     }
@@ -136,6 +131,27 @@ fun RouteInfoScreen(info: EnRouteInfo) {
             )
         )
     }
-    Spacer(modifier = Modifier.fillMaxWidth())
+//    Spacer(modifier = Modifier.fillMaxWidth())
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+
+        Text(
+            modifier = Modifier.weight(1f),
+            text = "Track",
+            textAlign = TextAlign.Center
+        )
+
+        TrackArrow(
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
+            "#${info.track}"
+        )
+    }
 
 }

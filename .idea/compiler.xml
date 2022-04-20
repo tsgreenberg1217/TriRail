@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="TestWearOs.app" target="11" />
-      <module name="TestWearOs.station_info" target="11" />
+      <module name="TestWearOs.eta_info" target="11" />
       <module name="TestWearOs.station_list" target="11" />
       <module name="TestWearOs.ui_components" target="11" />
     </bytecodeTargetLevel>
