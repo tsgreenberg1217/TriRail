@@ -5,9 +5,8 @@ import android.content.Intent
 import androidx.navigation.NavHostController
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
-import com.tsgreenberg.station_info.EtaInfoActivity
+import com.tsgreenberg.eta_info.EtaInfoActivity
 import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
@@ -21,7 +20,10 @@ class StationListNavigator @Inject constructor(
         when (routeAction) {
             is TriRailRootAction.StationInfo -> {
                 with(ctx) {
-                    Intent(this, EtaInfoActivity::class.java).also { startActivity(it) }
+                    Intent(this, EtaInfoActivity::class.java).also {
+                        it.putExtra(TriRailRootAction.StationInfo.intentKey, routeAction.station_id)
+                        startActivity(it)
+                    }
                 }
 
             }

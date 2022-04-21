@@ -1,14 +1,17 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
-import com.tsgreenberg.station_info.di.EtaInfoNavigationQualifier
+import com.tsgreenberg.core.navigation.TriRailRootAction
+import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,23 +26,22 @@ class EtaInfoActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            MaterialTheme {
+                val stationId = intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey)
+                val navController = rememberNavController()
+                triRailNav.navController = navController
+                val navState = navController.currentBackStackEntryAsState()
+                Log.d("TRI RAIL", "current destination is ${navState.value?.destination?.route}")
 
-            val navController = rememberNavController()
-            triRailNav.navController = navController
-
-            val navState = navController.currentBackStackEntryAsState()
-            Log.d("TRI RAIL", "current destination is ${navState.value?.destination?.route}")
-
-
-            EtaScreen(triRailNav = triRailNav, 12)
-//            NavHost(
-//                navController = triRailNav.navController,
-//                startDestination = NavConstants.STATION_INFO_ROUTE
-//            ) {
-//                with(triRailNav) {
-//                    getStationDetail(this)
-//                }
-//            }
+                stationId?.let {
+                    val viewModel: StationDetailViewModel = hiltViewModel()
+                    viewModel.setStationEta(it)
+                    EtaScreen(
+                        triRailNav = triRailNav,
+                        state = viewModel.state.value
+                    )
+                }
+            }
         }
     }
 }

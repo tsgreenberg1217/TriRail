@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

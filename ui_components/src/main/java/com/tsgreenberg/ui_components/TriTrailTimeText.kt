@@ -1,4 +1,4 @@
-package com.tsgreenberg.trirailwearos
+package com.tsgreenberg.ui_components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -7,11 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.foundation.CurvedTextStyle
-import androidx.wear.compose.material.CurvedText
-import androidx.wear.compose.material.ExperimentalWearMaterialApi
-import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
-import androidx.wear.compose.material.TimeTextDefaults
+import androidx.wear.compose.material.*
 
 @Composable
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)

@@ -11,6 +11,7 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner = "com.codingwithmitch.dotainfo.CustomTestRunner"
 
     }
 
@@ -105,4 +106,10 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+
+    kaptTest 'com.google.dagger:hilt-android-compiler:2.38.1'
+    // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
+    // ...with Kotlin.
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.38.1'
 }

@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -53,7 +53,7 @@ dependencies {
     implementation(project(":ui_components"))
     implementation(project(":core"))
 
-    def nav_version = "2.4.1"
+    def nav_version = "2.4.2"
 
     implementation "androidx.navigation:navigation-compose:$nav_version"
 

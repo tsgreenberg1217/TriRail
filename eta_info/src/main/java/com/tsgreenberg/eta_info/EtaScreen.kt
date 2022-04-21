@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,13 +27,11 @@ import com.tsgreenberg.ui_components.TriRailScaffold
 @Composable
 fun EtaScreen(
     triRailNav: TriRailNav,
-    id: Int
+    state: DataState<UiStopEtaInfo>
 ) {
-    val viewModel: StationDetailViewModel = hiltViewModel()
-    viewModel.setStationEta(id)
     val scalingLazyListState = rememberScalingLazyListState()
     TriRailScaffold(scalingLazyListState = scalingLazyListState) {
-        when (val state = viewModel.state.value) {
+        when (state) {
             is DataState.Loading -> {
                 Column(
                     Modifier.fillMaxSize(),

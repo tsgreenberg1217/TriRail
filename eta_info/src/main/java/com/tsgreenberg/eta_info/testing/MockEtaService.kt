@@ -1,6 +1,6 @@
-package com.tsgreenberg.station_info.testing
+package com.tsgreenberg.eta_info.testing
 
-import com.tsgreenberg.station_info.*
+import com.tsgreenberg.eta_info.*
 
 class MockEtaService : EtaService {
     override suspend fun getVehicles(

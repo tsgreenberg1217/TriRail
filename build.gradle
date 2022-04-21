@@ -3,7 +3,7 @@ buildscript {
     ext {
         // Dependency versions.
         activity_compose_version = '1.4.0'
-        compose_version = '1.2.0-alpha04'
+        compose_version = '1.2.0-alpha07'
         wear_compose_version = '1.0.0-alpha17'
 
         junit_version = '4.13.2'

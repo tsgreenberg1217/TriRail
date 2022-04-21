@@ -2,9 +2,7 @@ package com.tsgreenberg.trirailwearos.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.tsgreenberg.station_info.EtaInteractors
-import com.tsgreenberg.station_info.EtaService
-import com.tsgreenberg.station_list.StationInteractors
+import com.tsgreenberg.eta_info.EtaService
 import com.tsgreenberg.station_list.StationsService
 import dagger.Module
 import dagger.Provides
@@ -24,14 +22,12 @@ object NetworkingModule {
     fun getGson(): Gson = GsonBuilder().setLenient().create()
 
     @Provides
-    fun getInterceptor(): Interceptor {
-        return Interceptor {
-            val newRequest = it.request().newBuilder()
-                .addHeader("Content-Type", "application/json")
-                .build()
-            it.proceed(newRequest)
-        }
+    fun getInterceptor(): Interceptor = Interceptor {
+        it.request().newBuilder()
+            .addHeader("Content-Type", "application/json")
+            .build().let { newReq -> it.proceed(newReq) }
     }
+
 
     @Provides
     fun getClient(interceptor: Interceptor): OkHttpClient {
@@ -58,17 +54,5 @@ object NetworkingModule {
     fun getEtaService(retrofit: Retrofit): EtaService =
         retrofit.create(EtaService::class.java)
 
-    @Provides
-    fun getStationInteractors(
-        stationService: StationsService
-    ): StationInteractors {
-        return StationInteractors.build(stationService)
-    }
 
-    @Provides
-    fun getEtaInteractors(
-        etaService: EtaService
-    ): EtaInteractors {
-        return EtaInteractors.build(etaService)
-    }
 }

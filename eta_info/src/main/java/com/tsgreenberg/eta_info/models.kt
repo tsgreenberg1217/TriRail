@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName

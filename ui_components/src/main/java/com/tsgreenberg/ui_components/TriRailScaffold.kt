@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.material.*
-import com.tsgreenberg.trirailwearos.CustomTimeText
 
 @Composable
 fun TriRailScaffold(

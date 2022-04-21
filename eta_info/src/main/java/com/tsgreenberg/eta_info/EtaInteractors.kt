@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_info
+package com.tsgreenberg.eta_info
 
 import com.tsgreenberg.core.DataState
 import kotlinx.coroutines.flow.flow

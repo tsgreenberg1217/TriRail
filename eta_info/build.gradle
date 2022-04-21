@@ -2,6 +2,11 @@ apply {
     from("$rootDir/android-library-build.gradle")
 }
 
+android{
+    defaultConfig{
+        testInstrumentationRunner = "com.tsgreenberg.eta_info.CustomTestRunner"
+    }
+}
 dependencies{
     implementation(project(":core"))
     implementation(project(":ui_components"))
