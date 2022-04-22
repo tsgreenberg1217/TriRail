@@ -41,67 +41,17 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 
-@Module
-@TestInstallIn(components = [SingletonComponent::class], replaces = [ActivityModule::class])
-class FakeEtaModule {
-
-
-    @Provides
-    fun getEtaInteractors(
-        etaService: EtaService
-    ): EtaInteractors {
-        return EtaInteractors.build(etaService)
-    }
-
-    @Provides
-    fun getGetEtaForStation(interactors: EtaInteractors): GetEtaForStation {
-        return interactors.getEtaForStation
-    }
-
-}
-
-open class EtaInfoEndToEndTestBase {
-    @Module
-    @InstallIn(SingletonComponent::class)
-    abstract class TestModule {
-        @Binds
-        @EtaInfoNavigationQualifier
-        abstract fun getTestNav(mockNavigation: MockNavigation): TriRailNavImplementor<NavHostController>
-    }
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<EtaInfoActivity>()
-
-
-    private val context =
-        InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-
-    @Before
-    fun before() {
-        hiltRule.inject()
-        composeTestRule.activity.apply {
-            val testViewModel: StationDetailViewModel by viewModels()
-            testViewModel.setStationEta(1)
-        }
-    }
-
-}
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @HiltAndroidTest
-class EtaInfoEndToEndTest :EtaInfoEndToEndTestBase() {
-    @BindValue @JvmField
+class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
+    @BindValue
+    @JvmField
     val service: EtaService = MockEtaService()
 
     @Test
     fun bothTrainsAvailable() {
         composeTestRule.also {
-//            it.onRoot(useUnmergedTree = true)
-//                .printToLog("TAG") // For learning the ui tree system
-
             it.onNodeWithTag(ETA_TITLE_SOUTH, useUnmergedTree = true)
                 .assertTextEquals("Southbound")
 
