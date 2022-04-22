@@ -1,12 +1,13 @@
-package com.tsgreenberg.eta_info
+package com.tsgreenberg.eta_info.ui
 
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
@@ -22,25 +23,20 @@ class EtaInfoActivity : ComponentActivity() {
     @EtaInfoNavigationQualifier
     lateinit var triRailNav: TriRailNavImplementor<NavHostController>
 
+    private val viewModel: StationDetailViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val stationId = intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey)
+        stationId?.let { viewModel.setStationEta(it) }
         setContent {
             MaterialTheme {
-                val stationId = intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey)
                 val navController = rememberNavController()
                 triRailNav.navController = navController
-                val navState = navController.currentBackStackEntryAsState()
-                Log.d("TRI RAIL", "current destination is ${navState.value?.destination?.route}")
-
-                stationId?.let {
-                    val viewModel: StationDetailViewModel = hiltViewModel()
-                    viewModel.setStationEta(it)
-                    EtaScreen(
-                        triRailNav = triRailNav,
-                        state = viewModel.state.value
-                    )
-                }
+                EtaScreen(
+                    triRailNav = triRailNav,
+                    state = viewModel.state.value
+                )
             }
         }
     }

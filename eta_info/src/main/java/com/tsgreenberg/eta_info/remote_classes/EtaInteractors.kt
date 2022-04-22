@@ -1,6 +1,8 @@
-package com.tsgreenberg.eta_info
+package com.tsgreenberg.eta_info.remote_classes
 
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.core.ProgressBarState
+import com.tsgreenberg.eta_info.toUIStopEta
 import kotlinx.coroutines.flow.flow
 
 data class EtaInteractors(
@@ -19,8 +21,8 @@ class GetEtaForStation(
 ) {
     fun execute(id: Int) = flow {
         try {
+            emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
             val response = etaService.getStopEtas(id)
-//            Log.d("TRI RAIL", "data from flow is $response")
             emit(
                 DataState.Success(response.toUIStopEta())
             )
@@ -28,6 +30,8 @@ class GetEtaForStation(
             emit(
                 DataState.Error(e.localizedMessage.orEmpty())
             )
+        }finally {
+            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
         }
 
     }

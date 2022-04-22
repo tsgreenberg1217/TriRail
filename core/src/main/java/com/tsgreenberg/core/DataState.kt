@@ -1,7 +1,9 @@
 package com.tsgreenberg.core
 
 sealed class DataState<out T> {
-    object Loading : DataState<Nothing>()
+    data class Loading(
+        val progressBarState: ProgressBarState
+    ) : DataState<Nothing>()
 
     class Success<T>(
         val data: T

@@ -1,10 +1,12 @@
 package com.tsgreenberg.station_list
 
+import android.provider.ContactsContract
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.core.ProgressBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +17,7 @@ class StationViewModel @Inject constructor(
     private val getStops: GetStops
 ) : ViewModel() {
 
-    val state: MutableState<DataState<List<Stop>>> = mutableStateOf(DataState.Loading)
+    val state: MutableState<StationListState> = mutableStateOf(StationListState())
 
     init {
         getStops()
@@ -24,7 +26,19 @@ class StationViewModel @Inject constructor(
 
     private fun getStops() {
         getStops.execute().onEach {
-            state.value = it
+            when(it){
+                is DataState.Loading ->{
+                    state.value = state.value.copy(progressBarState = it.progressBarState)
+                }
+
+                is DataState.Success ->{
+                    state.value = state.value.copy(stops = it.data)
+                }
+
+                is DataState.Error ->{
+                    println("Error")
+                }
+            }
         }.launchIn(viewModelScope)
 
     }

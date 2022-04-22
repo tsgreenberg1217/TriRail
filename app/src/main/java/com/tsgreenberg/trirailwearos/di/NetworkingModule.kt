@@ -2,7 +2,8 @@ package com.tsgreenberg.trirailwearos.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.tsgreenberg.eta_info.EtaService
+import com.tsgreenberg.eta_info.remote_classes.EtaService
+import com.tsgreenberg.eta_info.testing.MockEtaService
 import com.tsgreenberg.station_list.StationsService
 import dagger.Module
 import dagger.Provides
@@ -53,6 +54,7 @@ object NetworkingModule {
     @Provides
     fun getEtaService(retrofit: Retrofit): EtaService =
         retrofit.create(EtaService::class.java)
+//        MockEtaService()
 
 
 }

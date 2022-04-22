@@ -74,7 +74,7 @@ fun StopEtaInfoDTO.toUIMap(): Map<String, List<EnRouteInfo>> = if (enRoute.isEmp
 ) else enRoute.getNextTrains()
 
 fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
-    Log.d("TRI RAIL", "list $this")
+//    Log.d("TRI RAIL", "list $this")
     val southBound = mutableListOf<EnRouteInfo>()
     val northBound = mutableListOf<EnRouteInfo>()
 

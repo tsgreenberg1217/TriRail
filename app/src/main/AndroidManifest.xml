@@ -37,8 +37,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.tsgreenberg.eta_info.EtaInfoActivity" />
+        <activity android:name="com.tsgreenberg.eta_info.ui.EtaInfoActivity" />
     </application>
 
 </manifest>

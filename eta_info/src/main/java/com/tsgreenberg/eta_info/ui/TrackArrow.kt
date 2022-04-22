@@ -1,11 +1,10 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.eta_info.ui
 
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.nativeCanvas

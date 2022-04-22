@@ -18,13 +18,12 @@ import com.tsgreenberg.core.navigation.TriRailRootAction
 
 @Composable
 fun ChooseStationNavigator(
-    triRailNav: TriRailNav
+    triRailNav: TriRailNav,
+    state: StationListState
 ) {
-    val viewModel: StationViewModel = hiltViewModel()
     val scalingLazyListState = rememberScalingLazyListState()
-
     ChooseStationList(
-        state = viewModel.state.value,
+        state = state,
         scrollState = scalingLazyListState,
         triRailNav = triRailNav
     )
@@ -32,62 +31,45 @@ fun ChooseStationNavigator(
 
 @Composable
 internal fun ChooseStationList(
-    state: DataState<List<Stop>>,
+    state: StationListState,
     scrollState: ScalingLazyListState,
     triRailNav: TriRailNav,
 ) {
-    MaterialTheme {
-        TriRailScaffold(scrollState) {
-            when (state) {
-                is DataState.Loading -> {
-                    Column(
-                        Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+    TriRailScaffold(
+        scrollState,
+        progressBarState = state.progressBarState
+    ) {
+        state.stops?.let {
+            ScalingLazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                state = scrollState
+            ) {
+                item {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        CircularProgressIndicator(
-                            Modifier.size(30.dp)
+                        Text(text = "Stations", textAlign = TextAlign.Center)
+                    }
+                }
+                items(it) { stop ->
+                    Chip(onClick = {
+                        triRailNav.navigate(
+                            TriRailRootAction.StationInfo(stop.id)
                         )
-                    }
+                    },
+                        colors = ChipDefaults.gradientBackgroundChipColors(
+                            startBackgroundColor = Color(0xFF4E90A6),
+                            endBackgroundColor = Color(0xFF132329)
+                        ),
+                        label = { Text(text = stop.name) }
+                    )
                 }
-
-                is DataState.Success -> {
-                    ScalingLazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                        state = scrollState
-                    ) {
-                        item {
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Text(text = "Stations", textAlign = TextAlign.Center)
-                            }
-                        }
-                        items(state.data) { stop ->
-                            Chip(onClick = {
-                                triRailNav.navigate(
-                                    TriRailRootAction.StationInfo(stop.id)
-                                )
-                            },
-                                colors = ChipDefaults.gradientBackgroundChipColors(
-                                    startBackgroundColor = Color(0xFF4E90A6),
-                                    endBackgroundColor = Color(0xFF132329)
-                                ),
-                                label = { Text(text = stop.name) }
-                            )
-                        }
-                    }
-                }
-
-                is DataState.Error -> {
-                    Text(text = state.msg)
-                }
-
             }
         }
     }
+
 
 }
 

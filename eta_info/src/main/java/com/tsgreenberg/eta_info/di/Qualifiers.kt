@@ -4,7 +4,3 @@ import javax.inject.Qualifier
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class EtaInfoNavigationQualifier
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class MockEtaServiceQualifier

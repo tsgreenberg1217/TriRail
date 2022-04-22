@@ -1,6 +1,7 @@
 package com.tsgreenberg.eta_info.testing
 
 import com.tsgreenberg.eta_info.*
+import com.tsgreenberg.eta_info.remote_classes.EtaService
 
 class MockEtaService : EtaService {
     override suspend fun getVehicles(
@@ -24,7 +25,7 @@ class MockEtaService : EtaService {
                             1,
                             18,
                             1,
-                            11,
+                            20,
                             "11:45PM",
                             "11:45PM",
                             "On Time",
@@ -56,7 +57,6 @@ class MockEtaService : EtaService {
                     )
                 )
             )
-
         )
     }
 }
