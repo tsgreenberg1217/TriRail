@@ -19,8 +19,8 @@ import com.tsgreenberg.eta_info.testing.TestingTags.NO_TRAIN_SOUTH
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
-
-
+import org.junit.runner.RunWith
+import org.junit.runners.Suite
 
 
 /**
@@ -28,6 +28,14 @@ import org.junit.Test
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
+@RunWith(Suite::class)
+@Suite.SuiteClasses(
+    EtaInfoEndToEndTest::class,
+    EtaInfoEndToEndTestUnAvail::class
+)
+class EtaUiTestSuite
 
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
