@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info
+package com.tsgreenberg.eta_info.android_test_utils
 
 import androidx.activity.viewModels
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -17,27 +17,8 @@ import dagger.hilt.components.SingletonComponent
 import org.junit.Before
 import org.junit.Rule
 
-
-//@Module
-//@TestInstallIn(components = [SingletonComponent::class], replaces = [ActivityModule::class])
-//class FakeEtaModule {
-//
-//
-//    @Provides
-//    fun getEtaInteractors(
-//        etaService: EtaService
-//    ): EtaInteractors {
-//        return EtaInteractors.build(etaService)
-//    }
-//
-//    @Provides
-//    fun getGetEtaForStation(interactors: EtaInteractors): GetEtaForStation {
-//        return interactors.getEtaForStation
-//    }
-//
-//}
-
 open class EtaInfoEndToEndTestBase {
+
     @Module
     @InstallIn(SingletonComponent::class)
     abstract class TestModule {
@@ -51,7 +32,6 @@ open class EtaInfoEndToEndTestBase {
 
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<EtaInfoActivity>()
-
 
     private val context =
         InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
