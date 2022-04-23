@@ -26,6 +26,8 @@ import com.tsgreenberg.eta_info.testing.TestingTags.ETA_MINS_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
+import com.tsgreenberg.eta_info.testing.TestingTags.NO_TRAIN_NORTH
+import com.tsgreenberg.eta_info.testing.TestingTags.NO_TRAIN_SOUTH
 import com.tsgreenberg.ui_components.TriRailScaffold
 
 @OptIn(ExperimentalPagerApi::class)
@@ -77,7 +79,10 @@ fun EtaScreen(
                                     verticalArrangement = Arrangement.Center,
 
                                     ) {
-                                    Text(text = "No upcoming trains for today.")
+                                    Text(
+                                        modifier = Modifier.testTag(if (key == "North") NO_TRAIN_NORTH else NO_TRAIN_SOUTH),
+                                        text = "No upcoming trains for today."
+                                    )
                                     Spacer(modifier = Modifier.padding(10.dp))
                                 }
                             } else {

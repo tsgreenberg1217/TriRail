@@ -13,4 +13,8 @@ object TestingTags {
     const val ETA_MINS_SOUTH = "${ETA_SOUTH}_${MINS_TAG}"
     const val ETA_VIEWPAGER = "ETA_VIEWPAGER"
 
+    private const val NO_TRAIN = "NO_TRAIN"
+    const val NO_TRAIN_SOUTH = "${ETA_SOUTH}_${NO_TRAIN}"
+    const val NO_TRAIN_NORTH = "${ETA_NORTH}_${NO_TRAIN}"
+
 }
