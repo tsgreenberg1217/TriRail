@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 
 @Module
@@ -48,13 +49,12 @@ object NetworkingModule {
     }.build()
 
     @Provides
+    @Singleton
     fun getStationsService(retrofit: Retrofit): StationsService =
         retrofit.create(StationsService::class.java)
 
     @Provides
+    @Singleton
     fun getEtaService(retrofit: Retrofit): EtaService =
         retrofit.create(EtaService::class.java)
-//        MockEtaService()
-
-
 }

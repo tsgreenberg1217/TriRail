@@ -2,6 +2,7 @@ package com.tsgreenberg.eta_info
 
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
+import com.tsgreenberg.eta_info.android_test_utils.EtaMockData
 import com.tsgreenberg.eta_info.remote_classes.GetEtaForStation
 import com.tsgreenberg.eta_info.testing.MockEtaService
 import kotlinx.coroutines.flow.toList
@@ -15,11 +16,11 @@ import org.junit.Test
  */
 class EtaInfoTests {
     // system under test
-    private lateinit var getEtaForStation : GetEtaForStation
+    private lateinit var getEtaForStation: GetEtaForStation
 
     @Test
     fun getEta_Success() = runBlocking {
-        getEtaForStation = GetEtaForStation(MockEtaService())
+        getEtaForStation = GetEtaForStation(MockEtaService(EtaMockData.available))
         val emissions = getEtaForStation.execute(1).toList()
         assert(emissions[0] is DataState.Loading)
         assert((emissions[0] as DataState.Loading).progressBarState == ProgressBarState.Loading)

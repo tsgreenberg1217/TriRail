@@ -11,7 +11,7 @@ import androidx.wear.compose.material.*
 
 @Composable
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
-fun CustomTimeText(
+internal fun CustomTimeText(
     visible: Boolean,
 //    showLeadingText: Boolean,
 //    leadingText: String

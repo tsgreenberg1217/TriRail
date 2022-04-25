@@ -6,17 +6,21 @@ import com.tsgreenberg.station_list.StationsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.components.SingletonComponent
 
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 class ActivityModule {
 
     @Provides
+    @ActivityRetainedScoped
     fun getGetStops(interactors: StationInteractors): GetStops = interactors.getStops
 
     @Provides
+    @ActivityRetainedScoped
     fun getStationInteractors(stationService: StationsService): StationInteractors {
         return StationInteractors.build(stationService)
     }

@@ -57,6 +57,7 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
 
             it.onNodeWithTag(ETA_VIEWPAGER, useUnmergedTree = true)
                 .performTouchInput { swipeLeft() }
+
             it.onNodeWithTag(ETA_TITLE_NORTH, useUnmergedTree = true)
                 .assertTextEquals("Northbound")
 
