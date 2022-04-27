@@ -4,4 +4,5 @@ apply {
 
 dependencies{
     implementation(project(":core"))
+    implementation("com.google.accompanist:accompanist-pager:0.24.3-alpha")
 }
