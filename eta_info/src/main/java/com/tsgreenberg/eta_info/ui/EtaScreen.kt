@@ -34,7 +34,8 @@ import com.tsgreenberg.ui_components.ViewPagerScroll
 @Composable
 fun EtaScreen(
     triRailNav: TriRailNav,
-    state: EtaStationState
+    state: EtaStationState,
+    refresh: () -> Unit
 ) {
     val scalingLazyListState = rememberScalingLazyListState()
     TriRailScaffold(
@@ -48,7 +49,8 @@ fun EtaScreen(
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize().padding(4.dp),
+                    .fillMaxSize()
+                    .padding(4.dp),
                 contentAlignment = Alignment.Center
             ) {
                 ViewPagerScroll(pagerState = pagerState)
@@ -60,7 +62,7 @@ fun EtaScreen(
                         .testTag(ETA_VIEWPAGER)
                 ) { page ->
                     if (page == 0) {
-                        UpcomingArrivalsSection(enRouteMap)
+                        UpcomingArrivalsSection(enRouteMap) { refresh() }
                     } else {
                         Text(text = "Working on it...")
                     }
@@ -76,7 +78,7 @@ fun Map<String, List<EnRouteInfo>>.getSouth(): List<EnRouteInfo>? = get("South")
 fun Map<String, List<EnRouteInfo>>.getNorth(): List<EnRouteInfo>? = get("North")
 
 @Composable
-fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>) {
+fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>, onRefresh: () -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
@@ -96,9 +98,7 @@ fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RefreshButton {
-
-            }
+            RefreshButton { onRefresh() }
 
         }
     }

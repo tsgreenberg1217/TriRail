@@ -25,10 +25,14 @@ class EtaInfoActivity : ComponentActivity() {
 
     private val viewModel: StationDetailViewModel by viewModels()
 
+    private var stationId: Int? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val stationId = intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey)
-        stationId?.let { viewModel.setStationEta(it) }
+        stationId = intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey)?.also {
+            viewModel.setStationEta(it)
+        }
+
         setContent {
             MaterialTheme {
                 val navController = rememberNavController()
@@ -36,7 +40,10 @@ class EtaInfoActivity : ComponentActivity() {
                 EtaScreen(
                     triRailNav = triRailNav,
                     state = viewModel.state.value
-                )
+                ) {
+
+                    stationId?.let { viewModel.setStationEta(it) }
+                }
             }
         }
     }
