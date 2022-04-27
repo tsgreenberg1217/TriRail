@@ -29,7 +29,7 @@ fun ViewPagerScroll(
             .fillMaxSize()
             .rotate(-45f)
     ) {
-        val stokeWidth = 10f
+        val stokeWidth = 5f
         val stroke = Stroke(
             width = stokeWidth,
             cap = StrokeCap.Round

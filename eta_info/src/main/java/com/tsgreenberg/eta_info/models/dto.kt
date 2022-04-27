@@ -34,22 +34,6 @@ data class Vehicle(
 )
 
 
-//data class StopEtaInfo(
-//    val blockID: Int,
-//    val stopID: Int,
-//    val patternStopID: Int,
-//    val minutes: Int,
-//    val time: String,
-//    val schedule: String,
-//    val status: String,
-//    val scheduleNumber: String,
-//    val statuscolor: String,
-//    val track: Int,
-//    @SerializedName("directionAbbr") val direction: String,
-//    val equipmentID: String,
-//    val routeID: Int
-//)
-
 data class StopEtaInfoDTO(
     val id: String,
     val enRoute: List<EnRouteInfo>

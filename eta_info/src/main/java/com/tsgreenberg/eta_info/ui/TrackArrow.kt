@@ -12,19 +12,20 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TrackArrow(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     trackTxt: String
 ) {
     Canvas(
         modifier
     ) {
 
-        val fontSize = 40.toSp().toPx()
+        val fontSize = 24.toSp().toPx()
         val textLeftPadding = 4.dp.toPx()
 
         val textPaint = Paint().apply {
             color = android.graphics.Color.WHITE
             textSize = fontSize
+            isAntiAlias = true
         }
 
         val txtRect = Rect().also {
@@ -32,7 +33,7 @@ fun TrackArrow(
         }
 
         val arrowWidth = textLeftPadding + txtRect.width()
-
+        val colorValue = 0xFF4E90A6
         drawPath(
             path = Path().apply {
                 moveTo(0f, 0f)
@@ -42,7 +43,8 @@ fun TrackArrow(
                 lineTo(arrowWidth, 0f)
                 close()
             },
-            color = Color(0xFF4E90A6),
+
+            color = Color(colorValue),
         )
 
         val textY = size.height - ((size.height - txtRect.height()) / 2)
