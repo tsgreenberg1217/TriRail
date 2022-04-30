@@ -5,11 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,7 +92,17 @@ fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>, onRefres
             val northTrains = enRouteMap.getNorth()
             val southTrains = enRouteMap.getSouth()
             ShowRouteInfo(direction = "North", list = northTrains)
-            Spacer(modifier = Modifier.padding(vertical = 5.dp))
+
+            Spacer(modifier = Modifier.padding(vertical = 2.dp))
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 80.dp)
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = Color.White)
+
+            )
+            Spacer(modifier = Modifier.padding(vertical = 2.dp))
             ShowRouteInfo(direction = "South", list = southTrains)
         }
         Column(
@@ -108,8 +120,10 @@ fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>, onRefres
 @Composable
 fun RefreshButton(onClick: () -> Unit) {
     Button(
-        onClick = onClick, modifier = Modifier.height(40.dp), colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.Transparent
+        onClick = onClick,
+        modifier = Modifier.height(40.dp).padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.DarkGray
         )
     ) {
         Column(
@@ -128,7 +142,40 @@ fun RefreshButton(onClick: () -> Unit) {
 @Composable
 fun ShowRouteInfo(direction: String, list: List<EnRouteInfo>?) {
     if (list.isNullOrEmpty()) {
-        Text(text = "No ${direction}bound trains at this time")
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row {
+                Text(
+                    modifier = Modifier
+                        .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                    text = "${direction}bound",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 12.sp
+                    )
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                    text = "No information",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        }
     } else {
         RouteInfo(direction, list.first())
     }
@@ -169,27 +216,21 @@ fun RouteInfo(direction: String, info: EnRouteInfo) {
                     text = "Track #${info.track}",
                     style = TextStyle(
                         color = Color.White,
-                        fontSize = 14.sp
+                        fontSize = 12.sp
                     )
                 )
             }
-            Row {
+            Row(
+                verticalAlignment = Bottom,
+            ) {
                 Text(
-                    text = "${info.minutes}", style = TextStyle(
+                    text = "${info.minutes} min.", style = TextStyle(
                         color = Color.White,
-                        fontSize = 24.sp
+                        fontSize = 18.sp,
+                        lineHeight = 0.sp,
+                        letterSpacing = 0.sp
                     ),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-
-                    modifier = Modifier
-                        .testTag(direction),
-                    text = "mins", style = TextStyle(
-                        color = Color.White,
-                        fontSize = 12.sp
-                    ),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.End
                 )
             }
 

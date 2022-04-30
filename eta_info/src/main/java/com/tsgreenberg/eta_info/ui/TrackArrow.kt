@@ -19,7 +19,7 @@ fun TrackArrow(
         modifier
     ) {
 
-        val fontSize = 24.toSp().toPx()
+        val fontSize = 26.toSp().toPx()
         val textLeftPadding = 4.dp.toPx()
 
         val textPaint = Paint().apply {
