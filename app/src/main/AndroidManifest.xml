@@ -28,7 +28,6 @@
 
         <activity
             android:name="com.tsgreenberg.station_list.StationListActivity"
-            android:theme="@style/Theme.App.Starting"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -38,7 +37,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.tsgreenberg.eta_info.ui.EtaInfoActivity" />
+        <activity
+            android:name="com.tsgreenberg.eta_info.ui.EtaInfoActivity"
+            android:theme="@android:style/Theme.DeviceDefault"
+            />
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ apply {
 dependencies{
     implementation(project(":core"))
     implementation(project(":ui_components"))
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 }
 
 sqldelight {
