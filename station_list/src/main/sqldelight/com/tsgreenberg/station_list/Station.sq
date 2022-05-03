@@ -1,0 +1,10 @@
+CREATE TABLE Station (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Station;
+
+insertStation:
+INSERT OR REPLACE INTO Station(id, name) VALUES (?,?);

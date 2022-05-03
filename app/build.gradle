@@ -10,7 +10,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.testwearos"
+        applicationId "com.tsgreenberg.trirailwearos"
         minSdk 30
         targetSdk 31
         versionCode 1
@@ -122,4 +122,11 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+}
+
+sqldelight {
+    TriRailDatabase { // This will be the name of the generated database class.
+        packageName = "com.tsgreenberg.trirailwearos"
+        dependency project(":station_list")
+    }
 }

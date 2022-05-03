@@ -3,12 +3,12 @@ package com.tsgreenberg.station_list.di
 import com.tsgreenberg.station_list.GetStops
 import com.tsgreenberg.station_list.StationInteractors
 import com.tsgreenberg.station_list.StationsService
+import com.tsgreenberg.stationlist.StationQueries
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import dagger.hilt.components.SingletonComponent
 
 
 @Module
@@ -21,8 +21,12 @@ class ActivityModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun getStationInteractors(stationService: StationsService): StationInteractors {
-        return StationInteractors.build(stationService)
+    fun getStationInteractors(
+        stationService: StationsService,
+        stationQueries: StationQueries
+    ): StationInteractors {
+        return StationInteractors.build(stationService, stationQueries)
     }
+
 
 }

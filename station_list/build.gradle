@@ -6,3 +6,9 @@ dependencies{
     implementation(project(":core"))
     implementation(project(":ui_components"))
 }
+
+sqldelight {
+    TriRailDatabase { // This will be the name of the generated database class.
+        packageName = "com.tsgreenberg.station_list"
+    }
+}

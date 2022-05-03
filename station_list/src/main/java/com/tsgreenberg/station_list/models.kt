@@ -8,13 +8,13 @@ data class GetStopsResponse(
 
 
 data class Stop(
-    val rid: Int,
+//    val rid: Int,
     val id: Int,
     val name: String,
-    val lat: Double,
-    val lng: Double,
-    val extID: String,
-    val shortName: String
+//    val lat: Double,
+//    val lng: Double,
+//    val extID: String,
+//    val shortName: String
 )
 
 

@@ -123,7 +123,7 @@ fun RefreshButton(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier.height(40.dp).padding(8.dp),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.DarkGray
+            backgroundColor = Color.Transparent
         )
     ) {
         Column(
