@@ -12,3 +12,9 @@ dependencies{
     implementation(project(":ui_components"))
     implementation("com.google.accompanist:accompanist-pager:0.24.3-alpha")
 }
+
+sqldelight {
+    TriRailDatabase { // This will be the name of the generated database class.
+        packageName = "com.tsgreenberg.eta_info"
+    }
+}

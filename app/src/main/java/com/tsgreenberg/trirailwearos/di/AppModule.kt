@@ -4,6 +4,7 @@ import android.content.Context
 import com.tsgreenberg.trirailwearos.TriRailDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import com.tsgreenberg.etainfo.ScheduleQueries
 import com.tsgreenberg.stationlist.StationQueries
 import dagger.Module
 import dagger.Provides
@@ -29,7 +30,10 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesStationListQueries(db: TriRailDatabase): StationQueries {
-        return db.stationQueries
-    }
+    fun providesStationListQueries(db: TriRailDatabase): StationQueries = db.stationQueries
+
+    @Provides
+    @Singleton
+    fun providesSchedule(db: TriRailDatabase): ScheduleQueries = db.scheduleQueries
+
 }
