@@ -1,10 +1,14 @@
 package com.tsgreenberg.trirailwearos.di
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.tsgreenberg.trirailwearos.TriRailDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import com.tsgreenberg.etainfo.ScheduleQueries
+import com.tsgreenberg.etainfo.TrainSchedule
+import com.tsgreenberg.etainfo.TrainScheduleQueries
 import com.tsgreenberg.stationlist.StationQueries
 import dagger.Module
 import dagger.Provides
@@ -34,6 +38,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesSchedule(db: TriRailDatabase): ScheduleQueries = db.scheduleQueries
+    fun providesSchedule(db: TriRailDatabase): TrainScheduleQueries = db.trainScheduleQueries
+
+    @Provides
+    @Singleton
+    fun providesFireStore(): FirebaseFirestore = Firebase.firestore
+
 
 }

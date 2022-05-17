@@ -1,7 +1,7 @@
 package com.tsgreenberg.eta_info
 
-import android.util.Log
 import com.google.gson.annotations.SerializedName
+import com.tsgreenberg.ui_components.toMinutes
 
 data class GetVehicleResponse(
     @SerializedName("get_vehicles") val vehicles: List<Vehicle>
@@ -98,4 +98,28 @@ data class EnRouteInfo(
 
 data class GetStopEtaResponse(
     @SerializedName("get_stop_etas") val etaDTOS: List<StopEtaInfoDTO>
+)
+
+data class UiTrainSchedule(
+    val stationId: Int,
+    val trainId: Int,
+    val direction: String,
+    val timeInMins: Int,
+    val isWeekday: Boolean
+)
+
+data class TrainScheduleDto(
+    val stationId: Int,
+    val trainId: Int,
+    val direction: String,
+    val time: String,
+    val isWeekday: Boolean
+)
+
+fun TrainScheduleDto.toUiTrainSchedule():UiTrainSchedule = UiTrainSchedule(
+    stationId = stationId,
+    trainId = trainId,
+    direction =  direction,
+    timeInMins = time.toMinutes(),
+    isWeekday = isWeekday
 )

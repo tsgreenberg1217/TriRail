@@ -1,7 +1,6 @@
 package com.tsgreenberg.station_list
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -19,6 +18,9 @@ import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.station_list.di.StationListNavigationQualifier
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -36,7 +38,6 @@ class StationListActivity : ComponentActivity() {
             MaterialTheme {
                 val navController = rememberNavController()
                 triRailNav.navController = navController
-                val navState = navController.currentBackStackEntryAsState()
                 NavHost(
                     navController = triRailNav.navController,
                     startDestination = NavConstants.STATION_LIST

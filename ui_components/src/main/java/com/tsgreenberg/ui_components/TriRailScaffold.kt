@@ -19,10 +19,7 @@ fun TriRailScaffold(
         modifier = Modifier.fillMaxSize(),
         positionIndicator = {
             if (scalingLazyListState.isScrollInProgress) {
-                PositionIndicator(
-                    scalingLazyListState =
-                    scalingLazyListState
-                )
+                PositionIndicator(scalingLazyListState = scalingLazyListState)
             }
         },
         timeText = {

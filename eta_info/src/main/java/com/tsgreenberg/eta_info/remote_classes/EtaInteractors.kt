@@ -3,18 +3,49 @@ package com.tsgreenberg.eta_info.remote_classes
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
 import com.tsgreenberg.eta_info.toUIStopEta
+import com.tsgreenberg.eta_info.toUiTrainSchedule
 import kotlinx.coroutines.flow.flow
 
 data class EtaInteractors(
-    val getEtaForStation: GetEtaForStation
+    val getEtaForStation: GetEtaForStation,
+    val getTrainSchedulesForStation: GetTrainSchedulesForStation
 ) {
     companion object Factory {
-        fun build(etaService: EtaService): EtaInteractors = EtaInteractors(
-            getEtaForStation = GetEtaForStation(etaService)
+        fun build(
+            etaService: EtaService,
+            trainsServices: TrainScheduleService
+        ): EtaInteractors = EtaInteractors(
+            getEtaForStation = GetEtaForStation(etaService),
+            getTrainSchedulesForStation = GetTrainSchedulesForStation(trainsServices)
         )
     }
 }
 
+
+class GetTrainSchedulesForStation(
+    private val trainScheduleService: TrainScheduleService
+) {
+    fun execute(id: Int, direction: String) = flow {
+        try {
+            emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
+
+            val response = trainScheduleService.getScheduleForStation(id, direction)
+                .map {
+                    it.toUiTrainSchedule()
+                }.sortedBy {
+                    it.timeInMins
+                }
+
+            emit(DataState.Success(response))
+        } catch (e: Exception) {
+            emit(
+                DataState.Error(e.localizedMessage.orEmpty())
+            )
+        } finally {
+            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
+        }
+    }
+}
 
 class GetEtaForStation(
     private val etaService: EtaService
@@ -30,7 +61,7 @@ class GetEtaForStation(
             emit(
                 DataState.Error(e.localizedMessage.orEmpty())
             )
-        }finally {
+        } finally {
             emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
         }
 

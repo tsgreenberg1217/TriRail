@@ -22,27 +22,27 @@ import androidx.wear.compose.material.rememberScalingLazyListState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.eta_info.EnRouteInfo
 import com.tsgreenberg.eta_info.R
-import com.tsgreenberg.eta_info.models.EtaStationState
+import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
+import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
 import com.tsgreenberg.ui_components.ViewPagerScroll
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun EtaScreen(
-    triRailNav: TriRailNav,
-    state: EtaStationState,
-    refresh: () -> Unit
+    state: TrainInfoState,
+    refresh: () -> Unit,
+    goToTrainSchedule: (String) -> Unit
 ) {
     val scalingLazyListState = rememberScalingLazyListState()
     TriRailScaffold(
+        progressBarState = state.etaProgressBarState,
         scalingLazyListState = scalingLazyListState,
-        state.progressBarState
     ) {
 
         state.eta?.let {
@@ -55,7 +55,6 @@ fun EtaScreen(
                     .padding(4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                ViewPagerScroll(pagerState = pagerState)
                 VerticalPager(
                     2,
                     state = pagerState,
@@ -64,15 +63,38 @@ fun EtaScreen(
                         .testTag(ETA_VIEWPAGER)
                 ) { page ->
                     if (page == 0) {
-                        UpcomingArrivalsSection(enRouteMap) { refresh() }
+                        UpcomingArrivalsSection(enRouteMap) {
+                            refresh()
+                        }
                     } else {
-                        Text(text = "Working on it...")
+                        ShowScheduleScreen { d -> goToTrainSchedule(d) }
                     }
                 }
+                ViewPagerScroll(pagerState = pagerState)
 
             }
         }
 
+    }
+}
+
+@Composable
+fun ShowScheduleScreen(onClick: (String) -> Unit) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(all = 20.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        TriRailButton(text = "NorthBound Schedule") {
+            onClick("N")
+        }
+        Spacer(modifier = Modifier.padding(vertical = 5.dp))
+        TriRailButton(text = "SouthBound Schedule") {
+            onClick("S")
+        }
     }
 }
 
@@ -121,7 +143,9 @@ fun UpcomingArrivalsSection(enRouteMap: Map<String, List<EnRouteInfo>>, onRefres
 fun RefreshButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.height(40.dp).padding(8.dp),
+        modifier = Modifier
+            .height(40.dp)
+            .padding(8.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent
         )

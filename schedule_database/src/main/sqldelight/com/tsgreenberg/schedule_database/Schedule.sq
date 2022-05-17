@@ -12,9 +12,16 @@ FROM Schedule
 WHERE station_id = ?
 ORDER BY train_id;
 
+
+getTrainForStation:
+SELECT direction, train_id, time, is_weekday
+FROM Schedule
+WHERE train_id = ?;
+
+-- VALUES(1,"N",600,"4:15 AM",1);
 initializeSchedule:
 INSERT INTO Schedule (station_id, direction,train_id,time,is_weekday)
-  VALUES(1,"N",600,"4:15 AM",1);
+
   VALUES(1,"S",601,"4:00 AM",1);
   VALUES(1,"N",602,"4:45 AM",1);
   VALUES(1,"S",603,"4:40 AM",1);

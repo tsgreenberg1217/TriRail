@@ -1,0 +1,24 @@
+CREATE TABLE TrainSchedule (
+    station_id INTEGER NOT NULL PRIMARY KEY,
+    direction TEXT NOT NULL,
+    train_id INTEGER NOT NULL,
+    time TEXT NOT NULL,
+    is_weekday INTEGER AS Boolean DEFAULT 1
+);
+
+
+insertStation:
+INSERT OR REPLACE INTO TrainSchedule(station_id, direction, train_id, time, is_weekday)
+VALUES (?,?,?,?,?);
+
+getScheduleForStation:
+SELECT direction, train_id, time, is_weekday
+FROM TrainSchedule
+WHERE station_id = ?
+ORDER BY train_id;
+
+
+getTrainForStation:
+SELECT direction, train_id, time, is_weekday
+FROM TrainSchedule
+WHERE train_id = ?;

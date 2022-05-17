@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'com.squareup.sqldelight'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+sqldelight {
+    TriRailDatabase { // This will be the name of the generated database class.
+        packageName = "com.tsgreenberg.schedule_database"
+    }
+}
+
+dependencies {
+    implementation 'javax.inject:javax.inject:1'
+}
