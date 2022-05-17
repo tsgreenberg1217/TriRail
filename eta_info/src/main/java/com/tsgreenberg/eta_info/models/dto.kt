@@ -104,6 +104,7 @@ data class UiTrainSchedule(
     val stationId: Int,
     val trainId: Int,
     val direction: String,
+    val timeString:String,
     val timeInMins: Int,
     val isWeekday: Boolean
 )
@@ -120,6 +121,15 @@ fun TrainScheduleDto.toUiTrainSchedule():UiTrainSchedule = UiTrainSchedule(
     stationId = stationId,
     trainId = trainId,
     direction =  direction,
+    timeString = time,
     timeInMins = time.toMinutes(),
     isWeekday = isWeekday
 )
+
+//data class JsonSchedule(
+//    val station_id: Int,
+//    val train_id: Int,
+//    val direction: String,
+//    val time: String,
+//    val is_weekday: Int
+//)

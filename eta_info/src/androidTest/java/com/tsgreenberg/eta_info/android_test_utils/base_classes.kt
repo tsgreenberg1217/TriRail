@@ -7,7 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.testing.MockNavigation
-import com.tsgreenberg.eta_info.ui.EtaInfoActivity
+import com.tsgreenberg.eta_info.ui.activity.EtaInfoActivity
 import com.tsgreenberg.eta_info.ui.StationDetailViewModel
 import dagger.Binds
 import dagger.Module

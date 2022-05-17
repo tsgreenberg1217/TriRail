@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StationDetailViewModel @Inject constructor(
     private val getEtaForStation: GetEtaForStation,
-    cache: EtaInfoViewModelCache
+    private val cache: EtaInfoViewModelCache
 ) : ViewModel() {
 
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
@@ -25,8 +25,8 @@ class StationDetailViewModel @Inject constructor(
         setStationEta(cache.stationId)
     }
 
-    fun refresh(id: Int) {
-        setStationEta(id)
+    fun refresh() {
+        setStationEta(cache.stationId)
     }
 
     private fun setStationEta(id: Int) {

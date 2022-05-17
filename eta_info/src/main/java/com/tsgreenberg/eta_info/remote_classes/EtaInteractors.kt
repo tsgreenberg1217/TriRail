@@ -4,7 +4,10 @@ import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
 import com.tsgreenberg.eta_info.toUIStopEta
 import com.tsgreenberg.eta_info.toUiTrainSchedule
+import com.tsgreenberg.ui_components.toMinutes
 import kotlinx.coroutines.flow.flow
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class EtaInteractors(
     val getEtaForStation: GetEtaForStation,
@@ -27,14 +30,16 @@ class GetTrainSchedulesForStation(
 ) {
     fun execute(id: Int, direction: String) = flow {
         try {
+            val nowInMinutes =
+                Date().let { SimpleDateFormat("hh:mm", Locale.US).format(it) }.toMinutes()
+
+
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
 
             val response = trainScheduleService.getScheduleForStation(id, direction)
-                .map {
-                    it.toUiTrainSchedule()
-                }.sortedBy {
-                    it.timeInMins
-                }
+                .map { it.toUiTrainSchedule() }
+                .filter { it.timeInMins > nowInMinutes }
+                .sortedBy { it.timeInMins }
 
             emit(DataState.Success(response))
         } catch (e: Exception) {

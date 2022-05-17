@@ -7,7 +7,7 @@ import androidx.core.view.ContentInfoCompat
 import androidx.navigation.NavHostController
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
-import com.tsgreenberg.eta_info.ui.EtaInfoActivity
+import com.tsgreenberg.eta_info.ui.activity.EtaInfoActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
