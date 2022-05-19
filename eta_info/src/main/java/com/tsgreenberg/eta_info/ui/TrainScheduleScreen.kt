@@ -50,10 +50,7 @@ internal fun TrainScheduleScreen(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-//                            horizontalArrangement = Arrangement.Start
-                        horizontalAlignment = Alignment.Start
-                        ) {
+                        Column(horizontalAlignment = Alignment.Start) {
                             TrackArrow(
                                 14.sp,
                                 trackTxt = it.trainId.toString()

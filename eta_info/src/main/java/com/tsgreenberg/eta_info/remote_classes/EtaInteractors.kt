@@ -31,7 +31,7 @@ class GetTrainSchedulesForStation(
     fun execute(id: Int, direction: String) = flow {
         try {
             val nowInMinutes =
-                Date().let { SimpleDateFormat("hh:mm", Locale.US).format(it) }.toMinutes()
+                Date().let { SimpleDateFormat("hh:mm aa", Locale.US).format(it) }.toMinutes()
 
 
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
