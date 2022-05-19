@@ -17,6 +17,8 @@ import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
 import com.tsgreenberg.eta_info.ui.*
+import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
+import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,8 +33,6 @@ class EtaInfoActivity : ComponentActivity() {
     lateinit var viewModelCache: EtaInfoViewModelCache
 
     var stationId: Int? = null
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@ class EtaInfoActivity : ComponentActivity() {
 
                         EtaScreen(
                             viewModel.state.value,
-                            refresh = { viewModel.refresh() },
+                            refresh = viewModel::refresh,
                             goToTrainSchedule = {
                                 viewModelCache.trainDirection = it
                                 navController.navigate("${NavConstants.STATION_INFO}/$it")

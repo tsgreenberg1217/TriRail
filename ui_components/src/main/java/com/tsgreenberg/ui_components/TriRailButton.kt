@@ -1,10 +1,7 @@
 package com.tsgreenberg.ui_components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,15 +15,13 @@ import androidx.wear.compose.material.Text
 @Composable
 fun TriRailButton(
     modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    content: @Composable BoxScope.() -> Unit
 ) {
     Button(
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         onClick = { onClick() },
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(modifier)
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
@@ -40,6 +35,6 @@ fun TriRailButton(
                 )
                 .matchParentSize(),
             contentAlignment = Alignment.Center,
-        ) { Text(text) }
+        ) { content() }
     }
 }

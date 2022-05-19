@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.ui
+package com.tsgreenberg.eta_info.ui.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

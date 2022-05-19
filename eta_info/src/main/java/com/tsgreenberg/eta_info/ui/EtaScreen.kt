@@ -88,12 +88,18 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        TriRailButton(text = "NorthBound Schedule") {
-            onClick("N")
+        TriRailButton(
+            Modifier.fillMaxWidth(),
+            onClick = { onClick("N") }
+        ) {
+            Text(text = "NorthBound Schedule")
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
-        TriRailButton(text = "SouthBound Schedule") {
-            onClick("S")
+        TriRailButton(
+            Modifier.fillMaxWidth(),
+            onClick = { onClick("S") }
+        ) {
+            Text("SouthBound Schedule")
         }
     }
 }
@@ -232,8 +238,9 @@ fun RouteInfo(direction: String, info: EnRouteInfo) {
             Column {
 
                 TrackArrow(
-                    modifier = Modifier.height(24.dp),
+                    fontSize = 10.sp,
                     trackTxt = info.scheduleNumber
+//                    trackTxt = "1"
                 )
 
                 Text(
