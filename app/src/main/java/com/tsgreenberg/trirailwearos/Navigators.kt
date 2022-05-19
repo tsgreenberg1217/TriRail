@@ -24,6 +24,7 @@ class StationListNavigator @Inject constructor(
                 with(ctx) {
                     Intent(this, EtaInfoActivity::class.java).also {
                         it.putExtra(TriRailRootAction.StationInfo.intentKey, routeAction.station_id)
+                        it.putExtra(TriRailRootAction.StationInfo.intentKeyName, routeAction.shortName)
                         it.flags = FLAG_ACTIVITY_NEW_TASK
                         startActivity(it)
                     }

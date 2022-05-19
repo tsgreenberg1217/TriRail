@@ -3,21 +3,31 @@ package com.tsgreenberg.station_list
 import com.google.gson.annotations.SerializedName
 
 data class GetStopsResponse(
-    @SerializedName("get_stops") val stops: List<Stop>
+    @SerializedName("get_stops") val stops: List<StopDto>
 )
 
 
-data class Stop(
+data class StopDto(
 //    val rid: Int,
     val id: Int,
     val name: String,
 //    val lat: Double,
 //    val lng: Double,
 //    val extID: String,
-//    val shortName: String
+    val shortName: String
 )
 
+data class UiStop(
+    val id: Int,
+    val name: String,
+    val shortName: String
+)
 
+fun StopDto.toUiStop():UiStop = UiStop(
+    id = this.id,
+    name = this.name.replace("Station","").trim(),
+    shortName = this.shortName
+)
 
 
 

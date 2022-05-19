@@ -35,12 +35,14 @@ import com.tsgreenberg.ui_components.ViewPagerScroll
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun EtaScreen(
+    shortName:String = "",
     state: TrainInfoState,
     refresh: () -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     val scalingLazyListState = rememberScalingLazyListState()
     TriRailScaffold(
+        extraText = shortName,
         progressBarState = state.etaProgressBarState,
         scalingLazyListState = scalingLazyListState,
     ) {

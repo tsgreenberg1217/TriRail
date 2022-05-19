@@ -13,6 +13,7 @@ import com.tsgreenberg.core.ProgressBarState
 fun TriRailScaffold(
     scalingLazyListState: ScalingLazyListState,
     progressBarState: ProgressBarState = ProgressBarState.Idle,
+    extraText: String = "",
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -24,6 +25,7 @@ fun TriRailScaffold(
         },
         timeText = {
             CustomTimeText(
+                extraText,
                 visible = !scalingLazyListState.isScrollInProgress,
             )
         },

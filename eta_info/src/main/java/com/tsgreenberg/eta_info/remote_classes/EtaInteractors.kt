@@ -30,15 +30,12 @@ class GetTrainSchedulesForStation(
 ) {
     fun execute(id: Int, direction: String) = flow {
         try {
-            val nowInMinutes =
-                Date().let { SimpleDateFormat("hh:mm aa", Locale.US).format(it) }.toMinutes()
-
-
+            val nowInMinutes = Date().toMinutes()
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
 
             val response = trainScheduleService.getScheduleForStation(id, direction)
                 .map { it.toUiTrainSchedule() }
-                .filter { it.timeInMins > nowInMinutes }
+                .filter { it.timeInMins >= nowInMinutes }
                 .sortedBy { it.timeInMins }
 
             emit(DataState.Success(response))

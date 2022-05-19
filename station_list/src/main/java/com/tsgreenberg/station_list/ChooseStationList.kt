@@ -56,14 +56,14 @@ internal fun ChooseStationList(
                 items(it) { stop ->
                     Chip(onClick = {
                         triRailNav.navigate(
-                            TriRailRootAction.StationInfo(stop.id)
+                            TriRailRootAction.StationInfo(stop.id, stop.shortName)
                         )
                     },
                         colors = ChipDefaults.gradientBackgroundChipColors(
                             startBackgroundColor = Color(0xFF4E90A6),
                             endBackgroundColor = Color(0xFF132329)
                         ),
-                        label = { Text(text = stop.name) }
+                        label = { Text(text = "${stop.name} Station") }
                     )
                 }
             }

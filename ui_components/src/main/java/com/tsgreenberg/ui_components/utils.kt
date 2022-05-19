@@ -1,5 +1,8 @@
 package com.tsgreenberg.ui_components
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 fun String.toMinutes(): Int {
     var newString = this
     val isPm = contains("PM")
@@ -10,6 +13,9 @@ fun String.toMinutes(): Int {
     return min
 
 }
+
+fun Date.toMinutes(): Int = SimpleDateFormat("hh:mm aa", Locale.US).format(this).toMinutes()
+
 
 fun Int.toTimeString(): String {
     val minutes = this % 60

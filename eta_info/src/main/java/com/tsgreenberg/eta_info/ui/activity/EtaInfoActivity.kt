@@ -38,7 +38,14 @@ class EtaInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        viewModelCache.apply {
+            stationId =
+                intent.extras
+                    ?.getInt(TriRailRootAction.StationInfo.intentKey) ?: -1
+            stationName =
+                intent.extras
+                    ?.getString(TriRailRootAction.StationInfo.intentKeyName) ?: ""
+        }
 
         setContent {
             MaterialTheme {
@@ -48,14 +55,10 @@ class EtaInfoActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = NavConstants.ETA
                 ) {
-                    composable(
-                        route = NavConstants.ETA,
-                    ) {
-                        viewModelCache.stationId =
-                            intent.extras?.getInt(TriRailRootAction.StationInfo.intentKey) ?: -1
+                    composable(NavConstants.ETA) {
                         val viewModel: StationDetailViewModel = hiltViewModel()
-
                         EtaScreen(
+                            shortName = viewModelCache.stationName,
                             viewModel.state.value,
                             refresh = viewModel::refresh,
                             goToTrainSchedule = {
@@ -74,6 +77,7 @@ class EtaInfoActivity : ComponentActivity() {
                     ) {
                         val viewModel: TrainScheduleViewModel = hiltViewModel()
                         UpcomingTrainsScreen(
+                            stationName = viewModelCache.stationName,
                             state = viewModel.state.value
                         )
 

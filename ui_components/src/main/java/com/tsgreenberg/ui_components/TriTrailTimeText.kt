@@ -12,6 +12,7 @@ import androidx.wear.compose.material.*
 @Composable
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
 internal fun CustomTimeText(
+    extraText: String = "",
     visible: Boolean,
 //    showLeadingText: Boolean,
 //    leadingText: String
@@ -22,10 +23,10 @@ internal fun CustomTimeText(
         exit = fadeOut(),
     ) {
         TimeText(
-            leadingCurvedContent = if (false) {
+            leadingCurvedContent = if (extraText.isNotEmpty()) {
                 {
                     CurvedText(
-                        text = "",
+                        text = extraText,
                         style = CurvedTextStyle(
                             color = Color.White
                         )

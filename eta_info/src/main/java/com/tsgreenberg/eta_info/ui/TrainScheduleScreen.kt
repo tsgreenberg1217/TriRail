@@ -19,18 +19,20 @@ import com.tsgreenberg.ui_components.toTimeString
 
 
 @Composable
-fun UpcomingTrainsScreen(state: TrainScheduleState) {
+fun UpcomingTrainsScreen(stationName: String = "",state: TrainScheduleState) {
     val scalingLazyListState = rememberScalingLazyListState()
-    TrainScheduleScreen(state, scalingLazyListState)
+    TrainScheduleScreen(stationName, state, scalingLazyListState)
 }
 
 @Composable
 internal fun TrainScheduleScreen(
+    stationName:String = "",
     state: TrainScheduleState,
     scrollState: ScalingLazyListState
 ) {
 
     TriRailScaffold(
+        extraText = stationName,
         progressBarState = state.progressBarState,
         scalingLazyListState = scrollState,
     ) {

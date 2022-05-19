@@ -4,5 +4,5 @@ import com.tsgreenberg.core.ProgressBarState
 
 data class StationListState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
-    val stops:List<Stop>? = null
+    val stops:List<UiStop>? = null
 )

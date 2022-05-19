@@ -6,9 +6,10 @@ import com.tsgreenberg.core.navigation.NavConstants.STATION_INFO_ROUTE
 import com.tsgreenberg.core.navigation.NavConstants.STATION_LIST
 
 sealed class TriRailRootAction(val route: String) {
-    data class StationInfo(val station_id: Int) : TriRailRootAction(STATION_INFO_ROUTE) {
+    data class StationInfo(val station_id: Int, val shortName:String) : TriRailRootAction(STATION_INFO_ROUTE) {
         companion object {
             const val intentKey = "StationInfo"
+            const val intentKeyName = "StationInfo_name"
         }
     }
 

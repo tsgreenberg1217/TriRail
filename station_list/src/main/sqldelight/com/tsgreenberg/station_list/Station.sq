@@ -1,10 +1,11 @@
 CREATE TABLE Station (
     id INTEGER NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    short_name TEXT NOT NULL
 );
 
 selectAll:
 SELECT * FROM Station;
 
 insertStation:
-INSERT OR REPLACE INTO Station(id, name) VALUES (?,?);
+INSERT OR REPLACE INTO Station(id, name, short_name) VALUES (?,?,?);

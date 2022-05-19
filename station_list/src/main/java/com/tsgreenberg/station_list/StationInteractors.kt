@@ -23,31 +23,30 @@ data class StationInteractors(
     }
 }
 
-fun List<Station>.toUiStop(): List<Stop> = map {
-    Stop(id = it.id.toInt(), name = it.name)
+fun List<Station>.toUiStop(): List<UiStop> = map {
+    UiStop(id = it.id.toInt(), name = it.name, shortName = it.short_name)
 }
 
 class GetStops(
     private val service: StationsService,
     private val db: StationQueries
 ) {
-    fun execute(): Flow<DataState<List<Stop>>> = flow {
+    fun execute(): Flow<DataState<List<UiStop>>> = flow {
         try {
             emit(
                 DataState.Loading(progressBarState = ProgressBarState.Loading)
             )
 
-
             val dbStations: List<Station> = db.selectAll().executeAsList()
 
             val data = if (dbStations.isEmpty()) {
-                val response = service.getStops()
+                val response = service.getStops().stops.map { it.toUiStop() }
                 db.transaction {
-                    response.stops.forEach {
-                        db.insertStation(it.id.toLong(), it.name)
+                    response.forEach {
+                        db.insertStation(it.id.toLong(), it.name, it.shortName)
                     }
                 }
-                response.stops
+                response
             } else dbStations.toUiStop()
 
             emit(DataState.Success(data))
