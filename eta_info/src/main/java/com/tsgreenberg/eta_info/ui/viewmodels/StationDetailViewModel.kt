@@ -19,6 +19,7 @@ class StationDetailViewModel @Inject constructor(
     private val cache: EtaInfoViewModelCache
 ) : ViewModel() {
 
+
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
 
     init {
@@ -27,6 +28,10 @@ class StationDetailViewModel @Inject constructor(
 
     fun refresh() {
         setStationEta(cache.stationId)
+    }
+
+    fun setTrainDirection(direction:String){
+        cache.trainDirection = direction
     }
 
     private fun setStationEta(id: Int) {

@@ -1,13 +1,12 @@
 package com.tsgreenberg.eta_info.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.*
@@ -15,21 +14,15 @@ import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.TrainScheduleState
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
-import com.tsgreenberg.ui_components.toTimeString
 
 
 @Composable
-fun UpcomingTrainsScreen(stationName: String = "",state: TrainScheduleState) {
-    val scalingLazyListState = rememberScalingLazyListState()
-    TrainScheduleScreen(stationName, state, scalingLazyListState)
-}
-
-@Composable
-internal fun TrainScheduleScreen(
-    stationName:String = "",
+fun UpcomingTrainsScreen(
+    stationName: String = "",
     state: TrainScheduleState,
-    scrollState: ScalingLazyListState
+    onTimeSelect: (String) -> Unit
 ) {
+    val scrollState = rememberScalingLazyListState()
 
     TriRailScaffold(
         extraText = stationName,
@@ -43,6 +36,21 @@ internal fun TrainScheduleScreen(
                 verticalArrangement = Arrangement.spacedBy(38.dp),
                 state = scrollState
             ) {
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp)
+                    )
+                }
+                item {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "Train Schedule", textAlign = TextAlign.Center)
+                    }
+                }
                 items(state.trainSchedule) {
                     Row(
                         Modifier
@@ -58,14 +66,13 @@ internal fun TrainScheduleScreen(
                                 trackTxt = it.trainId.toString()
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = it.timeString,
-                                fontSize = 22.sp
-                            )
+                            Text(it.timeString, fontSize = 22.sp)
                         }
 
                         TriRailButton(
-                            onClick = { /* Do something */ },
+                            onClick = {
+                                onTimeSelect(it.timeString)
+                            },
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_alarm_add_black_24dp),

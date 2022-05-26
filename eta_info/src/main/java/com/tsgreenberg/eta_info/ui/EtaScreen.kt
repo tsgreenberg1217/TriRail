@@ -40,17 +40,19 @@ fun EtaScreen(
     refresh: () -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
+    val pagerState = rememberPagerState()
     val scalingLazyListState = rememberScalingLazyListState()
     TriRailScaffold(
         extraText = shortName,
         progressBarState = state.etaProgressBarState,
         scalingLazyListState = scalingLazyListState,
+        isVisible =  !pagerState.isScrollInProgress
     ) {
 
         state.eta?.let {
             val enRouteMap = it.etaMap
-            val pagerState = rememberPagerState()
 
+            pagerState.isScrollInProgress
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -94,14 +96,14 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
             Modifier.fillMaxWidth(),
             onClick = { onClick("N") }
         ) {
-            Text(text = "NorthBound Schedule")
+            Text(text = "Northbound Schedule")
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
             Modifier.fillMaxWidth(),
             onClick = { onClick("S") }
         ) {
-            Text("SouthBound Schedule")
+            Text("Southbound Schedule")
         }
     }
 }

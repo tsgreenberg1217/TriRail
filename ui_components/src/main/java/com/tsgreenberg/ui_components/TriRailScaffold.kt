@@ -4,29 +4,34 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.*
 import com.tsgreenberg.core.ProgressBarState
 
 @Composable
 fun TriRailScaffold(
-    scalingLazyListState: ScalingLazyListState,
+    scalingLazyListState: ScalingLazyListState? = null,
     progressBarState: ProgressBarState = ProgressBarState.Idle,
+    isVisible: Boolean = true,
     extraText: String = "",
     content: @Composable () -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        positionIndicator = {
-            if (scalingLazyListState.isScrollInProgress) {
-                PositionIndicator(scalingLazyListState = scalingLazyListState)
+        positionIndicator = scalingLazyListState?.let {
+            {
+                if (scalingLazyListState.isScrollInProgress) {
+                    PositionIndicator(scalingLazyListState = scalingLazyListState)
+                }
             }
         },
         timeText = {
             CustomTimeText(
                 extraText,
-                visible = !scalingLazyListState.isScrollInProgress,
+                visible = isVisible && (scalingLazyListState?.isScrollInProgress?.not() ?: true),
             )
         },
         vignette = {
@@ -41,7 +46,11 @@ fun TriRailScaffold(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CircularProgressIndicator()
+                val colors = listOf(TriRailColors.Orange, TriRailColors.Blue, TriRailColors.Green)
+                val color = remember {
+                    colors.random()
+                }
+                CircularProgressIndicator(indicatorColor = color, trackColor = Color.Transparent)
             }
 
         }

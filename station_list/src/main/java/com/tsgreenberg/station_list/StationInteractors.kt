@@ -46,7 +46,7 @@ class GetStops(
                         db.insertStation(it.id.toLong(), it.name, it.shortName)
                     }
                 }
-                response
+                response.sortedBy { it.id }
             } else dbStations.toUiStop()
 
             emit(DataState.Success(data))

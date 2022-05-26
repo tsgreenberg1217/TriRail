@@ -1,6 +1,9 @@
 package com.tsgreenberg.eta_info.ui.activity
 
+import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.provider.AlarmClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,11 +19,16 @@ import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
-import com.tsgreenberg.eta_info.ui.*
+import com.tsgreenberg.eta_info.ui.EtaScreen
+import com.tsgreenberg.eta_info.ui.SetAlarmScreen
+import com.tsgreenberg.eta_info.ui.UpcomingTrainsScreen
 import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
+import com.tsgreenberg.ui_components.toFullStationName
+import com.tsgreenberg.ui_components.toMinutes
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class EtaInfoActivity : ComponentActivity() {
@@ -32,9 +40,6 @@ class EtaInfoActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelCache: EtaInfoViewModelCache
 
-    var stationId: Int? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +47,7 @@ class EtaInfoActivity : ComponentActivity() {
             stationId =
                 intent.extras
                     ?.getInt(TriRailRootAction.StationInfo.intentKey) ?: -1
-            stationName =
+            stationShortName =
                 intent.extras
                     ?.getString(TriRailRootAction.StationInfo.intentKeyName) ?: ""
         }
@@ -58,11 +63,11 @@ class EtaInfoActivity : ComponentActivity() {
                     composable(NavConstants.ETA) {
                         val viewModel: StationDetailViewModel = hiltViewModel()
                         EtaScreen(
-                            shortName = viewModelCache.stationName,
-                            viewModel.state.value,
+                            shortName = viewModelCache.stationShortName,
+                            state = viewModel.state.value,
                             refresh = viewModel::refresh,
                             goToTrainSchedule = {
-                                viewModelCache.trainDirection = it
+                                viewModel.setTrainDirection(it)
                                 navController.navigate("${NavConstants.STATION_INFO}/$it")
                             }
                         )
@@ -77,10 +82,56 @@ class EtaInfoActivity : ComponentActivity() {
                     ) {
                         val viewModel: TrainScheduleViewModel = hiltViewModel()
                         UpcomingTrainsScreen(
-                            stationName = viewModelCache.stationName,
+                            stationName = viewModelCache.stationShortName,
                             state = viewModel.state.value
-                        )
+                        ) {
+                            navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${viewModelCache.stationShortName}") {
+                                popUpTo(NavConstants.ETA)
+                            }
+//                            launchAlarm(viewModelCache.stationName, it)
+                        }
 
+                    }
+
+                    composable(
+                        NavConstants.SET_TRAIN_ALARM_ROUTE,
+                        arguments = listOf(
+                            navArgument(NavConstants.SET_TRAIN_ALARM_TIME) {
+                                type = NavType.StringType
+                            },
+                            navArgument(NavConstants.SET_TRAIN_ALARM_STATION) {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+
+                        val (stationName, time) = it.arguments?.run {
+                            Pair(
+                                getString(NavConstants.SET_TRAIN_ALARM_STATION) ?: "",
+                                getString(NavConstants.SET_TRAIN_ALARM_TIME) ?: ""
+                            )
+                        } ?: Pair("", "")
+                        val totalMinutes = time.toMinutes()
+                        val hours = totalMinutes.floorDiv(60)
+                        val minutes = totalMinutes % 60
+                        SetAlarmScreen(
+                            stationName = viewModelCache.stationShortName,
+                            totalMinutes
+                        ) {
+                            val alarmTime = Calendar.getInstance().apply {
+                                set(Calendar.HOUR_OF_DAY, hours)
+                                set(Calendar.MINUTE, minutes)
+                                add(Calendar.MINUTE, -it)
+                            }
+                            val alarmMsg = "${stationName.toFullStationName()} departure"
+                            val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
+                                putExtra(AlarmClock.EXTRA_MESSAGE, alarmMsg)
+                                putExtra(AlarmClock.EXTRA_HOUR, alarmTime.get(Calendar.HOUR_OF_DAY))
+                                putExtra(AlarmClock.EXTRA_MINUTES, alarmTime.get(Calendar.MINUTE))
+                            }
+                            startActivity(i)
+
+                        }
                     }
                 }
 

@@ -5,7 +5,7 @@ import com.tsgreenberg.eta_info.TrainScheduleDto
 import kotlinx.coroutines.tasks.await
 
 interface TrainScheduleService {
-    suspend fun getScheduleForStation(stationId: Int, direction: String): List<TrainScheduleDto>
+    suspend fun getScheduleForStation(stationId: Int, direction: String, isWeekday:Boolean): List<TrainScheduleDto>
 }
 
 internal class TrainScheduleServiceImpl(
@@ -13,11 +13,12 @@ internal class TrainScheduleServiceImpl(
 ) : TrainScheduleService {
     override suspend fun getScheduleForStation(
         stationId: Int,
-        direction: String
+        direction: String,
+        isWeekday: Boolean
     ): List<TrainScheduleDto> {
         val r = db.collection("schedules")
             .whereEqualTo("station_id", stationId)
-            .whereEqualTo("is_weekday", true)
+            .whereEqualTo("is_weekday", isWeekday)
             .whereEqualTo("direction", direction)
             .get()
             .await()

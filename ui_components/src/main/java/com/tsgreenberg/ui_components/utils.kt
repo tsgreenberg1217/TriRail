@@ -24,3 +24,59 @@ fun Int.toTimeString(): String {
     hours = if (isPm) hours - 12 else hours
     return "$hours:$minutes ${if (isPm) "PM" else "AM"}"
 }
+
+internal fun Date.isWeekend(): Boolean = Calendar.getInstance().let {
+    it.time = this
+    it.get(Calendar.DAY_OF_WEEK).let { d ->
+        d == Calendar.SATURDAY || d == Calendar.SUNDAY
+    }
+}
+
+// HOLIDAYS
+internal const val NEW_YEARS = "1/1"
+internal const val MEMORIAL_DAY = "5/30"
+internal const val FOURTH_OF_JULY = "7/4"
+internal const val LABOR_DAY = "9/5"
+internal const val THANKSGIVING = "11/24"
+internal const val CHRISTMAS = "12/25"
+
+internal fun Date.isHoliday(): Boolean = Calendar.getInstance().let {
+    it.time = this
+    val month = it.get(Calendar.MONTH)
+    val day = it.get(Calendar.DAY_OF_MONTH)
+    val monthString = "$month/$day"
+
+    when (monthString) {
+        NEW_YEARS, MEMORIAL_DAY, FOURTH_OF_JULY, LABOR_DAY, THANKSGIVING, CHRISTMAS -> true
+        else -> false
+    }
+}
+
+fun Date.isWeekendHours(): Boolean = isWeekend() || isHoliday()
+
+
+fun String.toFullStationName(): String {
+    return when (this) {
+        "BOC" -> "Boca Raton"
+        "BOY" -> "Boynton Beach"
+        "CYP" -> "Cypress Creek"
+        "DFB" -> "Deerfield Beach"
+        "DEL" -> "Delray Beach"
+        "FTL" -> "Fort Lauderdale"
+        "FLA" -> "Ft Lauderdale Airport"
+        "GOL" -> "Golden Glades"
+        "HIA" -> "Hialeah Market"
+        "HOL" -> "Hollywood"
+        "LAK" -> "Lake Worth"
+        "MAN" -> "Mangonia Park"
+        "MET" -> "Metrorail Transfer"
+        "MIA" -> "Miami Airport"
+        "OPL" -> "Opa-Locka"
+        "POM" -> "Pompano Beach"
+        "SHE" -> "Sheridan Street"
+        "WPB" -> "West Palm Beach"
+        else -> ""
+
+    }
+
+}

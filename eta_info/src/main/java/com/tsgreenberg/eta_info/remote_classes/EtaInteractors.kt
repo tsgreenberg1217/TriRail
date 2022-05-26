@@ -4,6 +4,7 @@ import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
 import com.tsgreenberg.eta_info.toUIStopEta
 import com.tsgreenberg.eta_info.toUiTrainSchedule
+import com.tsgreenberg.ui_components.isWeekendHours
 import com.tsgreenberg.ui_components.toMinutes
 import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
@@ -33,7 +34,7 @@ class GetTrainSchedulesForStation(
             val nowInMinutes = Date().toMinutes()
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
 
-            val response = trainScheduleService.getScheduleForStation(id, direction)
+            val response = trainScheduleService.getScheduleForStation(id, direction, Date().isWeekendHours().not())
                 .map { it.toUiTrainSchedule() }
                 .filter { it.timeInMins >= nowInMinutes }
                 .sortedBy { it.timeInMins }

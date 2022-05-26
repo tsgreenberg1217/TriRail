@@ -14,6 +14,8 @@ import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.ui_components.TriRailScaffold
 import com.tsgreenberg.core.navigation.TriRailNavRouteAction
 import com.tsgreenberg.core.navigation.TriRailRootAction
+import com.tsgreenberg.ui_components.TriRailChip
+import com.tsgreenberg.ui_components.TriRailColors
 
 
 @Composable
@@ -54,17 +56,11 @@ internal fun ChooseStationList(
                     }
                 }
                 items(it) { stop ->
-                    Chip(onClick = {
+                    TriRailChip(text = "${stop.name} Station", color = TriRailColors.Blue) {
                         triRailNav.navigate(
                             TriRailRootAction.StationInfo(stop.id, stop.shortName)
                         )
-                    },
-                        colors = ChipDefaults.gradientBackgroundChipColors(
-                            startBackgroundColor = Color(0xFF4E90A6),
-                            endBackgroundColor = Color(0xFF132329)
-                        ),
-                        label = { Text(text = "${stop.name} Station") }
-                    )
+                    }
                 }
             }
         }
