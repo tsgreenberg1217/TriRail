@@ -40,25 +40,24 @@ data class StopEtaInfoDTO(
 )
 
 data class UiStopEtaInfo(
-    val etaMap: Map<String, List<EnRouteInfo>>
+    val etaMap: Map<String, EnRouteInfo?>
 )
 
 
 fun GetStopEtaResponse.toUIStopEta(): UiStopEtaInfo = UiStopEtaInfo(
     etaMap = if (etaDTOS.isEmpty()) mapOf(
-        "North" to listOf(),
-        "South" to listOf()
+        "North" to null,
+        "South" to null
     ) else etaDTOS.first().toUIMap()
 )
 
 
-fun StopEtaInfoDTO.toUIMap(): Map<String, List<EnRouteInfo>> = if (enRoute.isEmpty()) mapOf(
-    "North" to listOf(),
-    "South" to listOf()
+fun StopEtaInfoDTO.toUIMap(): Map<String, EnRouteInfo?> = if (enRoute.isEmpty()) mapOf(
+    "North" to null,
+    "South" to null
 ) else enRoute.getNextTrains()
 
-fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
-//    Log.d("TRI RAIL", "list $this")
+fun List<EnRouteInfo>.getNextTrains(): Map<String, EnRouteInfo?> {
     val southBound = mutableListOf<EnRouteInfo>()
     val northBound = mutableListOf<EnRouteInfo>()
 
@@ -68,9 +67,9 @@ fun List<EnRouteInfo>.getNextTrains(): Map<String, List<EnRouteInfo>> {
     southBound.sortBy { it.minutes }
     northBound.sortBy { it.minutes }
 
-    return mutableMapOf<String, List<EnRouteInfo>>().apply {
-        put("North", northBound.toList())
-        put("South", southBound.toList())
+    return mutableMapOf<String, EnRouteInfo?>().apply {
+        put("North", northBound.firstOrNull())
+        put("South", southBound.firstOrNull())
     }
 }
 
