@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.ui
+package com.tsgreenberg.eta_info.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -94,14 +97,14 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
             Modifier.fillMaxWidth(),
             onClick = { onClick("N") }
         ) {
-            Text(text = "Northbound Schedule")
+            Text(text = "Northbound Schedule", textAlign = TextAlign.Center)
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
             Modifier.fillMaxWidth(),
             onClick = { onClick("S") }
         ) {
-            Text("Southbound Schedule")
+            Text("Southbound Schedule", textAlign = TextAlign.Center)
         }
     }
 }
@@ -117,11 +120,14 @@ fun UpcomingArrivalsSection(
     Column(
         Modifier
             .fillMaxSize()
-            .padding(top = 28.dp),
+            .padding(top = 20.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
-        Column {
+        Column(
+            Modifier.weight(4f, true),
+            verticalArrangement = Arrangement.Center,
+        ) {
             val northTrains = enRouteMap["North"]
             val southTrains = enRouteMap["South"]
             ShowRouteInfo(
@@ -132,9 +138,9 @@ fun UpcomingArrivalsSection(
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 80.dp)
-                    .fillMaxWidth()
+                    .align(CenterHorizontally)
                     .height(1.dp)
+                    .width(40.dp)
                     .background(color = Color.White)
 
             )
@@ -145,9 +151,9 @@ fun UpcomingArrivalsSection(
             )
         }
         Column(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth().weight(1f,true),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             RefreshButton { onRefresh() }
         }
@@ -187,7 +193,7 @@ fun ShowRouteInfo(
     arrival?.let {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             Row {
                 Text(

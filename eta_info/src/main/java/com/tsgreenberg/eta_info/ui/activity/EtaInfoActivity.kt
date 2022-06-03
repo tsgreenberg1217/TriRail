@@ -20,8 +20,8 @@ import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
-import com.tsgreenberg.eta_info.ui.EtaScreen
-import com.tsgreenberg.eta_info.ui.SetAlarmScreen
+import com.tsgreenberg.eta_info.ui.screens.EtaScreen
+import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.UpcomingTrainsScreen
 import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
@@ -29,7 +29,6 @@ import com.tsgreenberg.eta_info.utils.isValidForAlarm
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 
 

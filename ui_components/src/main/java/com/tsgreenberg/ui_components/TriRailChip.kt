@@ -1,8 +1,10 @@
 package com.tsgreenberg.ui_components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.Text
@@ -14,6 +16,12 @@ fun TriRailChip(modifier: Modifier = Modifier, text: String, color: Color, onCli
             startBackgroundColor = color,
             endBackgroundColor = Color(0xFF132329)
         ),
-        label = { Text(text) }
+        label = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = text,
+                textAlign = TextAlign.Center
+            )
+        }
     )
 }

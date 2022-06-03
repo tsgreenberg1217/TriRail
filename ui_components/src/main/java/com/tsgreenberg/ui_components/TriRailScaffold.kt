@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.wear.compose.material.*
 import com.tsgreenberg.core.ProgressBarState
 
@@ -19,6 +20,7 @@ fun TriRailScaffold(
     extraText: String = "",
     content: @Composable () -> Unit
 ) {
+    val isRound = LocalContext.current.resources.configuration.isScreenRound
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         positionIndicator = scalingLazyListState?.let {

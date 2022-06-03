@@ -35,7 +35,7 @@ fun UpcomingTrainsScreen(
             if (it.isNotEmpty()) {
                 ScalingLazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(38.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     state = scrollState
                 ) {
                     item {
@@ -58,20 +58,21 @@ fun UpcomingTrainsScreen(
                             Modifier
                                 .fillMaxWidth()
                                 .wrapContentHeight()
-                                .padding(horizontal = 5.dp),
+                                .padding(horizontal = 10.dp),
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(horizontalAlignment = Alignment.Start) {
+                            Column(Modifier.weight(3f),horizontalAlignment = Alignment.Start) {
                                 TrackArrow(
                                     14.sp,
                                     trackTxt = it.trainId.toString()
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(it.timeString, fontSize = 22.sp)
+                                Text(it.timeString, fontSize = 18.sp)
                             }
-
+                            Spacer(modifier = Modifier.weight(1f))
                             TriRailButton(
+                                modifier = Modifier.weight(2f),
                                 onClick = {
                                     onTimeSelect(it.timeString)
                                 },
@@ -80,7 +81,7 @@ fun UpcomingTrainsScreen(
                                     painter = painterResource(id = R.drawable.ic_alarm_add_black_24dp),
                                     contentDescription = "set alarm",
                                     modifier = Modifier
-                                        .size(ButtonDefaults.SmallButtonSize)
+                                        .size(32.dp)
                                         .wrapContentSize(align = Alignment.Center),
                                     tint = Color.White
                                 )

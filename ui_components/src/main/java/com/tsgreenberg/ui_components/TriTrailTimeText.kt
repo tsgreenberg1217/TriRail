@@ -29,6 +29,9 @@ internal fun CustomTimeText(
                         )
                     )
                 }
+            } else null,
+            startLinearContent = if (extraText.isNotEmpty()) {
+                { Text(text = extraText) }
             } else null
         )
     }

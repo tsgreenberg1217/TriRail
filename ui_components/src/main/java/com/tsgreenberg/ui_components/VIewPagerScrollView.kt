@@ -19,50 +19,86 @@ import com.google.accompanist.pager.PagerState
 @Composable
 fun ViewPagerScroll(
     pagerState: PagerState
-){
+) {
 
+    val isRound = LocalContext.current.resources.configuration.isScreenRound
     val scrollPosition = (pagerState.currentPage + pagerState.currentPageOffset)
         .coerceIn(0f, (pagerState.pageCount - 1).coerceAtLeast(0).toFloat())
 
     Canvas(
         Modifier
             .fillMaxSize()
-            .rotate(-45f)
+            .rotate(if (isRound) -45f else 0f)
     ) {
         val stokeWidth = 5f
         val stroke = Stroke(
             width = stokeWidth,
             cap = StrokeCap.Round
         )
-        val sizeArc = Size(size.width - stokeWidth, size.height - stokeWidth)
-        val pos = Offset(
-            (size.width - sizeArc.width) / 2f,
-            (size.height - sizeArc.height) / 2f
-        )
+        val strokeOffset = Size(size.width - stokeWidth, size.height - stokeWidth)
+        if (isRound) {
+            val pos = Offset(
+                (size.width - strokeOffset.width) / 2f,
+                (size.height - strokeOffset.height) / 2f
+            )
 
-        val sweep = 90f
+            val sweep = 90f
 
-        drawArc(
-            color = Color.White,
-            topLeft = pos,
-            style = stroke,
-            useCenter = false,
-            startAngle = 0f,
-            sweepAngle = sweep,
-            size = sizeArc,
-            alpha = .4f
-        )
-        val maxRotation = sweep - (sweep / pagerState.pageCount)
-        rotate(maxRotation * scrollPosition) {
             drawArc(
                 color = Color.White,
                 topLeft = pos,
                 style = stroke,
                 useCenter = false,
                 startAngle = 0f,
-                sweepAngle = sweep / pagerState.pageCount,
-                size = sizeArc,
+                sweepAngle = sweep,
+                size = strokeOffset,
+                alpha = .4f
             )
+            val maxRotation = sweep - (sweep / pagerState.pageCount)
+            rotate(maxRotation * scrollPosition) {
+                drawArc(
+                    color = Color.White,
+                    topLeft = pos,
+                    style = stroke,
+                    useCenter = false,
+                    startAngle = 0f,
+                    sweepAngle = sweep / pagerState.pageCount,
+                    size = strokeOffset,
+                )
+            }
+        } else {
+            val startOffset =
+                size.height.let { h -> h - (h / pagerState.pageCount) } * scrollPosition
+            val endOffset = startOffset + size.height / pagerState.pageCount
+            drawLine(
+                strokeWidth = stokeWidth,
+                color = Color.White,
+                start = Offset(
+                    strokeOffset.width,
+                    0f
+                ),
+                end = Offset(
+                    strokeOffset.width,
+                    size.height,
+                ),
+                cap = StrokeCap.Round,
+                alpha = .4f
+            )
+            drawLine(
+                strokeWidth = stokeWidth,
+                color = Color.White,
+                start = Offset(
+                    strokeOffset.width,
+                    startOffset
+                ),
+                end = Offset(
+                    strokeOffset.width,
+                    endOffset
+                ),
+                cap = StrokeCap.Round
+            )
+
+
         }
 
     }

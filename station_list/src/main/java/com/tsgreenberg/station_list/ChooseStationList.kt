@@ -56,7 +56,11 @@ internal fun ChooseStationList(
                     }
                 }
                 items(it) { stop ->
-                    TriRailChip(text = "${stop.name} Station", color = TriRailColors.Blue) {
+                    TriRailChip(
+                        Modifier.fillMaxWidth(),
+                        text = "${stop.name} Station",
+                        color = TriRailColors.Blue
+                    ) {
                         triRailNav.navigate(
                             TriRailRootAction.StationInfo(stop.id, stop.shortName)
                         )
