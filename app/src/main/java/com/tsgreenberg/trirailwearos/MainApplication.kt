@@ -5,10 +5,4 @@ import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
-class MainApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-//        FirebaseApp.initializeApp(this)
-
-    }
-}
+class MainApplication : Application()
