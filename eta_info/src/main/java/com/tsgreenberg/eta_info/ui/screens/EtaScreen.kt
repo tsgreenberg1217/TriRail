@@ -26,6 +26,7 @@ import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
+import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
 import com.tsgreenberg.ui_components.ViewPagerScroll

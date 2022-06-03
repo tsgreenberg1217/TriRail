@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.*
 import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.TrainScheduleState
+import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
 
