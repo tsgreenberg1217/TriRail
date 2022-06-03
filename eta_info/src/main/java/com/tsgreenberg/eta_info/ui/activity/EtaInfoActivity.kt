@@ -4,6 +4,7 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.provider.AlarmClock
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,9 +25,11 @@ import com.tsgreenberg.eta_info.ui.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.UpcomingTrainsScreen
 import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
+import com.tsgreenberg.eta_info.utils.isValidForAlarm
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 
 
@@ -88,7 +91,6 @@ class EtaInfoActivity : ComponentActivity() {
                             navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${viewModelCache.stationShortName}") {
                                 popUpTo(NavConstants.ETA)
                             }
-//                            launchAlarm(viewModelCache.stationName, it)
                         }
 
                     }
@@ -103,9 +105,9 @@ class EtaInfoActivity : ComponentActivity() {
                                 type = NavType.StringType
                             }
                         )
-                    ) {
+                    ) { backStackEntry ->
 
-                        val (stationName, time) = it.arguments?.run {
+                        val (stationName, time) = backStackEntry.arguments?.run {
                             Pair(
                                 getString(NavConstants.SET_TRAIN_ALARM_STATION) ?: "",
                                 getString(NavConstants.SET_TRAIN_ALARM_TIME) ?: ""
@@ -118,18 +120,25 @@ class EtaInfoActivity : ComponentActivity() {
                             stationName = viewModelCache.stationShortName,
                             totalMinutes
                         ) {
-                            val alarmTime = Calendar.getInstance().apply {
-                                set(Calendar.HOUR_OF_DAY, hours)
-                                set(Calendar.MINUTE, minutes)
-                                add(Calendar.MINUTE, -it)
+                            val now = Calendar.getInstance()
+                            if (now.time.isValidForAlarm(it)) {
+                                val alarmTime = now.apply {
+                                    set(Calendar.HOUR_OF_DAY, hours)
+                                    set(Calendar.MINUTE, minutes)
+                                    add(Calendar.MINUTE, -it)
+                                }
+                                launchAlarmIntent(
+                                    alarmTime,
+                                    "${stationName.toFullStationName()} departure"
+                                )
+                            } else {
+                                navController.popBackStack()
+                                Toast.makeText(
+                                    this@EtaInfoActivity,
+                                    "Time passed",
+                                    Toast.LENGTH_LONG
+                                )
                             }
-                            val alarmMsg = "${stationName.toFullStationName()} departure"
-                            val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
-                                putExtra(AlarmClock.EXTRA_MESSAGE, alarmMsg)
-                                putExtra(AlarmClock.EXTRA_HOUR, alarmTime.get(Calendar.HOUR_OF_DAY))
-                                putExtra(AlarmClock.EXTRA_MINUTES, alarmTime.get(Calendar.MINUTE))
-                            }
-                            startActivity(i)
 
                         }
                     }
@@ -137,6 +146,22 @@ class EtaInfoActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    fun launchAlarmIntent(alarmTime: Calendar, msg: String) {
+        val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
+            putExtra(AlarmClock.EXTRA_MESSAGE, msg)
+            putExtra(
+                AlarmClock.EXTRA_HOUR,
+                alarmTime.get(Calendar.HOUR_OF_DAY)
+            )
+            putExtra(
+                AlarmClock.EXTRA_MINUTES,
+                alarmTime.get(Calendar.MINUTE)
+            )
+        }
+        startActivity(i)
+
     }
 }
 
