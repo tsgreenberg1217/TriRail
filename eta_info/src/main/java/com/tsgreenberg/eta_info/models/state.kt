@@ -1,17 +1,30 @@
 package com.tsgreenberg.eta_info.models
 
 import com.tsgreenberg.core.ProgressBarState
-import com.tsgreenberg.core.navigation.TriRailRootAction
-import com.tsgreenberg.eta_info.UiStopEtaInfo
-import com.tsgreenberg.eta_info.UiTrainSchedule
 
 data class TrainInfoState(
     val etaProgressBarState: ProgressBarState = ProgressBarState.Idle,
-    val eta: UiStopEtaInfo? = null,
-    val expectedTimes: Map<String, UiTrainSchedule?>? = null
+    val arrivalMap: Map<String, TrainArrival>? = null,
 )
 
 data class TrainScheduleState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
-    val trainSchedule: List<UiTrainSchedule> = listOf(),
+    val trainSchedule: List<UiTrainSchedule>? = null,
 )
+
+sealed class TrainArrival {
+    data class EstimatedArrival(
+        val info: Int,
+        val trainId: String,
+        val status: String,
+        val trackNumber: Int
+    ) : TrainArrival()
+
+    data class ScheduledArrival(
+        val info: String,
+        val trainId: Int,
+    ) : TrainArrival()
+
+    object NoService : TrainArrival()
+    object NoInformation : TrainArrival()
+}

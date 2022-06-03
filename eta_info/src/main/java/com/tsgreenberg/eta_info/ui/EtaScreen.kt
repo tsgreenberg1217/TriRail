@@ -1,5 +1,6 @@
 package com.tsgreenberg.eta_info.ui
 
+import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,16 +16,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.ButtonDefaults
-import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.rememberScalingLazyListState
+import androidx.wear.compose.material.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.tsgreenberg.eta_info.EnRouteInfo
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tsgreenberg.eta_info.R
-import com.tsgreenberg.eta_info.UiTrainSchedule
+import com.tsgreenberg.eta_info.models.EnRouteInfo
+import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
@@ -50,38 +49,33 @@ fun EtaScreen(
         isVisible = !pagerState.isScrollInProgress
     ) {
 
-        state.eta?.let {
-            val enRouteMap = it.etaMap
 
-            pagerState.isScrollInProgress
-            Box(
+        pagerState.isScrollInProgress
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            VerticalPager(
+                2,
+                state = pagerState,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(4.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                VerticalPager(
-                    2,
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .testTag(ETA_VIEWPAGER)
-                ) { page ->
-                    if (page == 0) {
-                        UpcomingArrivalsSection(
-                            enRouteMap,
-                            state.expectedTimes
-                        ) {
-                            refresh()
-                        }
-                    } else {
-                        ShowScheduleScreen { d -> goToTrainSchedule(d) }
+                    .testTag(ETA_VIEWPAGER)
+            ) { page ->
+                if (page == 0) {
+                    state.arrivalMap?.let {
+                        UpcomingArrivalsSection(it) { refresh() }
                     }
+                } else {
+                    ShowScheduleScreen { d -> goToTrainSchedule(d) }
                 }
-                ViewPagerScroll(pagerState = pagerState)
-
             }
+            ViewPagerScroll(pagerState = pagerState)
+
         }
+
 
     }
 }
@@ -117,8 +111,7 @@ fun Map<String, EnRouteInfo>.getNorth(): EnRouteInfo? = get("North")
 
 @Composable
 fun UpcomingArrivalsSection(
-    enRouteMap: Map<String, EnRouteInfo?>,
-    expectedTimes: Map<String, UiTrainSchedule?>?,
+    enRouteMap: Map<String, TrainArrival>,
     onRefresh: () -> Unit
 ) {
     Column(
@@ -133,8 +126,7 @@ fun UpcomingArrivalsSection(
             val southTrains = enRouteMap["South"]
             ShowRouteInfo(
                 direction = "North",
-                info = northTrains,
-                nextExpectedTrain = expectedTimes?.run { get("North") }
+                arrival = northTrains,
             )
 
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
@@ -149,8 +141,7 @@ fun UpcomingArrivalsSection(
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
             ShowRouteInfo(
                 direction = "South",
-                info = southTrains,
-                nextExpectedTrain = expectedTimes?.run { get("South") }
+                arrival = southTrains,
             )
         }
         Column(
@@ -191,12 +182,9 @@ fun RefreshButton(onClick: () -> Unit) {
 @Composable
 fun ShowRouteInfo(
     direction: String,
-    info: EnRouteInfo?,
-    nextExpectedTrain: UiTrainSchedule?
+    arrival: TrainArrival?,
 ) {
-    if(info != null || nextExpectedTrain != null){
-        RouteInfo(direction, info, nextExpectedTrain)
-    } else {
+    arrival?.let {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -212,87 +200,92 @@ fun ShowRouteInfo(
                     )
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                nextExpectedTrain?.let {
+            Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
-                } ?: run {
-                    Text(
+            when (it) {
+                is TrainArrival.EstimatedArrival -> {
+                    RouteInfo("${it.info} mins", it.trackNumber.toString(), it.trainId)
+                }
+                is TrainArrival.ScheduledArrival -> {
+                    RouteInfo(it.info, trainId = it.trainId.toString())
+                }
+                is TrainArrival.NoService -> {
+                    Row(
                         modifier = Modifier
-                            .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                        text = "No information at this time",
-                        style = TextStyle(
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                            .fillMaxWidth()
+                            .height(40.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                            text = "No Service",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                         )
-                    )
+
+                    }
                 }
 
+                is TrainArrival.NoInformation ->{
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        CircularProgressIndicator()
+                    }
+                }
             }
         }
     }
+
 }
 
 @Composable
-fun RouteInfo(direction: String, info: EnRouteInfo?, nextExpectedTrain: UiTrainSchedule?) {
+fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
 
-    Column(
+    Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row {
-            Text(
-                modifier = Modifier
-                    .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                text = "${direction}bound",
-                style = TextStyle(
-                    color = Color.White,
-                    fontSize = 12.sp
-                )
+        Column {
+
+            TrackArrow(
+                fontSize = 10.sp,
+                trackTxt = "P$trainId"
             )
-        }
-        Spacer(modifier = Modifier.padding(vertical = 2.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-
-                TrackArrow(
-                    fontSize = 10.sp,
-                    trackTxt = info?.scheduleNumber ?: "P${nextExpectedTrain?.trainId.toString()}"
-                )
-
+            trackNumber?.let {
                 Text(
-                    text = nextExpectedTrain?.let { "ETA:" } ?: "Track #${info?.track}",
+                    text = "Track #$it",
                     style = TextStyle(
                         color = Color.White,
                         fontSize = 12.sp
                     )
                 )
             }
-            Row(
-                verticalAlignment = Bottom,
-            ) {
-                Text(
-                    text = nextExpectedTrain?.timeString ?: "${info?.minutes} min.",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        lineHeight = 0.sp,
-                        letterSpacing = 0.sp
-                    ),
-                    textAlign = TextAlign.End
-                )
-            }
 
         }
+        Row(
+            verticalAlignment = Bottom,
+        ) {
+            Text(
+                text = info,
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    lineHeight = 0.sp,
+                    letterSpacing = 0.sp
+                ),
+                textAlign = TextAlign.End
+            )
+        }
+
     }
+
 }

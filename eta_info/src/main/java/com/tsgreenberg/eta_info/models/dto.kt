@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info
+package com.tsgreenberg.eta_info.models
 
 import com.google.gson.annotations.SerializedName
 import com.tsgreenberg.ui_components.toMinutes
@@ -39,43 +39,35 @@ data class StopEtaInfoDTO(
     val enRoute: List<EnRouteInfo>
 )
 
-data class UiStopEtaInfo(
-    val etaMap: Map<String, EnRouteInfo?>
-)
 
 
-fun GetStopEtaResponse.toUIStopEta(): UiStopEtaInfo = UiStopEtaInfo(
-    etaMap = if (etaDTOS.isEmpty()) mapOf(
-        "North" to null,
-        "South" to null
-    ) else etaDTOS.first().toUIMap()
-)
-
-
-fun StopEtaInfoDTO.toUIMap(): Map<String, EnRouteInfo?> = if (enRoute.isEmpty()) mapOf(
-    "North" to null,
-    "South" to null
-) else enRoute.getNextTrains()
-
-fun List<EnRouteInfo>.getNextTrains(): Map<String, EnRouteInfo?> {
+fun GetStopEtaResponse.toArrivalMap(): Map<String, TrainArrival> {
     val southBound = mutableListOf<EnRouteInfo>()
     val northBound = mutableListOf<EnRouteInfo>()
 
-    forEach {
-        with(if (it.isNorthBound()) northBound else southBound) { add(it) }
+    etaDTOS.forEach { stops ->
+        stops.enRoute.forEach {
+            with(if (it.isNorthBound()) northBound else southBound) { add(it) }
+        }
+
     }
     southBound.sortBy { it.minutes }
     northBound.sortBy { it.minutes }
 
-    return mutableMapOf<String, EnRouteInfo?>().apply {
-        put("North", northBound.firstOrNull())
-        put("South", southBound.firstOrNull())
+    return mutableMapOf<String, TrainArrival>().apply {
+        put("North", northBound.firstOrNull()?.toEstArrival() ?: TrainArrival.NoInformation)
+        put("South", southBound.firstOrNull()?.toEstArrival() ?: TrainArrival.NoInformation)
     }
 }
 
 fun EnRouteInfo.isNorthBound(): Boolean = direction == "North"
-fun EnRouteInfo.isSouthBound(): Boolean = direction == "South"
 
+fun EnRouteInfo.toEstArrival(): TrainArrival.EstimatedArrival = TrainArrival.EstimatedArrival(
+    info = minutes,
+    trainId = scheduleNumber,
+    status = status,
+    trackNumber = track
+)
 
 data class EnRouteInfo(
     val blockID: Int,
@@ -103,7 +95,7 @@ data class UiTrainSchedule(
     val stationId: Int,
     val trainId: Int,
     val direction: String,
-    val timeString:String,
+    val timeString: String,
     val timeInMins: Int,
     val isWeekday: Boolean
 )
@@ -116,19 +108,11 @@ data class TrainScheduleDto(
     val isWeekday: Boolean
 )
 
-fun TrainScheduleDto.toUiTrainSchedule():UiTrainSchedule = UiTrainSchedule(
+fun TrainScheduleDto.toUiTrainSchedule(): UiTrainSchedule = UiTrainSchedule(
     stationId = stationId,
     trainId = trainId,
-    direction =  direction,
+    direction = direction,
     timeString = time,
     timeInMins = time.toMinutes(),
     isWeekday = isWeekday
 )
-
-//data class JsonSchedule(
-//    val station_id: Int,
-//    val train_id: Int,
-//    val direction: String,
-//    val time: String,
-//    val is_weekday: Int
-//)

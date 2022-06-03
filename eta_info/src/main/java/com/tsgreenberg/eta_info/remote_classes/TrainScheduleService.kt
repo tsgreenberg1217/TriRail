@@ -1,7 +1,7 @@
 package com.tsgreenberg.eta_info.remote_classes
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tsgreenberg.eta_info.TrainScheduleDto
+import com.tsgreenberg.eta_info.models.TrainScheduleDto
 import kotlinx.coroutines.tasks.await
 
 interface TrainScheduleService {

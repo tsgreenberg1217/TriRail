@@ -5,13 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
-import com.tsgreenberg.core.navigation.TriRailRootAction
-import com.tsgreenberg.eta_info.UiTrainSchedule
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
+import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.remote_classes.GetEtaForStation
 import com.tsgreenberg.eta_info.remote_classes.GetTrainSchedulesForStation
-import com.tsgreenberg.etainfo.GetScheduleForStation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,19 +22,42 @@ class StationDetailViewModel @Inject constructor(
     private val cache: EtaInfoViewModelCache
 ) : ViewModel() {
 
-
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
 
     init {
-        setStationEta(cache.stationId)
+        getEstTrainArrivals(cache.stationId)
     }
 
     fun refresh() {
-        setStationEta(cache.stationId)
+        getEstTrainArrivals(cache.stationId)
     }
 
     fun setTrainDirection(direction: String) {
         cache.trainDirection = direction
+    }
+
+
+    private fun getEstTrainArrivals(id: Int) {
+        getEtaForStation.execute(id).onEach {
+            when (it) {
+                is DataState.Loading -> {
+                    state.value = state.value.copy(
+                        etaProgressBarState = it.progressBarState
+                    )
+                }
+
+                is DataState.Success -> {
+                    it.data.forEach { (k, _) ->
+                        if (it.data[k] is TrainArrival.NoInformation) getExpectedTimes(k)
+                    }
+                    state.value = state.value.copy(arrivalMap = it.data)
+                }
+
+                is DataState.Error -> {
+                    print(it.msg)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getExpectedTimes(direction: String) {
@@ -49,38 +70,16 @@ class StationDetailViewModel @Inject constructor(
                 }
 
                 is DataState.Success -> {
-                    val newMap = mutableMapOf<String, UiTrainSchedule?>().apply {
-                        put(direction, if (it.data.isEmpty()) null else it.data.first())
+                    val scheduledArrival = if (it.data.isEmpty()) TrainArrival.NoService
+                    else it.data.first().run {
+                        TrainArrival.ScheduledArrival(
+                            info = timeString,
+                            trainId = trainId
+                        )
                     }
-                    state.value.expectedTimes?.run {
-                        forEach { (t, u) -> newMap[t] = u }
-                    }
-
-                    state.value = state.value.copy(expectedTimes = newMap)
-                }
-
-                is DataState.Error -> {
-                    print(it.msg)
-                }
-            }
-        }.launchIn(viewModelScope)
-
-    }
-
-    private fun setStationEta(id: Int) {
-        getEtaForStation.execute(id).onEach {
-            when (it) {
-                is DataState.Loading -> {
-                    state.value = state.value.copy(
-                        etaProgressBarState = it.progressBarState
-                    )
-                }
-
-                is DataState.Success -> {
-                    it.data.etaMap.forEach { (k, _) ->
-                        if (it.data.etaMap[k] == null) getExpectedTimes(k)
-                    }
-                    state.value = state.value.copy(eta = it.data)
+                    val newMap = state.value.arrivalMap?.toMutableMap() ?: mutableMapOf()
+                    newMap.apply { put(direction, scheduledArrival) }
+                    state.value = state.value.copy(arrivalMap = newMap)
                 }
 
                 is DataState.Error -> {
@@ -89,6 +88,4 @@ class StationDetailViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-
 }

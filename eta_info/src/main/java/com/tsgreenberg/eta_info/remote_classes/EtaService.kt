@@ -1,7 +1,7 @@
 package com.tsgreenberg.eta_info.remote_classes
 
-import com.tsgreenberg.eta_info.GetStopEtaResponse
-import com.tsgreenberg.eta_info.GetVehicleResponse
+import com.tsgreenberg.eta_info.models.GetStopEtaResponse
+import com.tsgreenberg.eta_info.models.GetVehicleResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

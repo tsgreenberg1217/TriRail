@@ -30,62 +30,71 @@ fun UpcomingTrainsScreen(
         scalingLazyListState = scrollState,
     ) {
 
-        if (state.trainSchedule.isNotEmpty()) {
-            ScalingLazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(38.dp),
-                state = scrollState
-            ) {
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp)
-                    )
-                }
-                item {
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(text = "Train Schedule", textAlign = TextAlign.Center)
+        state.trainSchedule?.let {
+            if (it.isNotEmpty()) {
+                ScalingLazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(38.dp),
+                    state = scrollState
+                ) {
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp)
+                        )
                     }
-                }
-                items(state.trainSchedule) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(horizontal = 5.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(horizontalAlignment = Alignment.Start) {
-                            TrackArrow(
-                                14.sp,
-                                trackTxt = it.trainId.toString()
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(it.timeString, fontSize = 22.sp)
-                        }
-
-                        TriRailButton(
-                            onClick = {
-                                onTimeSelect(it.timeString)
-                            },
+                    item {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_alarm_add_black_24dp),
-                                contentDescription = "set alarm",
-                                modifier = Modifier
-                                    .size(ButtonDefaults.SmallButtonSize)
-                                    .wrapContentSize(align = Alignment.Center),
-                                tint = Color.White
-                            )
+                            Text(text = "Train Schedule", textAlign = TextAlign.Center)
                         }
-
-
                     }
+                    items(it) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(horizontal = 5.dp),
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(horizontalAlignment = Alignment.Start) {
+                                TrackArrow(
+                                    14.sp,
+                                    trackTxt = it.trainId.toString()
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(it.timeString, fontSize = 22.sp)
+                            }
+
+                            TriRailButton(
+                                onClick = {
+                                    onTimeSelect(it.timeString)
+                                },
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_alarm_add_black_24dp),
+                                    contentDescription = "set alarm",
+                                    modifier = Modifier
+                                        .size(ButtonDefaults.SmallButtonSize)
+                                        .wrapContentSize(align = Alignment.Center),
+                                    tint = Color.White
+                                )
+                            }
+
+
+                        }
+                    }
+                }
+            } else {
+                Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
+                    Text(
+                        text = "No Schedule information available for today",
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }

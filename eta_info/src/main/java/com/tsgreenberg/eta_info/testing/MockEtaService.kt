@@ -1,7 +1,7 @@
 package com.tsgreenberg.eta_info.testing
 
-import com.tsgreenberg.eta_info.GetStopEtaResponse
-import com.tsgreenberg.eta_info.GetVehicleResponse
+import com.tsgreenberg.eta_info.models.GetStopEtaResponse
+import com.tsgreenberg.eta_info.models.GetVehicleResponse
 import com.tsgreenberg.eta_info.remote_classes.EtaService
 
 class MockEtaService(

@@ -1,8 +1,8 @@
 package com.tsgreenberg.eta_info.android_test_utils
 
-import com.tsgreenberg.eta_info.EnRouteInfo
-import com.tsgreenberg.eta_info.GetStopEtaResponse
-import com.tsgreenberg.eta_info.StopEtaInfoDTO
+import com.tsgreenberg.eta_info.models.EnRouteInfo
+import com.tsgreenberg.eta_info.models.GetStopEtaResponse
+import com.tsgreenberg.eta_info.models.StopEtaInfoDTO
 
 object EtaMockData {
     val available = GetStopEtaResponse(
