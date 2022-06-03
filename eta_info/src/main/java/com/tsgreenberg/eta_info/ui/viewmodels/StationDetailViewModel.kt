@@ -47,10 +47,11 @@ class StationDetailViewModel @Inject constructor(
                 }
 
                 is DataState.Success -> {
+                    state.value = state.value.copy(arrivalMap = it.data)
                     it.data.forEach { (k, _) ->
                         if (it.data[k] is TrainArrival.NoInformation) getExpectedTimes(k)
                     }
-                    state.value = state.value.copy(arrivalMap = it.data)
+
                 }
 
                 is DataState.Error -> {
