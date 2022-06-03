@@ -10,12 +10,9 @@ import androidx.wear.compose.foundation.CurvedTextStyle
 import androidx.wear.compose.material.*
 
 @Composable
-@OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
 internal fun CustomTimeText(
     extraText: String = "",
     visible: Boolean,
-//    showLeadingText: Boolean,
-//    leadingText: String
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -23,24 +20,16 @@ internal fun CustomTimeText(
         exit = fadeOut(),
     ) {
         TimeText(
-            leadingCurvedContent = if (extraText.isNotEmpty()) {
+            startCurvedContent = if (extraText.isNotEmpty()) {
                 {
-                    CurvedText(
+                    curvedText(
                         text = extraText,
                         style = CurvedTextStyle(
                             color = Color.White
                         )
                     )
                 }
-            } else null,
-            leadingLinearContent = if (false) {
-                {
-                    Text(
-                        text = "",
-                        style = TimeTextDefaults.timeTextStyle()
-                    )
-                }
-            } else null,
+            } else null
         )
     }
 }

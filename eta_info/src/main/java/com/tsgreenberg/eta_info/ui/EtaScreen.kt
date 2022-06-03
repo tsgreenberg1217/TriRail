@@ -1,6 +1,5 @@
 package com.tsgreenberg.eta_info.ui
 
-import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,7 +19,6 @@ import androidx.wear.compose.material.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.EnRouteInfo
 import com.tsgreenberg.eta_info.models.TrainArrival
@@ -31,6 +29,7 @@ import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
 import com.tsgreenberg.ui_components.ViewPagerScroll
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable

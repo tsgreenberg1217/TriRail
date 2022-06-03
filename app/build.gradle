@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.tsgreenberg.trirailwearos"
         minSdk 30
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -78,7 +78,7 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
-    implementation "androidx.compose.material:material:1.2.0-alpha08"
+    implementation "androidx.compose.material:material:1.2.0-beta03"
 
 
 
