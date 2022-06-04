@@ -1,14 +1,13 @@
 package com.tsgreenberg.ui_components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.tsgreenberg.core.ProgressBarState
 
@@ -20,7 +19,6 @@ fun TriRailScaffold(
     extraText: String = "",
     content: @Composable () -> Unit
 ) {
-    val isRound = LocalContext.current.resources.configuration.isScreenRound
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         positionIndicator = scalingLazyListState?.let {
@@ -43,16 +41,22 @@ fun TriRailScaffold(
 
         content()
         if (progressBarState is ProgressBarState.Loading) {
-            Row(
+            Box(
                 modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                contentAlignment = Alignment.Center
             ) {
-                val colors = listOf(TriRailColors.Orange, TriRailColors.Blue, TriRailColors.Green)
-                val color = remember {
-                    colors.random()
+                val colors = remember {
+                    listOf(TriRailColors.Blue, TriRailColors.Orange, TriRailColors.Green)
                 }
-                CircularProgressIndicator(indicatorColor = color, trackColor = Color.Transparent)
+                colors.forEachIndexed{ i, c ->
+                    CircularProgressIndicator(
+                        Modifier.size(100.dp - (i.dp * 12)),
+                        indicatorColor = c,
+                        trackColor = Color.Transparent,
+                        strokeWidth = 1.dp + i.dp
+                    )
+                }
+
             }
 
         }

@@ -22,7 +22,7 @@ import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
 import com.tsgreenberg.eta_info.ui.screens.EtaScreen
 import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
-import com.tsgreenberg.eta_info.ui.UpcomingTrainsScreen
+import com.tsgreenberg.eta_info.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
 import com.tsgreenberg.eta_info.utils.isValidForAlarm
@@ -120,7 +120,7 @@ class EtaInfoActivity : ComponentActivity() {
                             totalMinutes
                         ) {
                             val now = Calendar.getInstance()
-                            if (now.time.isValidForAlarm(it)) {
+                            if (now.time.isValidForAlarm(totalMinutes - it)) {
                                 val alarmTime = now.apply {
                                     set(Calendar.HOUR_OF_DAY, hours)
                                     set(Calendar.MINUTE, minutes)

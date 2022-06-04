@@ -27,7 +27,7 @@ fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int
             if (alarmAllowed) {
 
                 Text(
-                    text = "When would you like to be reminded about your trip?",
+                    text = "How many minutes before departure would you like to be reminded about your trip?",
                     style = TextStyle(
                         textAlign = TextAlign.Center,
                         lineHeight = 14.sp,

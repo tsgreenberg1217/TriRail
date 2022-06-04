@@ -1,5 +1,6 @@
 package com.tsgreenberg.eta_info.utils
 
+import com.tsgreenberg.ui_components.toMinutes
 import java.util.*
 
-fun Date.isValidForAlarm(minutes: Int) = Date().time.let { it <= it - (minutes * 60 * 1000) }
+fun Date.isValidForAlarm(alarmTime: Int) = toMinutes() <= alarmTime

@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.ui
+package com.tsgreenberg.eta_info.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -15,6 +15,8 @@ import com.tsgreenberg.eta_info.models.TrainScheduleState
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
+import com.tsgreenberg.ui_components.toMinutes
+import java.util.*
 
 
 @Composable
@@ -62,7 +64,7 @@ fun UpcomingTrainsScreen(
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(Modifier.weight(3f),horizontalAlignment = Alignment.Start) {
+                            Column(Modifier.weight(3f), horizontalAlignment = Alignment.Start) {
                                 TrackArrow(
                                     14.sp,
                                     trackTxt = it.trainId.toString()
@@ -73,6 +75,7 @@ fun UpcomingTrainsScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             TriRailButton(
                                 modifier = Modifier.weight(2f),
+                                isEnabled = Date().toMinutes() <= it.timeString.toMinutes() - 15,
                                 onClick = {
                                     onTimeSelect(it.timeString)
                                 },
@@ -92,7 +95,7 @@ fun UpcomingTrainsScreen(
                     }
                 }
             } else {
-                Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
+                Column(Modifier.fillMaxSize().padding(12.dp), Arrangement.Center, Alignment.CenterHorizontally) {
                     Text(
                         text = "No Schedule information available for today",
                         textAlign = TextAlign.Center
