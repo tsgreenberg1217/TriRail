@@ -79,7 +79,7 @@ data class EnRouteInfo(
     val schedule: String,
     val status: String,
     val scheduleNumber: String,
-    val statuscolor: String,
+    val statuscolor: String?,
     val track: Int,
     val direction: String,
     val directionAbbr: String,
