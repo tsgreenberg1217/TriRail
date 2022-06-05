@@ -18,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StationDetailViewModel @Inject constructor(
     private val getEtaForStation: GetEtaForStation,
-    private val getTrainSchedulesForStation: GetTrainSchedulesForStation,
     private val cache: EtaInfoViewModelCache
 ) : ViewModel() {
 
@@ -48,10 +47,6 @@ class StationDetailViewModel @Inject constructor(
 
                 is DataState.Success -> {
                     state.value = state.value.copy(arrivalMap = it.data)
-                    it.data.forEach { (k, _) ->
-                        if (it.data[k] is TrainArrival.NoInformation) getExpectedTimes(k)
-                    }
-
                 }
 
                 is DataState.Error -> {
@@ -61,32 +56,5 @@ class StationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getExpectedTimes(direction: String) {
-        getTrainSchedulesForStation.execute(cache.stationId, direction[0].toString()).onEach {
-            when (it) {
-                is DataState.Loading -> {
-                    state.value = state.value.copy(
-                        etaProgressBarState = it.progressBarState
-                    )
-                }
 
-                is DataState.Success -> {
-                    val scheduledArrival = if (it.data.isEmpty()) TrainArrival.NoService
-                    else it.data.first().run {
-                        TrainArrival.ScheduledArrival(
-                            info = timeString,
-                            trainId = trainId
-                        )
-                    }
-                    val newMap = state.value.arrivalMap?.toMutableMap() ?: mutableMapOf()
-                    newMap.apply { put(direction, scheduledArrival) }
-                    state.value = state.value.copy(arrivalMap = newMap)
-                }
-
-                is DataState.Error -> {
-                    print(it.msg)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
 }

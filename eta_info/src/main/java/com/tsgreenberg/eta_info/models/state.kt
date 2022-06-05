@@ -20,11 +20,11 @@ sealed class TrainArrival {
         val trackNumber: Int
     ) : TrainArrival()
 
-    data class ScheduledArrival(
-        val info: String,
-        val trainId: Int,
-    ) : TrainArrival()
+//    data class ScheduledArrival(
+//        val info: String,
+//        val trainId: Int,
+//    ) : TrainArrival()
 
-    object NoService : TrainArrival()
+//    object NoService : TrainArrival()
     object NoInformation : TrainArrival()
 }

@@ -20,79 +20,58 @@ fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int
     val nowInMins = Date().toMinutes()
     val currentDelta = etaInMins - nowInMins
     val minAllowedTime = 15
-    val alarmAllowed = currentDelta >= minAllowedTime
     TriRailScaffold(extraText = stationName) {
-
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-            if (alarmAllowed) {
-
-                Text(
-                    text = "How many minutes before departure would you like to be reminded about your trip?",
-                    style = TextStyle(
-                        textAlign = TextAlign.Center,
-                        lineHeight = 14.sp,
-                        fontSize = 14.sp
-                    )
+            Text(
+                text = "How many minutes before departure would you like to be reminded about your trip?",
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    lineHeight = 14.sp,
+                    fontSize = 14.sp
                 )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val buttonModifier = Modifier.height(40.dp)
+
+                TriRailButton(
+                    buttonModifier,
+                    onClick = { onAlarmSelect(15) },
                 ) {
-                    val buttonModifier = Modifier
-                        .height(40.dp)
-
-                    TriRailButton(
-                        buttonModifier,
-                        onClick = { onAlarmSelect(15) },
-                        isEnabled = currentDelta >= minAllowedTime
-                    ) {
-                        Text(
-                            text = "${minAllowedTime}min",
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-                    TriRailButton(
-                        buttonModifier,
-                        onClick = { onAlarmSelect(30) },
-                        color = TriRailColors.Green,
-                        isEnabled = currentDelta >= 30
-                    ) {
-                        Text(
-                            text = "30min",
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-
-                    TriRailButton(
-                        buttonModifier,
-                        onClick = { onAlarmSelect(60) },
-                        color = TriRailColors.Orange,
-                        isEnabled = currentDelta >= 60
-                    ) {
-                        Text(
-                            text = "1hr",
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-
-
+                    Text(
+                        text = "${minAllowedTime}min",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
                 }
-            } else {
-                Text(
-                    text = "The scheduled time is too soon for an alarm",
-                    textAlign = TextAlign.Center
-                )
+                TriRailButton(
+                    buttonModifier,
+                    onClick = { onAlarmSelect(30) },
+                    color = TriRailColors.Green,
+                ) {
+                    Text(
+                        text = "30min",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+
+                TriRailButton(
+                    buttonModifier,
+                    onClick = { onAlarmSelect(60) },
+                    color = TriRailColors.Orange,
+                ) {
+                    Text(
+                        text = "1hr",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
-
         }
-
-
     }
-
-
 }

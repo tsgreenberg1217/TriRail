@@ -119,25 +119,15 @@ class EtaInfoActivity : ComponentActivity() {
                             stationName = viewModelCache.stationShortName,
                             totalMinutes
                         ) {
-                            val now = Calendar.getInstance()
-                            if (now.time.isValidForAlarm(totalMinutes - it)) {
-                                val alarmTime = now.apply {
-                                    set(Calendar.HOUR_OF_DAY, hours)
-                                    set(Calendar.MINUTE, minutes)
-                                    add(Calendar.MINUTE, -it)
-                                }
-                                launchAlarmIntent(
-                                    alarmTime,
-                                    "${stationName.toFullStationName()} departure"
-                                )
-                            } else {
-                                navController.popBackStack()
-                                Toast.makeText(
-                                    this@EtaInfoActivity,
-                                    "Time passed",
-                                    Toast.LENGTH_LONG
-                                )
+                            val alarmTime = Calendar.getInstance().apply {
+                                set(Calendar.HOUR_OF_DAY, hours)
+                                set(Calendar.MINUTE, minutes)
+                                add(Calendar.MINUTE, -it)
                             }
+                            launchAlarmIntent(
+                                alarmTime,
+                                "${stationName.toFullStationName()} departure"
+                            )
 
                         }
                     }

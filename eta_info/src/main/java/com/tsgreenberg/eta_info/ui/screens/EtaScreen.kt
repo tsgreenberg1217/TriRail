@@ -212,21 +212,19 @@ fun ShowRouteInfo(
                 is TrainArrival.EstimatedArrival -> {
                     RouteInfo("${it.info} mins", it.trackNumber.toString(), it.trainId)
                 }
-                is TrainArrival.ScheduledArrival -> {
-                    RouteInfo(it.info, trainId = it.trainId.toString())
-                }
-                is TrainArrival.NoService -> {
+
+                is TrainArrival.NoInformation ->{
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = CenterVertically
                     ) {
                         Text(
                             modifier = Modifier
                                 .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                            text = "No Service",
+                            text = "No train eta at this time...",
                             style = TextStyle(
                                 color = Color.White,
                                 fontSize = 12.sp,
@@ -234,16 +232,6 @@ fun ShowRouteInfo(
                             )
                         )
 
-                    }
-                }
-
-                is TrainArrival.NoInformation ->{
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        CircularProgressIndicator()
                     }
                 }
             }

@@ -75,7 +75,6 @@ fun UpcomingTrainsScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             TriRailButton(
                                 modifier = Modifier.weight(2f),
-                                isEnabled = Date().toMinutes() <= it.timeString.toMinutes() - 15,
                                 onClick = {
                                     onTimeSelect(it.timeString)
                                 },
