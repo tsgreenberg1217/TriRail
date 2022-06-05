@@ -87,9 +87,7 @@ class EtaInfoActivity : ComponentActivity() {
                             stationName = viewModelCache.stationShortName,
                             state = viewModel.state.value
                         ) {
-                            navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${viewModelCache.stationShortName}") {
-                                popUpTo(NavConstants.ETA)
-                            }
+                            navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${viewModelCache.stationShortName}")
                         }
 
                     }
