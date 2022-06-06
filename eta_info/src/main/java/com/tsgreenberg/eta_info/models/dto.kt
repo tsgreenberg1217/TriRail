@@ -40,7 +40,6 @@ data class StopEtaInfoDTO(
 )
 
 
-
 fun GetStopEtaResponse.toArrivalMap(): Map<String, TrainArrival> {
     val southBound = mutableListOf<EnRouteInfo>()
     val northBound = mutableListOf<EnRouteInfo>()
@@ -65,7 +64,8 @@ fun EnRouteInfo.isNorthBound(): Boolean = direction == "North"
 fun EnRouteInfo.toEstArrival(): TrainArrival.EstimatedArrival = TrainArrival.EstimatedArrival(
     info = minutes,
     trainId = scheduleNumber,
-    status = status,
+    status = if (status.replace(" ", "").all { it.isLetterOrDigit() }) status else null,
+    statusColor = statuscolor,
     trackNumber = track
 )
 

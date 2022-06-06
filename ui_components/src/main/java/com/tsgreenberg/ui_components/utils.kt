@@ -80,3 +80,11 @@ fun String.toFullStationName(): String {
     }
 
 }
+
+fun Int.toEtaString(): String = if (this > 59) {
+    val mins = this % 60
+    val hours = this.floorDiv(60)
+    "$hours hr $mins mins"
+} else {
+    "$this mins"
+}

@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,9 +29,7 @@ import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
-import com.tsgreenberg.ui_components.TriRailButton
-import com.tsgreenberg.ui_components.TriRailScaffold
-import com.tsgreenberg.ui_components.ViewPagerScroll
+import com.tsgreenberg.ui_components.*
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -151,7 +148,9 @@ fun UpcomingArrivalsSection(
             )
         }
         Column(
-            Modifier.fillMaxWidth().weight(1f,true),
+            Modifier
+                .fillMaxWidth()
+                .weight(1f, true),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
@@ -195,7 +194,10 @@ fun ShowRouteInfo(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = CenterHorizontally
         ) {
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Text(
                     modifier = Modifier
                         .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
@@ -205,15 +207,31 @@ fun ShowRouteInfo(
                         fontSize = 12.sp
                     )
                 )
+                if (it is TrainArrival.EstimatedArrival) {
+                    it.status?.let { status ->
+                        Text(
+                            text = " : $status",
+
+                            style = TextStyle(
+                                color = Color(
+                                    it.statusColor?.let { android.graphics.Color.parseColor(it) }
+                                        ?: 0xFFF
+                                ),
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
+                }
+
             }
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
             when (it) {
                 is TrainArrival.EstimatedArrival -> {
-                    RouteInfo("${it.info} mins", it.trackNumber.toString(), it.trainId)
+                    RouteInfo(it.info.toEtaString(), it.trackNumber.toString(), it.trainId)
                 }
 
-                is TrainArrival.NoInformation ->{
+                is TrainArrival.NoInformation -> {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -252,7 +270,7 @@ fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
 
             TrackArrow(
                 fontSize = 10.sp,
-                trackTxt = "P$trainId"
+                trackTxt = trainId
             )
             trackNumber?.let {
                 Text(

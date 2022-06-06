@@ -16,8 +16,9 @@ sealed class TrainArrival {
     data class EstimatedArrival(
         val info: Int,
         val trainId: String,
-        val status: String,
-        val trackNumber: Int
+        val status: String?,
+        val statusColor:String?,
+        val trackNumber: Int,
     ) : TrainArrival()
 
 //    data class ScheduledArrival(

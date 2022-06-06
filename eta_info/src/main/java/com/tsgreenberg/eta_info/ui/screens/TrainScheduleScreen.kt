@@ -96,7 +96,7 @@ fun UpcomingTrainsScreen(
             } else {
                 Column(Modifier.fillMaxSize().padding(12.dp), Arrangement.Center, Alignment.CenterHorizontally) {
                     Text(
-                        text = "No Schedule information available for today",
+                        text = "No schedule information available for today",
                         textAlign = TextAlign.Center
                     )
                 }
