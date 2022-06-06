@@ -212,7 +212,6 @@ fun ShowRouteInfo(
                     it.status?.let { status ->
                         Text(
                             text = " $status",
-
                             style = TextStyle(
                                 color = Color(
                                     it.statusColor?.let { android.graphics.Color.parseColor(it) }
