@@ -39,7 +39,6 @@ fun TriRailScaffold(
         }
     ) {
 
-        content()
         if (progressBarState is ProgressBarState.Loading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -59,6 +58,8 @@ fun TriRailScaffold(
 
             }
 
+        }else{
+            content()
         }
     }
 }
