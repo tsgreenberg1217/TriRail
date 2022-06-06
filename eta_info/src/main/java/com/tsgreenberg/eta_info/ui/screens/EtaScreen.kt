@@ -211,7 +211,7 @@ fun ShowRouteInfo(
                 if (it is TrainArrival.EstimatedArrival) {
                     it.status?.let { status ->
                         Text(
-                            text = " : $status",
+                            text = " $status",
 
                             style = TextStyle(
                                 color = Color(

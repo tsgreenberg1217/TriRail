@@ -64,7 +64,10 @@ fun EnRouteInfo.isNorthBound(): Boolean = direction == "North"
 fun EnRouteInfo.toEstArrival(): TrainArrival.EstimatedArrival = TrainArrival.EstimatedArrival(
     info = minutes,
     trainId = scheduleNumber,
-    status = if (status.replace(" ", "").all { it.isLetterOrDigit() }) status else null,
+    status = if (status
+            .replace(" ", "")
+            .replace(":", "")
+            .all { it.isLetterOrDigit() }) status else null,
     statusColor = statuscolor,
     trackNumber = track
 )
