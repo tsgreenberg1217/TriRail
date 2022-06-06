@@ -39,7 +39,8 @@ internal fun ChooseStationList(
 ) {
     TriRailScaffold(
         scrollState,
-        progressBarState = state.progressBarState
+        progressBarState = state.progressBarState,
+        error = state.error
     ) {
         state.stops?.let {
             ScalingLazyColumn(

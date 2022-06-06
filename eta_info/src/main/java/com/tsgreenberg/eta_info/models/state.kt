@@ -5,11 +5,13 @@ import com.tsgreenberg.core.ProgressBarState
 data class TrainInfoState(
     val etaProgressBarState: ProgressBarState = ProgressBarState.Idle,
     val arrivalMap: Map<String, TrainArrival>? = null,
+    val error:String? = null
 )
 
 data class TrainScheduleState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val trainSchedule: List<UiTrainSchedule>? = null,
+    val error:String? = null
 )
 
 sealed class TrainArrival {

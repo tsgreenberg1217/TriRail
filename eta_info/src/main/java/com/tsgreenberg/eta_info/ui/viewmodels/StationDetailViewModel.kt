@@ -50,7 +50,7 @@ class StationDetailViewModel @Inject constructor(
                 }
 
                 is DataState.Error -> {
-                    print(it.msg)
+                    state.value = state.value.copy(error = it.msg)
                 }
             }
         }.launchIn(viewModelScope)

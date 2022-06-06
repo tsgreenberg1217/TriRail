@@ -38,7 +38,7 @@ class TrainScheduleViewModel @Inject constructor(
                 }
 
                 is DataState.Error -> {
-                    println("Error")
+                    state.value = state.value.copy(error = it.msg)
                 }
             }
         }.launchIn(viewModelScope)

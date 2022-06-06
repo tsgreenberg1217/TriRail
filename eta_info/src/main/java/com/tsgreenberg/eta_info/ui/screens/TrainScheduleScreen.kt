@@ -15,8 +15,6 @@ import com.tsgreenberg.eta_info.models.TrainScheduleState
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.TriRailButton
 import com.tsgreenberg.ui_components.TriRailScaffold
-import com.tsgreenberg.ui_components.toMinutes
-import java.util.*
 
 
 @Composable
@@ -30,6 +28,7 @@ fun UpcomingTrainsScreen(
     TriRailScaffold(
         extraText = stationName,
         progressBarState = state.progressBarState,
+        error = state.error,
         scalingLazyListState = scrollState,
     ) {
 

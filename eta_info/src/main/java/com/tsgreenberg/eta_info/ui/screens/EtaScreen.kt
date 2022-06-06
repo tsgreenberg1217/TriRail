@@ -45,6 +45,7 @@ fun EtaScreen(
     TriRailScaffold(
         extraText = shortName,
         progressBarState = state.etaProgressBarState,
+        error = state.error,
         scalingLazyListState = scalingLazyListState,
         isVisible = !pagerState.isScrollInProgress
     ) {

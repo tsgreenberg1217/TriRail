@@ -7,7 +7,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.*
 import com.tsgreenberg.core.ProgressBarState
 
@@ -15,6 +18,7 @@ import com.tsgreenberg.core.ProgressBarState
 fun TriRailScaffold(
     scalingLazyListState: ScalingLazyListState? = null,
     progressBarState: ProgressBarState = ProgressBarState.Idle,
+    error: String? = null,
     isVisible: Boolean = true,
     extraText: String = "",
     content: @Composable () -> Unit
@@ -39,27 +43,59 @@ fun TriRailScaffold(
         }
     ) {
 
-        if (progressBarState is ProgressBarState.Loading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                val colors = remember {
-                    listOf(TriRailColors.Blue, TriRailColors.Orange, TriRailColors.Green)
-                }
-                colors.forEachIndexed{ i, c ->
-                    CircularProgressIndicator(
-                        Modifier.size(100.dp - (i.dp * 12)),
-                        indicatorColor = c,
-                        trackColor = Color.Transparent,
-                        strokeWidth = 1.dp + i.dp
-                    )
-                }
+        when {
+            progressBarState is ProgressBarState.Loading -> TriRailLoadingSpinner()
+            error != null -> TriRailErrorScreen(error)
+            else -> content()
 
-            }
-
-        }else{
-            content()
         }
+
+    }
+}
+
+@Composable
+internal fun TriRailLoadingSpinner() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        val colors = remember {
+            listOf(TriRailColors.Blue, TriRailColors.Orange, TriRailColors.Green)
+        }
+        colors.forEachIndexed { i, c ->
+            CircularProgressIndicator(
+                Modifier.size(100.dp - (i.dp * 12)),
+                indicatorColor = c,
+                trackColor = Color.Transparent,
+                strokeWidth = 1.dp + i.dp
+            )
+        }
+
+    }
+}
+
+
+@Composable
+internal fun TriRailErrorScreen(errorMsg: String) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(5.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Error", style = TextStyle(
+                fontSize = 18.sp,
+                color = TriRailColors.Orange,
+                textAlign = TextAlign.Center
+            )
+        )
+        Text(
+            text = errorMsg, style = TextStyle(
+                fontSize = 18.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        )
+
     }
 }
