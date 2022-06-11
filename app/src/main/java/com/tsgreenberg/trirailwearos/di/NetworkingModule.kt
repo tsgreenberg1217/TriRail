@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.tsgreenberg.eta_info.remote_classes.EtaService
 import com.tsgreenberg.eta_info.testing.MockEtaService
 import com.tsgreenberg.station_list.StationsService
+import com.tsgreenberg.trirailwearos.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +43,7 @@ object NetworkingModule {
 
     @Provides
     fun getRetrofit(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder().apply {
-        baseUrl("https://trirailpublic.etaspot.net")
+        baseUrl(BuildConfig.API_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
 
