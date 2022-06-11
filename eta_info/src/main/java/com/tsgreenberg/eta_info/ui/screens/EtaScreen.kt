@@ -213,7 +213,7 @@ fun ShowRouteInfo(
                     Text(
                         modifier = Modifier
                             .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                        text = "${direction}bound",
+                        text = "${direction}bound ETA",
                         style = TextStyle(
                             color = Color.White,
                             fontSize = 12.sp
