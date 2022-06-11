@@ -67,7 +67,10 @@ fun EtaScreen(
             ) { page ->
                 if (page == 0) {
                     state.arrivalMap?.let {
-                        UpcomingArrivalsSection(it) { refresh() }
+                        UpcomingArrivalsSection(
+                            it,
+                            onRefresh = { refresh() },
+                            goToTrainSchedule = { goToTrainSchedule(it) })
                     }
                 } else {
                     ShowScheduleScreen { d -> goToTrainSchedule(d) }
@@ -93,6 +96,7 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
 
         TriRailButton(
             Modifier.fillMaxWidth(),
+            color = TriRailColors.Green,
             onClick = { onClick("N") }
         ) {
             Text(text = "Northbound Schedule", textAlign = TextAlign.Center)
@@ -100,6 +104,7 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
             Modifier.fillMaxWidth(),
+            color = TriRailColors.Orange,
             onClick = { onClick("S") }
         ) {
             Text("Southbound Schedule", textAlign = TextAlign.Center)
@@ -113,7 +118,8 @@ fun Map<String, EnRouteInfo>.getNorth(): EnRouteInfo? = get("North")
 @Composable
 fun UpcomingArrivalsSection(
     enRouteMap: Map<String, TrainArrival>,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    goToTrainSchedule: (String) -> Unit
 ) {
     Column(
         Modifier
@@ -131,6 +137,7 @@ fun UpcomingArrivalsSection(
             ShowRouteInfo(
                 direction = "North",
                 arrival = northTrains,
+                goToTrainSchedule = { goToTrainSchedule(it) }
             )
 
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
@@ -146,7 +153,9 @@ fun UpcomingArrivalsSection(
             ShowRouteInfo(
                 direction = "South",
                 arrival = southTrains,
-            )
+            ) {
+                goToTrainSchedule(it)
+            }
         }
         Column(
             Modifier
@@ -189,6 +198,7 @@ fun RefreshButton(onClick: () -> Unit) {
 fun ShowRouteInfo(
     direction: String,
     arrival: TrainArrival?,
+    goToTrainSchedule: (String) -> Unit
 ) {
     arrival?.let {
         Column(
@@ -199,27 +209,29 @@ fun ShowRouteInfo(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    modifier = Modifier
-                        .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                    text = "${direction}bound",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 12.sp
-                    )
-                )
-                if (it is TrainArrival.EstimatedArrival) {
-                    it.status?.let { status ->
-                        Text(
-                            text = " $status",
-                            style = TextStyle(
-                                color = Color(
-                                    it.statusColor?.let { android.graphics.Color.parseColor(it) }
-                                        ?: 0xFFF
-                                ),
-                                fontSize = 12.sp
-                            )
+                if(it !is TrainArrival.EndOfLine){
+                    Text(
+                        modifier = Modifier
+                            .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                        text = "${direction}bound",
+                        style = TextStyle(
+                            color = Color.White,
+                            fontSize = 12.sp
                         )
+                    )
+                    if (it is TrainArrival.EstimatedArrival) {
+                        it.status?.let { status ->
+                            Text(
+                                text = " $status",
+                                style = TextStyle(
+                                    color = Color(
+                                        it.statusColor?.let { android.graphics.Color.parseColor(it) }
+                                            ?: 0xFFF
+                                    ),
+                                    fontSize = 12.sp
+                                )
+                            )
+                        }
                     }
                 }
 
@@ -229,6 +241,33 @@ fun ShowRouteInfo(
             when (it) {
                 is TrainArrival.EstimatedArrival -> {
                     RouteInfo(it.info.toEtaString(), it.trackNumber.toString(), it.trainId)
+                }
+
+                is TrainArrival.EndOfLine -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(42.dp)
+                            .padding(horizontal = 20.dp)
+                            .padding(vertical = 2.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = CenterVertically
+                    ) {
+                        TriRailButton(Modifier.fillMaxWidth(), onClick = {
+                            goToTrainSchedule(
+                                direction[0].toString()
+                            )
+                        }) {
+                            Text(
+                                "See all ${direction}bound departures", style = TextStyle(
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    textAlign = TextAlign.Center
+                                ),
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            )
+                        }
+                    }
                 }
 
                 is TrainArrival.NoInformation -> {

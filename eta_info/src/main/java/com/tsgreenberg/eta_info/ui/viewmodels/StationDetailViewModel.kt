@@ -46,7 +46,14 @@ class StationDetailViewModel @Inject constructor(
                 }
 
                 is DataState.Success -> {
-                    state.value = state.value.copy(arrivalMap = it.data)
+                    val arrivalMap = it.data.toMutableMap()
+
+                    when (id) {
+                        1 -> arrivalMap["South"] = TrainArrival.EndOfLine
+                        18 -> arrivalMap["North"] = TrainArrival.EndOfLine
+                    }
+
+                    state.value = state.value.copy(arrivalMap = arrivalMap)
                 }
 
                 is DataState.Error -> {

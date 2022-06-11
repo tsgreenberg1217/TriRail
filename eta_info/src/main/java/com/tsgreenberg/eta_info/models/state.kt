@@ -30,4 +30,5 @@ sealed class TrainArrival {
 
 //    object NoService : TrainArrival()
     object NoInformation : TrainArrival()
+    object EndOfLine : TrainArrival()
 }
