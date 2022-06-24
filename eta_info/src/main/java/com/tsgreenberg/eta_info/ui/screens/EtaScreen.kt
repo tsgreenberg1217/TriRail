@@ -23,6 +23,7 @@ import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.EnRouteInfo
+import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
@@ -37,7 +38,7 @@ import com.tsgreenberg.ui_components.*
 fun EtaScreen(
     shortName: String = "",
     state: TrainInfoState,
-    refresh: () -> Unit,
+    refresh: (EtaRefreshState) -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     val pagerState = rememberPagerState()
@@ -69,7 +70,8 @@ fun EtaScreen(
                     state.arrivalMap?.let {
                         UpcomingArrivalsSection(
                             it,
-                            onRefresh = { refresh() },
+                            state.etaRefreshState,
+                            onRefresh = { refresh(it) },
                             goToTrainSchedule = { goToTrainSchedule(it) })
                     }
                 } else {
@@ -118,7 +120,8 @@ fun Map<String, EnRouteInfo>.getNorth(): EnRouteInfo? = get("North")
 @Composable
 fun UpcomingArrivalsSection(
     enRouteMap: Map<String, TrainArrival>,
-    onRefresh: () -> Unit,
+    etaRefreshState: EtaRefreshState,
+    onRefresh: (EtaRefreshState) -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     Column(
@@ -164,22 +167,21 @@ fun UpcomingArrivalsSection(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
-            RefreshButton { onRefresh() }
+            RefreshButton(etaRefreshState) { onRefresh(it) }
         }
     }
 }
 
 
 @Composable
-fun RefreshButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
+fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: (EtaRefreshState) -> Unit) {
+    val isEnabled = etaRefreshState is EtaRefreshState.Enabled
+    TriRailButton(
+        onClick = { onRefresh(etaRefreshState) },
         modifier = Modifier
             .height(40.dp)
             .padding(8.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.Transparent
-        )
+        color = if (isEnabled) TriRailColors.Blue else Color.DarkGray,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -209,7 +211,7 @@ fun ShowRouteInfo(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                if(it !is TrainArrival.EndOfLine){
+                if (it !is TrainArrival.EndOfLine) {
                     Text(
                         modifier = Modifier
                             .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),

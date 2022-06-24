@@ -20,6 +20,7 @@ import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
+import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.ui.screens.EtaScreen
 import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.screens.UpcomingTrainsScreen
@@ -67,7 +68,20 @@ class EtaInfoActivity : ComponentActivity() {
                         EtaScreen(
                             shortName = viewModelCache.stationShortName,
                             state = viewModel.state.value,
-                            refresh = viewModel::refresh,
+                            refresh = {
+                                if (it is EtaRefreshState.Disabled) {
+                                    val secsSinceRequest =
+                                        (Calendar.getInstance().timeInMillis - it.timeDisabled) / 1000
+                                    Toast.makeText(
+                                        this@EtaInfoActivity,
+                                        "Refresh active in ${60 - secsSinceRequest} seconds",
+                                        Toast.LENGTH_SHORT
+                                    ).show();
+                                } else {
+                                    viewModel.refresh()
+                                }
+
+                            },
                             goToTrainSchedule = {
                                 viewModel.setTrainDirection(it)
                                 navController.navigate("${NavConstants.STATION_INFO}/$it")
@@ -135,7 +149,7 @@ class EtaInfoActivity : ComponentActivity() {
         }
     }
 
-    fun launchAlarmIntent(alarmTime: Calendar, msg: String) {
+    private fun launchAlarmIntent(alarmTime: Calendar, msg: String) {
         val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
             putExtra(AlarmClock.EXTRA_MESSAGE, msg)
             putExtra(
