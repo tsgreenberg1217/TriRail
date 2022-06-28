@@ -7,6 +7,8 @@ import android.provider.AlarmClock
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -26,7 +28,6 @@ import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
-import com.tsgreenberg.eta_info.utils.isValidForAlarm
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,13 @@ class EtaInfoActivity : ComponentActivity() {
 
     @Inject
     lateinit var viewModelCache: EtaInfoViewModelCache
+
+    private val viewModel: StationDetailViewModel by viewModels()
+
+    private fun setViewmodelDirection(direction: String){
+        viewModel.setTrainDirection(direction)
+        triRailNav.navController.navigate("${NavConstants.STATION_INFO}/$direction")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,29 +71,13 @@ class EtaInfoActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = NavConstants.ETA
                 ) {
+
                     composable(NavConstants.ETA) {
-                        val viewModel: StationDetailViewModel = hiltViewModel()
                         EtaScreen(
                             shortName = viewModelCache.stationShortName,
                             state = viewModel.state.value,
-                            refresh = {
-                                if (it is EtaRefreshState.Disabled) {
-                                    val secsSinceRequest =
-                                        (Calendar.getInstance().timeInMillis - it.timeDisabled) / 1000
-                                    Toast.makeText(
-                                        this@EtaInfoActivity,
-                                        "Refresh active in ${60 - secsSinceRequest} seconds",
-                                        Toast.LENGTH_SHORT
-                                    ).show();
-                                } else {
-                                    viewModel.refresh()
-                                }
-
-                            },
-                            goToTrainSchedule = {
-                                viewModel.setTrainDirection(it)
-                                navController.navigate("${NavConstants.STATION_INFO}/$it")
-                            }
+                            refresh = viewModel::refresh,
+                            goToTrainSchedule = this@EtaInfoActivity::setViewmodelDirection,
                         )
                     }
 

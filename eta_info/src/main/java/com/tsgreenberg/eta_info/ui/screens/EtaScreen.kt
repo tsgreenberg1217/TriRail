@@ -1,5 +1,6 @@
 package com.tsgreenberg.eta_info.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -17,20 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.wear.compose.material.*
+import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.rememberScalingLazyListState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tsgreenberg.eta_info.R
-import com.tsgreenberg.eta_info.models.EnRouteInfo
 import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
-import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_NORTH
-import com.tsgreenberg.eta_info.testing.TestingTags.ETA_TITLE_SOUTH
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.*
+import java.util.*
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -38,8 +39,8 @@ import com.tsgreenberg.ui_components.*
 fun EtaScreen(
     shortName: String = "",
     state: TrainInfoState,
-    refresh: (EtaRefreshState) -> Unit,
-    goToTrainSchedule: (String) -> Unit
+    refresh: () -> Unit,
+    goToTrainSchedule: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState()
     val scalingLazyListState = rememberScalingLazyListState()
@@ -50,9 +51,6 @@ fun EtaScreen(
         scalingLazyListState = scalingLazyListState,
         isVisible = !pagerState.isScrollInProgress
     ) {
-
-
-        pagerState.isScrollInProgress
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,11 +69,12 @@ fun EtaScreen(
                         UpcomingArrivalsSection(
                             it,
                             state.etaRefreshState,
-                            onRefresh = { refresh(it) },
-                            goToTrainSchedule = { goToTrainSchedule(it) })
+                            onRefresh = refresh,
+                            goToTrainSchedule = goToTrainSchedule,
+                        )
                     }
                 } else {
-                    ShowScheduleScreen { d -> goToTrainSchedule(d) }
+                    ShowScheduleScreen(goToSchedule = goToTrainSchedule)
                 }
             }
             ViewPagerScroll(pagerState = pagerState)
@@ -86,8 +85,15 @@ fun EtaScreen(
     }
 }
 
+const val NB = "Northbound Schedule"
+const val SB = "Southbound Schedule"
+const val N = "N"
+const val S = "S"
+
 @Composable
-fun ShowScheduleScreen(onClick: (String) -> Unit) {
+fun ShowScheduleScreen(
+    goToSchedule: (String) -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -99,29 +105,35 @@ fun ShowScheduleScreen(onClick: (String) -> Unit) {
         TriRailButton(
             Modifier.fillMaxWidth(),
             color = TriRailColors.Green,
-            onClick = { onClick("N") }
+            onClick = {
+                goToSchedule(N)
+            }
         ) {
-            Text(text = "Northbound Schedule", textAlign = TextAlign.Center)
+            Text(text = NB, textAlign = TextAlign.Center)
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
             Modifier.fillMaxWidth(),
             color = TriRailColors.Orange,
-            onClick = { onClick("S") }
+            onClick = {
+                goToSchedule(S)
+            }
         ) {
-            Text("Southbound Schedule", textAlign = TextAlign.Center)
+            Text(SB, textAlign = TextAlign.Center)
         }
     }
 }
 
-fun Map<String, EnRouteInfo>.getSouth(): EnRouteInfo? = get("South")
-fun Map<String, EnRouteInfo>.getNorth(): EnRouteInfo? = get("North")
+const val SOUTHBOUND_ETA = "Southbound ETA"
+const val NORTHBOUND_ETA = "Northbound ETA"
+const val NORTH = "North"
+const val SOUTH = "South"
 
 @Composable
 fun UpcomingArrivalsSection(
     enRouteMap: Map<String, TrainArrival>,
     etaRefreshState: EtaRefreshState,
-    onRefresh: (EtaRefreshState) -> Unit,
+    onRefresh: () -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     Column(
@@ -135,12 +147,12 @@ fun UpcomingArrivalsSection(
             Modifier.weight(4f, true),
             verticalArrangement = Arrangement.Center,
         ) {
-            val northTrains = enRouteMap["North"]
-            val southTrains = enRouteMap["South"]
+            val northTrains = enRouteMap[NORTH]
+            val southTrains = enRouteMap[SOUTH]
             ShowRouteInfo(
-                direction = "North",
+                title = NORTHBOUND_ETA,
                 arrival = northTrains,
-                goToTrainSchedule = { goToTrainSchedule(it) }
+                goToTrainSchedule = goToTrainSchedule
             )
 
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
@@ -154,11 +166,10 @@ fun UpcomingArrivalsSection(
             )
             Spacer(modifier = Modifier.padding(vertical = 2.dp))
             ShowRouteInfo(
-                direction = "South",
+                title = SOUTHBOUND_ETA,
                 arrival = southTrains,
-            ) {
-                goToTrainSchedule(it)
-            }
+                goToTrainSchedule = goToTrainSchedule
+            )
         }
         Column(
             Modifier
@@ -167,17 +178,31 @@ fun UpcomingArrivalsSection(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
-            RefreshButton(etaRefreshState) { onRefresh(it) }
+            RefreshButton(etaRefreshState, onRefresh = onRefresh)
         }
     }
 }
 
 
 @Composable
-fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: (EtaRefreshState) -> Unit) {
+fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: () -> Unit) {
     val isEnabled = etaRefreshState is EtaRefreshState.Enabled
+    val ctx = LocalContext.current
     TriRailButton(
-        onClick = { onRefresh(etaRefreshState) },
+        onClick = {
+            when(etaRefreshState){
+                is EtaRefreshState.Enabled -> onRefresh()
+                is EtaRefreshState.Disabled ->{
+                    val secsSinceRequest =
+                        (Calendar.getInstance().timeInMillis - etaRefreshState.timeDisabled) / 1000
+                    Toast.makeText(
+                        ctx,
+                        "Refresh active in ${60 - secsSinceRequest} seconds",
+                        Toast.LENGTH_SHORT
+                    ).show();
+                }
+            }
+        },
         modifier = Modifier
             .height(40.dp)
             .padding(8.dp),
@@ -188,17 +213,18 @@ fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: (EtaRefreshState)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_sync_48px),
-                contentDescription = "Refresh ETAs",
-                Modifier.size(24.dp)
+                contentDescription = SB,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
 }
 
+const val NO_TRAINS = "No train eta at this time..."
 
 @Composable
 fun ShowRouteInfo(
-    direction: String,
+    title: String,
     arrival: TrainArrival?,
     goToTrainSchedule: (String) -> Unit
 ) {
@@ -213,9 +239,9 @@ fun ShowRouteInfo(
             ) {
                 if (it !is TrainArrival.EndOfLine) {
                     Text(
-                        modifier = Modifier
-                            .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                        text = "${direction}bound ETA",
+                        modifier = Modifier,
+//                            .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                        text = title,
                         style = TextStyle(
                             color = Color.White,
                             fontSize = 12.sp
@@ -255,13 +281,12 @@ fun ShowRouteInfo(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = CenterVertically
                     ) {
-                        TriRailButton(Modifier.fillMaxWidth(), onClick = {
-                            goToTrainSchedule(
-                                direction[0].toString()
-                            )
-                        }) {
+                        TriRailButton(
+                            Modifier.fillMaxWidth(),
+                            onClick = { goToTrainSchedule("S") }
+                        ) {
                             Text(
-                                "See all ${direction}bound departures", style = TextStyle(
+                                "See all Xbound departures", style = TextStyle(
                                     color = Color.White,
                                     fontSize = 12.sp,
                                     textAlign = TextAlign.Center
@@ -281,9 +306,9 @@ fun ShowRouteInfo(
                         verticalAlignment = CenterVertically
                     ) {
                         Text(
-                            modifier = Modifier
-                                .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                            text = "No train eta at this time...",
+                            modifier = Modifier,
+//                                .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
+                            text = NO_TRAINS,
                             style = TextStyle(
                                 color = Color.White,
                                 fontSize = 12.sp,

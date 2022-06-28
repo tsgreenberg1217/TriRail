@@ -27,9 +27,7 @@ fun TriRailScaffold(
         modifier = Modifier.fillMaxSize(),
         positionIndicator = scalingLazyListState?.let {
             {
-                if (scalingLazyListState.isScrollInProgress) {
-                    PositionIndicator(scalingLazyListState = scalingLazyListState)
-                }
+                if (it.isScrollInProgress) PositionIndicator(scalingLazyListState = scalingLazyListState)
             }
         },
         timeText = {
@@ -46,9 +44,8 @@ fun TriRailScaffold(
         when {
             progressBarState is ProgressBarState.Loading -> TriRailLoadingSpinner()
             error != null -> TriRailErrorScreen(error)
-            else -> content()
-
         }
+        if (error == null) content()
 
     }
 }
@@ -78,7 +75,9 @@ internal fun TriRailLoadingSpinner() {
 @Composable
 internal fun TriRailErrorScreen(errorMsg: String) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(5.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
