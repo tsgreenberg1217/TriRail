@@ -21,6 +21,8 @@ fun ViewPagerScroll(
     pagerState: PagerState
 ) {
 
+    val sweep = 45f
+
     val isRound = LocalContext.current.resources.configuration.isScreenRound
     val scrollPosition = (pagerState.currentPage + pagerState.currentPageOffset)
         .coerceIn(0f, (pagerState.pageCount - 1).coerceAtLeast(0).toFloat())
@@ -28,7 +30,7 @@ fun ViewPagerScroll(
     Canvas(
         Modifier
             .fillMaxSize()
-            .rotate(if (isRound) -45f else 0f)
+            .rotate(if (isRound) -(sweep/2) else 0f)
     ) {
         val stokeWidth = 5f
         val stroke = Stroke(
@@ -41,8 +43,6 @@ fun ViewPagerScroll(
                 (size.width - strokeOffset.width) / 2f,
                 (size.height - strokeOffset.height) / 2f
             )
-
-            val sweep = 90f
 
             drawArc(
                 color = Color.White,
