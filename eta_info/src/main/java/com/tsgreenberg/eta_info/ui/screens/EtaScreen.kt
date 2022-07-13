@@ -28,6 +28,7 @@ import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
+import com.tsgreenberg.eta_info.testing.TestingTags
 import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.*
@@ -103,7 +104,7 @@ fun ShowScheduleScreen(
     ) {
 
         TriRailButton(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth().testTag(TestingTags.NORTH_SCHEDULE_BUTTON),
             color = TriRailColors.Green,
             onClick = {
                 goToSchedule(N)
@@ -113,7 +114,7 @@ fun ShowScheduleScreen(
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth().testTag(TestingTags.SOUTH_SCHEDULE_BUTTON),
             color = TriRailColors.Orange,
             onClick = {
                 goToSchedule(S)
@@ -240,7 +241,6 @@ fun ShowRouteInfo(
                 if (it !is TrainArrival.EndOfLine) {
                     Text(
                         modifier = Modifier,
-//                            .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
                         text = title,
                         style = TextStyle(
                             color = Color.White,
@@ -277,7 +277,8 @@ fun ShowRouteInfo(
                             .fillMaxWidth()
                             .height(42.dp)
                             .padding(horizontal = 20.dp)
-                            .padding(vertical = 2.dp),
+                            .padding(vertical = 2.dp)
+                            .testTag(TestingTags.END_OF_LINE),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = CenterVertically
                     ) {
@@ -286,7 +287,7 @@ fun ShowRouteInfo(
                             onClick = { goToTrainSchedule("S") }
                         ) {
                             Text(
-                                "See all Xbound departures", style = TextStyle(
+                                "See all departures", style = TextStyle(
                                     color = Color.White,
                                     fontSize = 12.sp,
                                     textAlign = TextAlign.Center
@@ -318,6 +319,7 @@ fun ShowRouteInfo(
 
                     }
                 }
+                else -> {}
             }
         }
     }
