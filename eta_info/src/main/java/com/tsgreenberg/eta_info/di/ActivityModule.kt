@@ -43,7 +43,7 @@ class ActivityModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun providesTrainScheduleSerivice(
+    fun providesTrainScheduleService(
         fireStore: FirebaseFirestore
     ): TrainScheduleService = TrainScheduleServiceImpl(fireStore)
 }
