@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info
+package com.tsgreenberg.eta_info.EndToEndTesting
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -38,6 +38,7 @@ import org.junit.Test
 @HiltAndroidTest
 class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
 
+
     @BindValue
     @JvmField
     val service: EtaService = MockEtaService(EtaMockData.available)
@@ -54,6 +55,19 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
                 .onChildren()
                 .assertAny(hasText("See all departures"))
 
+
+            it.onNodeWithTag(TestingTags.TRAIN_ARRIVAL)
+                .assertExists()
+
+            it.onNodeWithTag(TestingTags.TRAIN_ARRIVAL_TRACK,true)
+                .assertExists()
+                .onChildAt(1)
+                .assertTextEquals("Track #1")
+
+            it.onNodeWithTag(TestingTags.TRAIN_ARRIVAL_INFO,true)
+                .assertExists()
+                .assertTextEquals("20 mins")
+
             it.onNodeWithTag(ETA_VIEWPAGER, useUnmergedTree = true)
                 .performTouchInput { swipeUp() }
 
@@ -66,6 +80,9 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
                 .assertExists()
                 .assertHasClickAction()
                 .assert(hasText(SB))
+                .performClick()
+
+            it.onNodeWithTag(TestingTags.SCHEDULE_LIST).assertExists()
 
 
         }

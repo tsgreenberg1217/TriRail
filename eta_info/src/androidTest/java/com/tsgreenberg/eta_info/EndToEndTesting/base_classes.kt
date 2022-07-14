@@ -58,9 +58,7 @@ open class EtaInfoEndToEndTestBase {
 
         @Provides
         @ActivityRetainedScoped
-        fun getVmCache(): EtaInfoViewModelCache = EtaInfoViewModelCache().apply {
-            stationId = 1
-        }
+        fun getVmCache(): EtaInfoViewModelCache = EtaInfoViewModelCache()
 
         @Provides
         @ActivityRetainedScoped

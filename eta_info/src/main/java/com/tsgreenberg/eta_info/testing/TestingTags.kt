@@ -5,6 +5,13 @@ object TestingTags {
 
     private const val TITLE_TAG = "TITLE"
 
+    const val SCHEDULE_LIST = "SCHEDULE_LIST"
+
+    const val REFRESH_BUTTON = "REFRESH_BUTTON"
+
+    const val TRAIN_ARRIVAL = "TRAIN_ARRIVAL"
+    const val TRAIN_ARRIVAL_TRACK = "TRAIN_ARRIVAL_TRACK"
+    const val TRAIN_ARRIVAL_INFO = "TRAIN_ARRIVAL_INFO"
     private const val ETA_SOUTH = "ETA_SOUTH"
     private const val ETA_NORTH = "ETA_NORTH"
 

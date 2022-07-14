@@ -5,6 +5,8 @@ apply {
 android{
     defaultConfig{
         testInstrumentationRunner = "com.tsgreenberg.eta_info.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 }
 dependencies{
@@ -14,6 +16,10 @@ dependencies{
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
     implementation("com.google.accompanist:accompanist-pager:0.24.3-alpha")
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 }
 
 sqldelight {

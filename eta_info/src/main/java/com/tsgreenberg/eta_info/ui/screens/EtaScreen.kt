@@ -104,7 +104,9 @@ fun ShowScheduleScreen(
     ) {
 
         TriRailButton(
-            Modifier.fillMaxWidth().testTag(TestingTags.NORTH_SCHEDULE_BUTTON),
+            Modifier
+                .fillMaxWidth()
+                .testTag(TestingTags.NORTH_SCHEDULE_BUTTON),
             color = TriRailColors.Green,
             onClick = {
                 goToSchedule(N)
@@ -114,7 +116,9 @@ fun ShowScheduleScreen(
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
         TriRailButton(
-            Modifier.fillMaxWidth().testTag(TestingTags.SOUTH_SCHEDULE_BUTTON),
+            Modifier
+                .fillMaxWidth()
+                .testTag(TestingTags.SOUTH_SCHEDULE_BUTTON),
             color = TriRailColors.Orange,
             onClick = {
                 goToSchedule(S)
@@ -191,9 +195,9 @@ fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: () -> Unit) {
     val ctx = LocalContext.current
     TriRailButton(
         onClick = {
-            when(etaRefreshState){
+            when (etaRefreshState) {
                 is EtaRefreshState.Enabled -> onRefresh()
-                is EtaRefreshState.Disabled ->{
+                is EtaRefreshState.Disabled -> {
                     val secsSinceRequest =
                         (Calendar.getInstance().timeInMillis - etaRefreshState.timeDisabled) / 1000
                     Toast.makeText(
@@ -206,7 +210,8 @@ fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: () -> Unit) {
         },
         modifier = Modifier
             .height(40.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .testTag(TestingTags.REFRESH_BUTTON),
         color = if (isEnabled) TriRailColors.Blue else Color.DarkGray,
     ) {
         Column(
@@ -330,11 +335,15 @@ fun ShowRouteInfo(
 fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(TestingTags.TRAIN_ARRIVAL),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
+        Column(
+            Modifier.testTag(TestingTags.TRAIN_ARRIVAL_TRACK)
+        ) {
 
             TrackArrow(
                 fontSize = 10.sp,
@@ -355,6 +364,7 @@ fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
             verticalAlignment = Bottom,
         ) {
             Text(
+                modifier = Modifier.testTag(TestingTags.TRAIN_ARRIVAL_INFO),
                 text = info,
                 style = TextStyle(
                     color = Color.White,
