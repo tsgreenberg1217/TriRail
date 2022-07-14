@@ -235,7 +235,7 @@ fun ShowRouteInfo(
 ) {
     arrival?.let {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag(title),
             horizontalAlignment = CenterHorizontally
         ) {
             Row(
@@ -282,7 +282,7 @@ fun ShowRouteInfo(
                             .height(42.dp)
                             .padding(horizontal = 20.dp)
                             .padding(vertical = 2.dp)
-                            .testTag(TestingTags.END_OF_LINE),
+                            .testTag(TestingTags.TRAIN_END_OF_LINE),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = CenterVertically
                     ) {
@@ -306,7 +306,8 @@ fun ShowRouteInfo(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp),
+                            .height(40.dp)
+                            .testTag(TestingTags.TRAIN_NO_INFO),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = CenterVertically
                     ) {

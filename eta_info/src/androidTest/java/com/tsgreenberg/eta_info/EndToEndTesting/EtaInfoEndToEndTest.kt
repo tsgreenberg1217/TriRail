@@ -50,7 +50,7 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
 //                .assertTextEquals("Southbound")
 //
             //
-            it.onNodeWithTag(TestingTags.END_OF_LINE)
+            it.onNodeWithTag(TestingTags.TRAIN_END_OF_LINE)
                 .assertExists()
                 .onChildren()
                 .assertAny(hasText("See all departures"))

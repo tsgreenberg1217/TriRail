@@ -1,13 +1,10 @@
 package com.tsgreenberg.eta_info.EtaScreenTesting
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
@@ -21,7 +18,6 @@ import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
 import java.util.*
-import kotlin.assert
 
 
 //fun SemanticsNodeInteraction.assertTextColor(
@@ -44,7 +40,7 @@ import kotlin.assert
 
 
 
-class EtaScreenTests {
+class RefreshButtonTests {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 //
