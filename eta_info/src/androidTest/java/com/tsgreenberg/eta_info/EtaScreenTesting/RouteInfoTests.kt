@@ -11,7 +11,6 @@ import com.tsgreenberg.eta_info.testing.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.NORTHBOUND_ETA
 import com.tsgreenberg.eta_info.ui.screens.ShowRouteInfo
 import com.tsgreenberg.ui_components.toEtaString
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 

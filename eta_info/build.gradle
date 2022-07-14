@@ -5,8 +5,6 @@ apply {
 android{
     defaultConfig{
         testInstrumentationRunner = "com.tsgreenberg.eta_info.CustomTestRunner"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
     }
 }
 dependencies{
