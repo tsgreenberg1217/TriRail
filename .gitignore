@@ -16,3 +16,7 @@ local.properties
 trirail_keystore.rtf
 trirailkeystore
 *.apk
+.idea/inspectionProfiles/Project_Default.xml
+.idea/codeStyles/Project.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/androidTestResultsUserPreferences.xml
