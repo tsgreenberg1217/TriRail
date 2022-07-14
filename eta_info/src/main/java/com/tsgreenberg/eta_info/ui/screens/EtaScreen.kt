@@ -160,16 +160,15 @@ fun UpcomingArrivalsSection(
                 goToTrainSchedule = goToTrainSchedule
             )
 
-            Spacer(modifier = Modifier.padding(vertical = 2.dp))
             Box(
                 modifier = Modifier
                     .align(CenterHorizontally)
+                    .padding(vertical = 4.dp)
                     .height(1.dp)
                     .width(40.dp)
                     .background(color = Color.White)
 
             )
-            Spacer(modifier = Modifier.padding(vertical = 2.dp))
             ShowRouteInfo(
                 title = SOUTHBOUND_ETA,
                 arrival = southTrains,
