@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.testing.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.NORTHBOUND_ETA
-import com.tsgreenberg.eta_info.ui.screens.ShowRouteInfo
+import com.tsgreenberg.eta_info.ui.screens.EtaInfoContainer
 import com.tsgreenberg.ui_components.toEtaString
 import org.junit.Rule
 import org.junit.Test
@@ -21,11 +21,12 @@ class RouteInfoTests {
     val composeRule = createComposeRule()
 
 
+    // component under test
     fun setup(title:String,trainArrival: TrainArrival){
         composeRule.run {
             setContent {
                 Box(Modifier.background(Color.Black)) {
-                    ShowRouteInfo(
+                    EtaInfoContainer(
                         title,
                         trainArrival
                     ) {}
@@ -46,9 +47,9 @@ class RouteInfoTests {
 
         setup(title, trainArrival)
         composeRule.run {
-            onNodeWithTag(TestingTags.TRAIN_ARRIVAL).assertExists()
-            onNodeWithTag(TestingTags.TRAIN_END_OF_LINE).assertDoesNotExist()
-            onNodeWithTag(TestingTags.TRAIN_NO_INFO).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_ETA_INFO).assertExists()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_END_OF_LINE).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_NO_INFO).assertDoesNotExist()
 
             onNodeWithTag(TestingTags.TRAIN_ARRIVAL_TRACK)
                 .onChildren()
@@ -67,9 +68,9 @@ class RouteInfoTests {
         val trainArrival = TrainArrival.NoInformation
         setup(title, trainArrival)
         composeRule.run {
-            onNodeWithTag(TestingTags.TRAIN_ARRIVAL).assertDoesNotExist()
-            onNodeWithTag(TestingTags.TRAIN_END_OF_LINE).assertDoesNotExist()
-            onNodeWithTag(TestingTags.TRAIN_NO_INFO).assertExists()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_ETA_INFO).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_END_OF_LINE).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_NO_INFO).assertExists()
         }
     }
 
@@ -81,9 +82,9 @@ class RouteInfoTests {
         val trainArrival = TrainArrival.EndOfLine
         setup(title, trainArrival)
         composeRule.run {
-            onNodeWithTag(TestingTags.TRAIN_ARRIVAL).assertDoesNotExist()
-            onNodeWithTag(TestingTags.TRAIN_END_OF_LINE).assertExists()
-            onNodeWithTag(TestingTags.TRAIN_NO_INFO).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_ETA_INFO).assertDoesNotExist()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_END_OF_LINE).assertExists()
+            onNodeWithTag(TestingTags.ARRIVAL_INFO_NO_INFO).assertDoesNotExist()
         }
     }
 

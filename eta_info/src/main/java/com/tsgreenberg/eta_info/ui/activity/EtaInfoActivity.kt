@@ -4,11 +4,10 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.provider.AlarmClock
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -26,7 +25,7 @@ import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.ui.screens.EtaScreen
 import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.screens.UpcomingTrainsScreen
-import com.tsgreenberg.eta_info.ui.viewmodels.StationDetailViewModel
+import com.tsgreenberg.eta_info.ui.viewmodels.TrainArrivalViewModel
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainScheduleViewModel
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
@@ -44,15 +43,29 @@ class EtaInfoActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelCache: EtaInfoViewModelCache
 
-    private val viewModel: StationDetailViewModel by viewModels()
+    private val viewModel: TrainArrivalViewModel by viewModels()
 
-    private fun setViewmodelDirection(direction: String){
+    private fun setViewModelDirection(direction: String){
         viewModel.setTrainDirection(direction)
         triRailNav.navController.navigate("${NavConstants.STATION_INFO}/$direction")
     }
 
+    private fun initialRefreshRequest(){
+        viewModel.run {
+            if(state.value.etaRefreshState is EtaRefreshState.Enabled){
+                refresh()
+                setRefreshState(
+                    EtaRefreshState.Disabled(Calendar.getInstance().timeInMillis)
+                )
+                setEnableTimer(60)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("TEST LOGS", "Lifecycle created")
 
         viewModelCache.apply {
             stationId =
@@ -76,8 +89,8 @@ class EtaInfoActivity : ComponentActivity() {
                         EtaScreen(
                             shortName = viewModelCache.stationShortName,
                             state = viewModel.state.value,
-                            refresh = viewModel::refresh,
-                            goToTrainSchedule = this@EtaInfoActivity::setViewmodelDirection,
+                            refresh = ::initialRefreshRequest,
+                            goToTrainSchedule = this@EtaInfoActivity::setViewModelDirection,
                         )
                     }
 
@@ -141,6 +154,32 @@ class EtaInfoActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("TEST LOGS", "Lifecycle resumed: coroute running = ${viewModel.job?.isActive ?: false}")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("TEST LOGS", "Lifecycle paused")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("TEST LOGS", "Lifecycle stopped")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("TEST LOGS", "Lifecycle destoryed")
+    }
+
+    override fun isFinishing(): Boolean {
+        Log.d("TEST LOGS", "Lifecycle finishing")
+        return super.isFinishing()
+    }
+
     private fun launchAlarmIntent(alarmTime: Calendar, msg: String) {
         val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
             putExtra(AlarmClock.EXTRA_MESSAGE, msg)
@@ -157,6 +196,8 @@ class EtaInfoActivity : ComponentActivity() {
 
     }
 }
+
+
 
 
 //composable{

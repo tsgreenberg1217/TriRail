@@ -6,9 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -75,7 +72,7 @@ fun EtaScreen(
                         )
                     }
                 } else {
-                    ShowScheduleScreen(goToSchedule = goToTrainSchedule)
+                    ScheduleButtonsSection(goToTrainSchedule)
                 }
             }
             ViewPagerScroll(pagerState = pagerState)
@@ -92,7 +89,7 @@ const val N = "N"
 const val S = "S"
 
 @Composable
-fun ShowScheduleScreen(
+fun ScheduleButtonsSection(
     goToSchedule: (String) -> Unit
 ) {
     Column(
@@ -144,9 +141,9 @@ fun UpcomingArrivalsSection(
     Column(
         Modifier
             .fillMaxSize()
-            .padding(top = 20.dp),
+            .padding(top = 22.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
             Modifier.weight(4f, true),
@@ -154,33 +151,36 @@ fun UpcomingArrivalsSection(
         ) {
             val northTrains = enRouteMap[NORTH]
             val southTrains = enRouteMap[SOUTH]
-            ShowRouteInfo(
-                title = NORTHBOUND_ETA,
-                arrival = northTrains,
-                goToTrainSchedule = goToTrainSchedule
-            )
+            northTrains?.let {
+                EtaInfoContainer(
+                    title = NORTHBOUND_ETA,
+                    arrival = it,
+                    goToTrainSchedule = goToTrainSchedule
+                )
+            }
 
             Box(
                 modifier = Modifier
-                    .align(CenterHorizontally)
+                    .align(Alignment.CenterHorizontally)
                     .padding(vertical = 4.dp)
                     .height(1.dp)
                     .width(40.dp)
                     .background(color = Color.White)
 
             )
-            ShowRouteInfo(
-                title = SOUTHBOUND_ETA,
-                arrival = southTrains,
-                goToTrainSchedule = goToTrainSchedule
-            )
+            southTrains?.let {
+                EtaInfoContainer(
+                    title = SOUTHBOUND_ETA,
+                    arrival = it,
+                    goToTrainSchedule = goToTrainSchedule
+                )
+            }
+
         }
         Column(
-            Modifier
-                .fillMaxWidth()
-                .weight(1f, true),
+            Modifier.weight(1f, true),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             RefreshButton(etaRefreshState, onRefresh = onRefresh)
         }
@@ -225,119 +225,120 @@ fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: () -> Unit) {
     }
 }
 
-const val NO_TRAINS = "No train eta at this time..."
-
 @Composable
-fun ShowRouteInfo(
-    title: String,
-    arrival: TrainArrival?,
-    goToTrainSchedule: (String) -> Unit
-) {
-    arrival?.let {
-        Column(
-            modifier = Modifier.fillMaxWidth().testTag(title),
-            horizontalAlignment = CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                if (it !is TrainArrival.EndOfLine) {
+fun ArrivalInfoHeader(title:String, arrival:TrainArrival){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        if (arrival !is TrainArrival.EndOfLine) {
+            Text(
+                modifier = Modifier,
+                text = title,
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 12.sp
+                )
+            )
+            if (arrival is TrainArrival.EstimatedArrival) {
+                arrival.status?.let { status ->
                     Text(
-                        modifier = Modifier,
-                        text = title,
+                        text = " $status",
                         style = TextStyle(
-                            color = Color.White,
+                            color = Color(
+                                arrival.statusColor?.let { android.graphics.Color.parseColor(it) }
+                                    ?: 0xFFF
+                            ),
                             fontSize = 12.sp
                         )
                     )
-                    if (it is TrainArrival.EstimatedArrival) {
-                        it.status?.let { status ->
-                            Text(
-                                text = " $status",
-                                style = TextStyle(
-                                    color = Color(
-                                        it.statusColor?.let { android.graphics.Color.parseColor(it) }
-                                            ?: 0xFFF
-                                    ),
-                                    fontSize = 12.sp
-                                )
-                            )
-                        }
-                    }
                 }
-
-            }
-            Spacer(modifier = Modifier.padding(vertical = 2.dp))
-
-            when (it) {
-                is TrainArrival.EstimatedArrival -> {
-                    RouteInfo(it.info.toEtaString(), it.trackNumber.toString(), it.trainId)
-                }
-
-                is TrainArrival.EndOfLine -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(42.dp)
-                            .padding(horizontal = 20.dp)
-                            .padding(vertical = 2.dp)
-                            .testTag(TestingTags.TRAIN_END_OF_LINE),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        TriRailButton(
-                            Modifier.fillMaxWidth(),
-                            onClick = { goToTrainSchedule("S") }
-                        ) {
-                            Text(
-                                "See all departures", style = TextStyle(
-                                    color = Color.White,
-                                    fontSize = 12.sp,
-                                    textAlign = TextAlign.Center
-                                ),
-                                modifier = Modifier.padding(horizontal = 4.dp)
-                            )
-                        }
-                    }
-                }
-
-                is TrainArrival.NoInformation -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp)
-                            .testTag(TestingTags.TRAIN_NO_INFO),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier,
-//                                .testTag(if (direction == "North") ETA_TITLE_NORTH else ETA_TITLE_SOUTH),
-                            text = NO_TRAINS,
-                            style = TextStyle(
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-
-                    }
-                }
-                else -> {}
             }
         }
+
+    }
+}
+
+@Composable
+fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: (String) -> Unit) = when (arrival) {
+    is TrainArrival.EstimatedArrival -> {
+        EtaInfo(arrival.info.toEtaString(), arrival.trackNumber.toString(), arrival.trainId)
+    }
+
+    is TrainArrival.EndOfLine -> {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .testTag(TestingTags.ARRIVAL_INFO_END_OF_LINE),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TriRailButton(
+                Modifier.fillMaxWidth(),
+                onClick = { goToTrainSchedule("S") }
+            ) {
+                Text(
+                    "See all departures", style = TextStyle(
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+            }
+        }
+    }
+
+    is TrainArrival.NoInformation -> {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .testTag(TestingTags.ARRIVAL_INFO_NO_INFO),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = NO_TRAINS,
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+        }
+    }
+}
+
+
+const val NO_TRAINS = "No train eta at this time..."
+
+@Composable
+fun EtaInfoContainer(
+    title: String,
+    arrival: TrainArrival,
+    goToTrainSchedule: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth().testTag(title),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ArrivalInfoHeader(title, arrival)
+        Spacer(modifier = Modifier.padding(vertical = 2.dp))
+        ArrivalInfo(arrival, goToTrainSchedule)
     }
 
 }
 
 @Composable
-fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
+fun EtaInfo(info: String, trackNumber: String? = null, trainId: String) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .testTag(TestingTags.TRAIN_ARRIVAL),
+            .testTag(TestingTags.ARRIVAL_INFO_ETA_INFO),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -361,7 +362,7 @@ fun RouteInfo(info: String, trackNumber: String? = null, trainId: String) {
 
         }
         Row(
-            verticalAlignment = Bottom,
+            verticalAlignment = Alignment.Bottom,
         ) {
             Text(
                 modifier = Modifier.testTag(TestingTags.TRAIN_ARRIVAL_INFO),
