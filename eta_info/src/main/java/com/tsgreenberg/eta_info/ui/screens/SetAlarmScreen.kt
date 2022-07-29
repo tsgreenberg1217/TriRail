@@ -23,6 +23,7 @@ fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int
     TriRailScaffold(extraText = stationName) {
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
             Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = "How many minutes before departure would you like to be reminded about your trip?",
                 style = TextStyle(
                     textAlign = TextAlign.Center,

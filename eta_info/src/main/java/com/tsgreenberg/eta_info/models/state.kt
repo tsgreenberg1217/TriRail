@@ -3,6 +3,7 @@ package com.tsgreenberg.eta_info.models
 import com.tsgreenberg.core.ProgressBarState
 
 data class TrainInfoState(
+    val refreshId:Int = -1,
     val etaProgressBarState: ProgressBarState = ProgressBarState.Idle,
     val etaRefreshState: EtaRefreshState = EtaRefreshState.Enabled,
     val arrivalMap: Map<String, TrainArrival>? = null,

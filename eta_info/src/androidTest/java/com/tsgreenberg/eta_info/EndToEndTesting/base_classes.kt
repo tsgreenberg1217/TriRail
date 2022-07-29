@@ -10,7 +10,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
-import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
 import com.tsgreenberg.eta_info.models.TrainScheduleDto
 import com.tsgreenberg.eta_info.remote_classes.*
 import com.tsgreenberg.eta_info.testing.MockNavigation
@@ -55,10 +54,6 @@ open class EtaInfoEndToEndTestBase {
     @Module
     @InstallIn(ActivityRetainedComponent::class)
     class TestActivityModule {
-
-        @Provides
-        @ActivityRetainedScoped
-        fun getVmCache(): EtaInfoViewModelCache = EtaInfoViewModelCache()
 
         @Provides
         @ActivityRetainedScoped

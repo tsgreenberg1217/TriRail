@@ -37,7 +37,7 @@ import java.util.*
 fun EtaScreen(
     shortName: String = "",
     state: TrainInfoState,
-    refresh: () -> Unit,
+    refresh: (Int) -> Unit,
     goToTrainSchedule: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState()
@@ -66,6 +66,7 @@ fun EtaScreen(
                     state.arrivalMap?.let {
                         UpcomingArrivalsSection(
                             it,
+                            state.refreshId,
                             state.etaRefreshState,
                             onRefresh = refresh,
                             goToTrainSchedule = goToTrainSchedule,
@@ -134,8 +135,9 @@ const val SOUTH = "South"
 @Composable
 fun UpcomingArrivalsSection(
     enRouteMap: Map<String, TrainArrival>,
+    refreshId: Int,
     etaRefreshState: EtaRefreshState,
-    onRefresh: () -> Unit,
+    onRefresh: (Int) -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     Column(
@@ -182,20 +184,20 @@ fun UpcomingArrivalsSection(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RefreshButton(etaRefreshState, onRefresh = onRefresh)
+            RefreshButton(refreshId, etaRefreshState, onRefresh = onRefresh)
         }
     }
 }
 
 
 @Composable
-fun RefreshButton(etaRefreshState: EtaRefreshState, onRefresh: () -> Unit) {
+fun RefreshButton(refreshId: Int, etaRefreshState: EtaRefreshState, onRefresh: (Int) -> Unit) {
     val isEnabled = etaRefreshState is EtaRefreshState.Enabled
     val ctx = LocalContext.current
     TriRailButton(
         onClick = {
             when (etaRefreshState) {
-                is EtaRefreshState.Enabled -> onRefresh()
+                is EtaRefreshState.Enabled -> onRefresh(refreshId)
                 is EtaRefreshState.Disabled -> {
                     val secsSinceRequest =
                         (Calendar.getInstance().timeInMillis - etaRefreshState.timeDisabled) / 1000
@@ -275,7 +277,7 @@ fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: (String) -> Unit) = wh
             verticalAlignment = Alignment.CenterVertically
         ) {
             TriRailButton(
-                Modifier.fillMaxWidth(),
+                Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                 onClick = { goToTrainSchedule("S") }
             ) {
                 Text(

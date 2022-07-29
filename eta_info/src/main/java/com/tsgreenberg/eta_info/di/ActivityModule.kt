@@ -1,7 +1,6 @@
 package com.tsgreenberg.eta_info.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tsgreenberg.eta_info.models.EtaInfoViewModelCache
 import com.tsgreenberg.eta_info.remote_classes.*
 import dagger.Module
 import dagger.Provides
@@ -13,11 +12,6 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 @InstallIn(ActivityRetainedComponent::class)
 class ActivityModule {
 
-    @Provides
-    @ActivityRetainedScoped
-    fun providesViewModelCache():EtaInfoViewModelCache{
-        return EtaInfoViewModelCache()
-    }
 
     @Provides
     @ActivityRetainedScoped

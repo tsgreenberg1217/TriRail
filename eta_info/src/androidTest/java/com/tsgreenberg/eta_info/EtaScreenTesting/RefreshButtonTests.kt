@@ -52,7 +52,7 @@ class RefreshButtonTests {
     private fun setUpRefresh(state: EtaRefreshState, action: () -> Unit): SemanticsNodeInteraction {
         return composeTestRule.run {
             setContent {
-                RefreshButton(etaRefreshState = state) {
+                RefreshButton(1, etaRefreshState = state) {
                     action()
                 }
             }

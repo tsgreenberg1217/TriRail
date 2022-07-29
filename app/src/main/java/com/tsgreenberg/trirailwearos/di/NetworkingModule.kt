@@ -37,7 +37,7 @@ object NetworkingModule {
         return OkHttpClient.Builder().apply {
             addInterceptor(interceptor)
             addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
-            addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+//            addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         }.build()
     }
 
