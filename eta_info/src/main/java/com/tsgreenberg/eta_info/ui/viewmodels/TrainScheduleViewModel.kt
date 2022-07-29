@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TrainScheduleViewModel @Inject constructor(
     private val getTrainSchedulesForStation: GetTrainSchedulesForStation,
-    cache: EtaInfoViewModelCache
+    private val cache: EtaInfoViewModelCache
 ) : ViewModel() {
     val state: MutableState<TrainScheduleState> = mutableStateOf(TrainScheduleState())
 
@@ -29,16 +29,16 @@ class TrainScheduleViewModel @Inject constructor(
 
     private fun getScheduleForStation(id: Int, direction: String) {
         getTrainSchedulesForStation.execute(id, direction).onEach {
-            when (it) {
+            state.value = when (it) {
                 is DataState.Loading -> {
-                    state.value = state.value.copy(progressBarState = it.progressBarState)
+                    state.value.copy(progressBarState = it.progressBarState)
                 }
                 is DataState.Success -> {
-                    state.value = state.value.copy(trainSchedule = it.data)
+                    state.value.copy(trainSchedule = it.data)
                 }
 
                 is DataState.Error -> {
-                    state.value = state.value.copy(error = it.msg)
+                    state.value.copy(error = it.msg)
                 }
             }
         }.launchIn(viewModelScope)
