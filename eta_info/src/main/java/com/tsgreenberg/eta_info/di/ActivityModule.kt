@@ -1,6 +1,7 @@
 package com.tsgreenberg.eta_info.di
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.eta_info.remote_classes.*
 import dagger.Module
 import dagger.Provides
@@ -11,7 +12,6 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class ActivityModule {
-
 
     @Provides
     @ActivityRetainedScoped
@@ -25,15 +25,14 @@ class ActivityModule {
         return interactors.getTrainSchedulesForStation
     }
 
-
     @Provides
     @ActivityRetainedScoped
     fun providesGetEtaInteractors(
         etaService: EtaService,
-        trainServices: TrainScheduleService
-    ): EtaInteractors {
-        return EtaInteractors.build(etaService, trainServices)
-    }
+        trainServices: TrainScheduleService,
+        etaDtoMapper: EtaDtoMapper
+    ): EtaInteractors = EtaInteractors.build(etaService, trainServices, etaDtoMapper)
+
 
     @Provides
     @ActivityRetainedScoped

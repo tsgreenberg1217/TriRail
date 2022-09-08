@@ -1,16 +1,16 @@
 package com.tsgreenberg.eta_info.android_test_utils
 
-import com.tsgreenberg.eta_info.models.EnRouteInfo
-import com.tsgreenberg.eta_info.models.GetStopEtaResponse
+import com.tsgreenberg.eta_info.models.EnRouteInfoDTO
+import com.tsgreenberg.eta_info.models.GetStopEtaResponseDto
 import com.tsgreenberg.eta_info.models.StopEtaInfoDTO
 
 object EtaMockData {
-    val available = GetStopEtaResponse(
+    val available = GetStopEtaResponseDto(
         listOf(
             StopEtaInfoDTO(
                 "1",
                 listOf(
-                    EnRouteInfo(
+                    EnRouteInfoDTO(
                         0,
                         1,
                         18,
@@ -27,7 +27,7 @@ object EtaMockData {
                         "1103",
                         1
                     ),
-                    EnRouteInfo(
+                    EnRouteInfoDTO(
                         0,
                         1,
                         18,
@@ -50,7 +50,7 @@ object EtaMockData {
     )
 
 
-    val notAvailable = GetStopEtaResponse(
+    val notAvailable = GetStopEtaResponseDto(
         listOf(StopEtaInfoDTO("1", listOf()))
     )
 }

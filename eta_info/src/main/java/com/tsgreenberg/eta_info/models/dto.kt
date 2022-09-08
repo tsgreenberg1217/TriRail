@@ -3,11 +3,11 @@ package com.tsgreenberg.eta_info.models
 import com.google.gson.annotations.SerializedName
 import com.tsgreenberg.ui_components.toMinutes
 
-data class GetVehicleResponse(
-    @SerializedName("get_vehicles") val vehicles: List<Vehicle>
+data class GetVehicleResponseDto(
+    @SerializedName("get_vehicles") val vehicles: List<VehicleDto>
 )
 
-data class Vehicle(
+data class VehicleDto(
     val routeID: Int,
     val patternID: Int,
     val equipmentID: String,
@@ -36,71 +36,21 @@ data class Vehicle(
 
 data class StopEtaInfoDTO(
     val id: String,
-    val enRoute: List<EnRouteInfo>
+    val enRoute: List<EnRouteInfoDTO>
 )
 
-
-fun GetStopEtaResponse.toArrivalMap(): Map<String, TrainArrival> {
-    val southBound = mutableListOf<EnRouteInfo>()
-    val northBound = mutableListOf<EnRouteInfo>()
-
-    etaDTOS.forEach { stops ->
-        stops.enRoute.forEach {
-            with(if (it.isNorthBound()) northBound else southBound) { add(it) }
-        }
-
-    }
-    southBound.sortBy { it.minutes }
-    northBound.sortBy { it.minutes }
-
-    return mutableMapOf<String, TrainArrival>().apply {
-        put("North", northBound.firstOrNull()?.toEstArrival() ?: TrainArrival.NoInformation)
-        put("South", southBound.firstOrNull()?.toEstArrival() ?: TrainArrival.NoInformation)
-    }
-}
-
-fun EnRouteInfo.isNorthBound(): Boolean = direction == "North"
-
-fun EnRouteInfo.toEstArrival(): TrainArrival.EstimatedArrival = TrainArrival.EstimatedArrival(
-    info = minutes,
-    trainId = scheduleNumber,
-    status = if (status
-            .replace(" ", "")
-            .replace(":", "")
-            .all { it.isLetterOrDigit() }) status else null,
-    statusColor = statuscolor,
-    trackNumber = track
-)
-
-data class EnRouteInfo(
-    val blockID: Int,
-    val stopID: Int,
-    val patternStopID: Int,
-    val timePoint: Int,
+data class EnRouteInfoDTO(
     val minutes: Int,
-    val time: String,
-    val schedule: String,
     val status: String,
     val scheduleNumber: String,
-    val statuscolor: String?,
+    val statusColor: String?,
     val track: Int,
     val direction: String,
-    val directionAbbr: String,
-    val equipmentID: String,
-    val routeID: Int
+    val stopId:Int,
 )
 
-data class GetStopEtaResponse(
+data class GetStopEtaResponseDto(
     @SerializedName("get_stop_etas") val etaDTOS: List<StopEtaInfoDTO>
-)
-
-data class UiTrainSchedule(
-    val stationId: Int,
-    val trainId: Int,
-    val direction: String,
-    val timeString: String,
-    val timeInMins: Int,
-    val isWeekday: Boolean
 )
 
 data class TrainScheduleDto(

@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.eta_info.models.EtaRefreshState
-import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.remote_classes.GetEtaForStation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrainArrivalViewModel @Inject constructor(
-    private val getEtaForStation: GetEtaForStation
+    private val getEtaForStation: GetEtaForStation,
+    private val mapper: TrainArrivalStateMapper
 ) : ViewModel() {
 
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
@@ -55,16 +56,9 @@ class TrainArrivalViewModel @Inject constructor(
                 }
 
                 is DataState.Success -> {
-                    val arrivalMap = it.data.toMutableMap()
-
-                    when (id) {
-                        1 -> arrivalMap["South"] = TrainArrival.EndOfLine
-                        18 -> arrivalMap["North"] = TrainArrival.EndOfLine
-                    }
-
                     state.value.copy(
                         refreshId = id,
-                        arrivalMap = arrivalMap
+                        arrivalMap = mapper.invoke(it.data)
                     )
                 }
 

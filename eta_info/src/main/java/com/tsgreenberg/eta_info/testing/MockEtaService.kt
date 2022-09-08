@@ -1,11 +1,11 @@
 package com.tsgreenberg.eta_info.testing
 
-import com.tsgreenberg.eta_info.models.GetStopEtaResponse
-import com.tsgreenberg.eta_info.models.GetVehicleResponse
+import com.tsgreenberg.eta_info.models.GetStopEtaResponseDto
+import com.tsgreenberg.eta_info.models.GetVehicleResponseDto
 import com.tsgreenberg.eta_info.remote_classes.EtaService
 
 class MockEtaService(
-    private val response: GetStopEtaResponse
+    private val response: GetStopEtaResponseDto
 ) : EtaService {
     override suspend fun getVehicles(
         hasETAData: Int,
@@ -13,10 +13,10 @@ class MockEtaService(
         isInService: Int,
         hasDirections: Int,
         token: String
-    ): GetVehicleResponse {
-        return GetVehicleResponse(listOf())
+    ): GetVehicleResponseDto {
+        return GetVehicleResponseDto(listOf())
     }
 
-    override suspend fun getStopEtas(stopId: Int, token: String): GetStopEtaResponse = response
+    override suspend fun getStopEtas(stopId: Int, token: String): GetStopEtaResponseDto = response
 
 }

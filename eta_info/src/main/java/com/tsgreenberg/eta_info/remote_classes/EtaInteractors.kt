@@ -2,10 +2,9 @@ package com.tsgreenberg.eta_info.remote_classes
 
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
-import com.tsgreenberg.eta_info.models.toArrivalMap
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.eta_info.models.toUiTrainSchedule
 import com.tsgreenberg.ui_components.isWeekendHours
-import com.tsgreenberg.ui_components.toMinutes
 import kotlinx.coroutines.flow.flow
 import java.util.*
 
@@ -16,9 +15,10 @@ data class EtaInteractors(
     companion object Factory {
         fun build(
             etaService: EtaService,
-            trainsServices: TrainScheduleService
+            trainsServices: TrainScheduleService,
+            etaMapper:EtaDtoMapper
         ): EtaInteractors = EtaInteractors(
-            getEtaForStation = GetEtaForStation(etaService),
+            getEtaForStation = GetEtaForStation(etaService, etaMapper),
             getTrainSchedulesForStation = GetTrainSchedulesForStation(trainsServices)
         )
     }
@@ -32,7 +32,11 @@ class GetTrainSchedulesForStation(
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
 
-            val response = trainScheduleService.getScheduleForStation(id, direction, Date().isWeekendHours().not())
+            val response = trainScheduleService.getScheduleForStation(
+                id,
+                direction,
+                Date().isWeekendHours().not()
+            )
                 .map { it.toUiTrainSchedule() }
                 .sortedBy { it.timeInMins }
 
@@ -47,16 +51,17 @@ class GetTrainSchedulesForStation(
     }
 }
 
+
 class GetEtaForStation(
-    private val etaService: EtaService
+    private val etaService: EtaService,
+    private val mapper: EtaDtoMapper
 ) {
     fun execute(id: Int) = flow {
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
             val response = etaService.getStopEtas(id)
-            emit(
-                DataState.Success(response.toArrivalMap())
-            )
+            val data = mapper.invoke(response)
+            emit(DataState.Success(data))
         } catch (e: Exception) {
             emit(
                 DataState.Error(e.localizedMessage.orEmpty())
@@ -67,4 +72,27 @@ class GetEtaForStation(
 
     }
 }
+
+
+//
+//class GetEtaForStation(
+//    private val etaService: EtaService
+//) {
+//    fun execute(id: Int) = flow {
+//        try {
+//            emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
+//            val response = etaService.getStopEtas(id)
+//            emit(
+//                DataState.Success(response.toArrivalMap())
+//            )
+//        } catch (e: Exception) {
+//            emit(
+//                DataState.Error(e.localizedMessage.orEmpty())
+//            )
+//        } finally {
+//            emit(DataState.Loading(progressBarState = ProgressBarState.Idle))
+//        }
+//
+//    }
+//}
 
