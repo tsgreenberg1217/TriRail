@@ -1,5 +1,6 @@
 package com.tsgreenberg.eta_info.ui.viewmodels
 
+import android.icu.util.Calendar
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -24,16 +25,30 @@ class TrainArrivalViewModel @Inject constructor(
     private val mapper: TrainArrivalStateMapper
 ) : ViewModel() {
 
+    private val refreshTime = 60
+
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
 
-    fun setRefreshState(refreshState: EtaRefreshState) {
+
+    fun initialRefreshRequest(id: Int, timeRequested: Long) {
+        if (state.value.etaRefreshState is EtaRefreshState.Enabled) {
+            getEstTrainArrivals(id)
+            setRefreshState(
+                EtaRefreshState.Disabled(timeRequested)
+            )
+            setEnableTimer(refreshTime)
+        }
+    }
+
+
+    private fun setRefreshState(refreshState: EtaRefreshState) {
         Log.d("TEST LOGS", "Refresh state set to $refreshState!")
         state.value = state.value.copy(
             etaRefreshState = refreshState
         )
     }
 
-    fun setEnableTimer(seconds: Int) {
+    private fun setEnableTimer(seconds: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 Log.d("TEST LOGS", "CR launched!")

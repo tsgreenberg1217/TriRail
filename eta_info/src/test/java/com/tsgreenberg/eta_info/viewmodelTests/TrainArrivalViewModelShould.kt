@@ -1,6 +1,5 @@
 package com.tsgreenberg.eta_info.viewmodelTests
 
-import android.icu.util.Calendar
 import android.util.Log
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
@@ -8,16 +7,19 @@ import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.eta_info.models.ArrivalData
 import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainArrival
-import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.remote_classes.GetEtaForStation
 import com.tsgreenberg.eta_info.ui.viewmodels.TrainArrivalViewModel
 import com.tsgreenberg.eta_info.utils.MainCoroutineRule
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -34,9 +36,10 @@ class TrainArrivalViewModelShould {
     private val mapper = mockk<TrainArrivalStateMapper>()
     private val getEtaForStation = mockk<GetEtaForStation>()
 
-    val viewModel: TrainArrivalViewModel = TrainArrivalViewModel(getEtaForStation, mapper)
+    // system under test
+    private val viewModel: TrainArrivalViewModel = TrainArrivalViewModel(getEtaForStation, mapper)
 
-    val data = listOf<ArrivalData>()
+    private val data = listOf<ArrivalData>()
 
     @Before
     fun setup() {
@@ -104,38 +107,48 @@ class TrainArrivalViewModelShould {
     }
 
     @Test
-    fun handelsDisableButton() = runTest {
+    fun handlesDisableButton() = runTest {
+        createSuccessCase()
         val now = Date().time
 
         viewModel.state.value.run {
             Assert.assertEquals(EtaRefreshState.Enabled, etaRefreshState)
         }
 
-        viewModel.run {
-            setRefreshState(
-                EtaRefreshState.Disabled(now)
-            )
-            setEnableTimer(60)
-        }
+        viewModel.initialRefreshRequest(1, now)
+
+        verify(exactly = 1) { getEtaForStation.execute(1) }
 
         viewModel.state.value.run {
             Assert.assertEquals(EtaRefreshState.Disabled(now), etaRefreshState)
         }
 
-        // test left edges
+        // test left edge
         advanceTimeBy(59000)
 
         viewModel.state.value.run {
             Assert.assertEquals(EtaRefreshState.Disabled(now), etaRefreshState)
         }
 
-        // test right edges
+        // test right edge
         advanceTimeBy(2000)
 
         viewModel.state.value.run {
             Assert.assertEquals(EtaRefreshState.Enabled, etaRefreshState)
         }
 
+    }
+
+    @Test
+    fun blockRefreshBeforeTimeAllowed() = runTest {
+        createSuccessCase()
+        val now = Date().time
+        viewModel.initialRefreshRequest(1, now)
+        advanceTimeBy(59000)
+        // this call should not trigger refresh
+        viewModel.initialRefreshRequest(1, now)
+        verify(exactly = 1) { getEtaForStation.execute(1) }
+        Assert.assertEquals(EtaRefreshState.Disabled(now), viewModel.state.value.etaRefreshState)
     }
 
 }

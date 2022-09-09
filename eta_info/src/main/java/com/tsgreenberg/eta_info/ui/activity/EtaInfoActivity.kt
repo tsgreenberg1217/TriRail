@@ -43,27 +43,6 @@ class EtaInfoActivity : ComponentActivity() {
     @EtaInfoNavigationQualifier
     lateinit var triRailNav: TriRailNavImplementor<NavHostController>
 
-    private val viewModel: TrainArrivalViewModel by viewModels()
-
-//    private fun setViewModelDirection(direction: String){
-//        triRailNav.navController.navigate(
-////            "${NavConstants.STATION_INFO}/$direction"
-//            "stationInfo/$id/$direction"
-//        )
-//    }
-
-    private fun initialRefreshRequest(id:Int){
-        viewModel.run {
-            if(state.value.etaRefreshState is EtaRefreshState.Enabled){
-                getEstTrainArrivals(id)
-                setRefreshState(
-                    EtaRefreshState.Disabled(Calendar.getInstance().timeInMillis)
-                )
-                setEnableTimer(60)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -100,7 +79,7 @@ class EtaInfoActivity : ComponentActivity() {
                         EtaScreen(
                             shortName = stationShortName,
                             state = viewModel.state.value,
-                            refresh = ::initialRefreshRequest,
+                            refresh = viewModel::initialRefreshRequest,
                             goToTrainSchedule = setViewModelDirection,
                         )
 

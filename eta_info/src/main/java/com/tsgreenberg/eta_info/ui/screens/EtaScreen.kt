@@ -37,7 +37,7 @@ import java.util.*
 fun EtaScreen(
     shortName: String = "",
     state: TrainInfoState,
-    refresh: (Int) -> Unit,
+    refresh: (Int, Long) -> Unit,
     goToTrainSchedule: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState()
@@ -137,7 +137,7 @@ fun UpcomingArrivalsSection(
     enRouteMap: Map<String, TrainArrival>,
     refreshId: Int,
     etaRefreshState: EtaRefreshState,
-    onRefresh: (Int) -> Unit,
+    onRefresh: (Int, Long) -> Unit,
     goToTrainSchedule: (String) -> Unit
 ) {
     Column(
@@ -191,13 +191,13 @@ fun UpcomingArrivalsSection(
 
 
 @Composable
-fun RefreshButton(refreshId: Int, etaRefreshState: EtaRefreshState, onRefresh: (Int) -> Unit) {
+fun RefreshButton(refreshId: Int, etaRefreshState: EtaRefreshState, onRefresh: (Int, Long) -> Unit) {
     val isEnabled = etaRefreshState is EtaRefreshState.Enabled
     val ctx = LocalContext.current
     TriRailButton(
         onClick = {
             when (etaRefreshState) {
-                is EtaRefreshState.Enabled -> onRefresh(refreshId)
+                is EtaRefreshState.Enabled -> onRefresh(refreshId, Calendar.getInstance().timeInMillis)
                 is EtaRefreshState.Disabled -> {
                     val secsSinceRequest =
                         (Calendar.getInstance().timeInMillis - etaRefreshState.timeDisabled) / 1000
