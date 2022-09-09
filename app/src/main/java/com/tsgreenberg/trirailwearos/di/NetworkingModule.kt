@@ -3,7 +3,6 @@ package com.tsgreenberg.trirailwearos.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.eta_info.testing.MockEtaService
 import com.tsgreenberg.station_list.StationsService
 import com.tsgreenberg.trirailwearos.BuildConfig
 import dagger.Module

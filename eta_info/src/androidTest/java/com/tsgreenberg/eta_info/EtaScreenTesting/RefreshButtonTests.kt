@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tsgreenberg.eta_info.models.EtaRefreshState
-import com.tsgreenberg.eta_info.testing.TestingTags
+import com.tsgreenberg.eta_info.utils.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.RefreshButton
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not

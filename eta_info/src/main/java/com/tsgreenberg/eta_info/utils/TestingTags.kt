@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.testing
+package com.tsgreenberg.eta_info.utils
 
 object TestingTags {
     const val ETA_VIEWPAGER = "ETA_VIEWPAGER"

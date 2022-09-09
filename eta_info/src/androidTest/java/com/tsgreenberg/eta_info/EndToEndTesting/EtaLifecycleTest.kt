@@ -6,7 +6,7 @@ import com.tsgreenberg.eta_info.android_test_utils.EtaInfoEndToEndTestBase
 import com.tsgreenberg.eta_info.android_test_utils.EtaMockData
 import com.tsgreenberg.eta_info.di.ActivityModule
 import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.eta_info.testing.MockEtaService
+import com.tsgreenberg.eta_info.MockEtaService
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.tsgreenberg.eta_info.models.TrainArrival
-import com.tsgreenberg.eta_info.testing.TestingTags
+import com.tsgreenberg.eta_info.utils.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.NORTHBOUND_ETA
 import com.tsgreenberg.eta_info.ui.screens.EtaInfoContainer
 import com.tsgreenberg.ui_components.toEtaString

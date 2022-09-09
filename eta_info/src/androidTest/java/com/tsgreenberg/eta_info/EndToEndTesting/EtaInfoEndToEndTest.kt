@@ -7,9 +7,9 @@ import com.tsgreenberg.eta_info.android_test_utils.EtaInfoEndToEndTestBase
 import com.tsgreenberg.eta_info.android_test_utils.EtaMockData
 import com.tsgreenberg.eta_info.di.ActivityModule
 import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.eta_info.testing.MockEtaService
-import com.tsgreenberg.eta_info.testing.TestingTags
-import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
+import com.tsgreenberg.eta_info.MockEtaService
+import com.tsgreenberg.eta_info.utils.TestingTags
+import com.tsgreenberg.eta_info.utils.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.eta_info.ui.screens.NB
 import com.tsgreenberg.eta_info.ui.screens.SB
 import dagger.hilt.android.testing.BindValue

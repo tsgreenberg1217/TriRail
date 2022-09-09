@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.testing
+package com.tsgreenberg.eta_info
 
 import androidx.navigation.NavHostController
 import com.tsgreenberg.core.navigation.TriRailNavImplementor

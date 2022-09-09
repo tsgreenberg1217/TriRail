@@ -25,8 +25,8 @@ import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
-import com.tsgreenberg.eta_info.testing.TestingTags
-import com.tsgreenberg.eta_info.testing.TestingTags.ETA_VIEWPAGER
+import com.tsgreenberg.eta_info.utils.TestingTags
+import com.tsgreenberg.eta_info.utils.TestingTags.ETA_VIEWPAGER
 import com.tsgreenberg.eta_info.ui.components.TrackArrow
 import com.tsgreenberg.ui_components.*
 import java.util.*

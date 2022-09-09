@@ -26,20 +26,20 @@ class TrainArrivalViewModel @Inject constructor(
 
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
 
-    fun setRefreshState(refreshState:EtaRefreshState){
+    fun setRefreshState(refreshState: EtaRefreshState) {
         Log.d("TEST LOGS", "Refresh state set to $refreshState!")
         state.value = state.value.copy(
             etaRefreshState = refreshState
         )
     }
 
-    fun setEnableTimer(seconds:Int){
+    fun setEnableTimer(seconds: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 Log.d("TEST LOGS", "CR launched!")
                 delay(1000L * seconds)
                 setRefreshState(EtaRefreshState.Enabled)
-            }finally {
+            } finally {
                 Log.d("TEST LOGS", "CR canceled")
             }
 
@@ -49,22 +49,17 @@ class TrainArrivalViewModel @Inject constructor(
     fun getEstTrainArrivals(id: Int) {
         getEtaForStation.execute(id).onEach {
             state.value = when (it) {
-                is DataState.Loading -> {
-                    state.value.copy(
-                        etaProgressBarState = it.progressBarState
-                    )
-                }
+                is DataState.Loading -> state.value.copy(
+                    etaProgressBarState = it.progressBarState
+                )
 
-                is DataState.Success -> {
-                    state.value.copy(
-                        refreshId = id,
-                        arrivalMap = mapper.invoke(it.data)
-                    )
-                }
+                is DataState.Success -> state.value.copy(
+                    refreshId = id,
+                    arrivalMap = mapper.invoke(it.data)
+                )
 
-                is DataState.Error -> {
-                    state.value.copy(error = it.msg)
-                }
+                is DataState.Error -> state.value.copy(error = it.msg)
+
             }
         }.launchIn(viewModelScope)
     }
