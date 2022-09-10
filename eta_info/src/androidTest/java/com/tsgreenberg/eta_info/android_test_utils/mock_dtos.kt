@@ -11,37 +11,30 @@ object EtaMockData {
                 "1",
                 listOf(
                     EnRouteInfoDTO(
-                        0,
-                        1,
-                        18,
-                        1,
-                        20,
-                        "11:45PM",
-                        "11:45PM",
+                        29,
                         "On Time",
-                        "P688",
+                        "P618",
                         "#39b139",
                         1,
                         "North",
-                        "N.",
-                        "1103",
                         1
                     ),
                     EnRouteInfoDTO(
-                        0,
-                        1,
-                        18,
-                        1,
-                        7,
-                        "1:45PM",
-                        "1:45PM",
+                        89,
                         "On Time",
-                        "P677",
+                        "P620",
                         "#39b139",
-                        10,
+                        1,
+                        "North",
+                        1
+                    ),
+                    EnRouteInfoDTO(
+                        7,
+                        "12:22PM",
+                        "P609",
+                        "#39b139",
+                        2,
                         "South",
-                        "S.",
-                        "1103",
                         1
                     )
                 )

@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.navigation.Navigator
+import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.utils.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.NORTHBOUND_ETA
@@ -13,13 +15,14 @@ import com.tsgreenberg.eta_info.ui.screens.EtaInfoContainer
 import com.tsgreenberg.ui_components.toEtaString
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
 
 class RouteInfoTests {
 
 
+    val x = mock<TriRailNav>()
     @get:Rule
     val composeRule = createComposeRule()
-
 
     // component under test
     fun setup(title:String,trainArrival: TrainArrival){

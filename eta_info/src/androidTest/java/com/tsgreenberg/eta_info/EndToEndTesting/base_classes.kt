@@ -12,6 +12,7 @@ import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.eta_info.models.TrainScheduleDto
 import com.tsgreenberg.eta_info.remote_classes.*
 import com.tsgreenberg.eta_info.MockNavigation
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.eta_info.ui.activity.EtaInfoActivity
 import dagger.Binds
 import dagger.Module
@@ -68,9 +69,10 @@ open class EtaInfoEndToEndTestBase {
         @ActivityRetainedScoped
         fun providesGetEtaInteractors(
             etaService: EtaService,
-            trainServices: TrainScheduleService
+            trainServices: TrainScheduleService,
+            etaMapper: EtaDtoMapper
         ): EtaInteractors {
-            return EtaInteractors.build(etaService, trainServices)
+            return EtaInteractors.build(etaService, trainServices, etaMapper)
         }
 
 
