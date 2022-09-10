@@ -39,22 +39,23 @@ import java.util.*
 //}
 
 
-
 class RefreshButtonTests {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-//
-//
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
 
+    private var int = 0
 
-    private fun setUpRefresh(state: EtaRefreshState, action: () -> Unit): SemanticsNodeInteraction {
+    private val testAction: (Int, Long) -> Unit = { x, y ->
+        int++
+    }
+
+    private fun setUpRefresh(
+        state: EtaRefreshState,
+        action: (Int, Long) -> Unit
+    ): SemanticsNodeInteraction {
         return composeTestRule.run {
             setContent {
-                RefreshButton(1, etaRefreshState = state) {
-                    action()
-                }
+                RefreshButton(1, etaRefreshState = state, action)
             }
             onNodeWithTag(TestingTags.REFRESH_BUTTON, true)
         }
@@ -62,23 +63,15 @@ class RefreshButtonTests {
 
     @Test
     fun testRefreshButtonEnabled() {
-        var int = 0
-        setUpRefresh(EtaRefreshState.Enabled) {
-            int++
-        }.apply {
-            performClick()
-        }
+
+        setUpRefresh(EtaRefreshState.Enabled, testAction).performClick()
         assert(int == 1)
     }
 
     @Test
     fun testRefreshButtonDisabled() {
         var int = 0
-        setUpRefresh(EtaRefreshState.Disabled(0)) {
-            int++
-        }.apply {
-            performClick()
-        }
+        setUpRefresh(EtaRefreshState.Disabled(0), testAction).performClick()
         val isDisabled = int == 0
         assert(isDisabled)
     }
@@ -86,10 +79,10 @@ class RefreshButtonTests {
     @Test
     fun testToastEmission() {
         val toastMsg = "Refresh active in 60 seconds"
-        setUpRefresh(EtaRefreshState.Disabled(Calendar.getInstance().timeInMillis)) {
-        }.apply {
-            performClick()
-        }
+        setUpRefresh(
+            EtaRefreshState.Disabled(Calendar.getInstance().timeInMillis),
+            testAction
+        ).performClick()
         onView(withText(toastMsg)).inRoot(
             withDecorView(
                 not(
