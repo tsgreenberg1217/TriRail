@@ -20,25 +20,6 @@ import org.junit.Test
 import java.util.*
 
 
-//fun SemanticsNodeInteraction.assertTextColor(
-//    color: Color
-//): SemanticsNodeInteraction = assert(isOfColor(color))
-//
-//private fun isOfColor(color: Color): SemanticsMatcher = SemanticsMatcher(
-//    "${SemanticsProperties.Text.name} is of color '$color'"
-//) {
-//    val textLayoutResults = mutableListOf<TextLayoutResult>()
-//    it.config.getOrNull(SemanticsActions.GetTextLayoutResult)
-//        ?.action
-//        ?.invoke(textLayoutResults)
-//    return@SemanticsMatcher if (textLayoutResults.isEmpty()) {
-//        false
-//    } else {
-//        textLayoutResults.first().layoutInput.style.color == color
-//    }
-//}
-
-
 class RefreshButtonTests {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()

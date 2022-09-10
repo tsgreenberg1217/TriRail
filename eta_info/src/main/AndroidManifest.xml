@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tsgreenberg.eta_info">
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <application>
         <activity
             android:name="com.tsgreenberg.eta_info.ui.activity.EtaInfoActivity"
             android:exported="false"
             />
     </application>
+
 </manifest>
