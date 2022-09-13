@@ -6,41 +6,54 @@ import com.tsgreenberg.eta_info.models.General.SOUTHERN_EOL
 import com.tsgreenberg.eta_info.utils.InvalidDirectionException
 import javax.inject.Inject
 
-class EtaDtoMapper @Inject constructor(): Function1<GetStopEtaResponseDto, List<ArrivalData>> {
+class EtaDtoMapper @Inject constructor() : Function1<GetStopEtaResponseDto, ArrivalData> {
 
-    override fun invoke(response: GetStopEtaResponseDto): List<ArrivalData> {
+    override fun invoke(response: GetStopEtaResponseDto): ArrivalData {
 
         return mutableListOf<EnRouteInfoDTO>().apply {
             response.etaDTOS.forEach { addAll(it.enRoute) }
         }.map {
-            ArrivalData(
+            Arrival(
                 info = it.minutes,
                 trainId = it.scheduleNumber,
                 status = it.status,
-                statusColor = it.statusColor ?: "#FFF",
+                statusColor = it.statusColor ?: "#ffffff",
                 trackNumber = it.track,
-                stopId = it.stopId,
                 direction = it.direction
+            )
+        }.let {
+            ArrivalData(
+                stopId = response.etaDTOS.first().id.toInt(),
+                data = it
             )
         }
     }
 }
 
-class TrainArrivalStateMapper @Inject constructor() : Function1<List<ArrivalData>, Map<String, TrainArrival>> {
-    override fun invoke(data: List<ArrivalData>): Map<String, TrainArrival> {
-        val (north, south) = splitToNorthAndSouth(data)
-        val northState = mapToSortedState(north)
-        val southState = mapToSortedState(south)
+class TrainArrivalStateMapper @Inject constructor() :
+    Function1<ArrivalData, Map<String, TrainArrival>> {
+    override fun invoke(arrivalData: ArrivalData): Map<String, TrainArrival> {
+        val (north, south) = splitToNorthAndSouth(arrivalData.data)
+
+        val isNorthernEnd = arrivalData.stopId == NORTHERN_EOL
+        val isSouthernEnd = arrivalData.stopId == SOUTHERN_EOL
+
+        val northState = mapToSortedState(north, isNorthernEnd).first()
+        val southState = mapToSortedState(south, isSouthernEnd).first()
+
         return mapOf(
-            Keys.NORTH_KEY to northState.first(),
-            Keys.SOUTH_KEY to southState.first()
+            Keys.NORTH_KEY to northState,
+            Keys.SOUTH_KEY to southState
         )
 
     }
 
-    private fun splitToNorthAndSouth(data: List<ArrivalData>): Pair<List<ArrivalData>, List<ArrivalData>> {
-        val north = mutableListOf<ArrivalData>()
-        val south = mutableListOf<ArrivalData>()
+    private fun isEndOfLine(arrivalData: ArrivalData, endId: Int) =
+        arrivalData.run { stopId == endId }
+
+    private fun splitToNorthAndSouth(data: List<Arrival>): Pair<List<Arrival>, List<Arrival>> {
+        val north = mutableListOf<Arrival>()
+        val south = mutableListOf<Arrival>()
 
         data.forEach {
             when (it.direction) {
@@ -53,25 +66,25 @@ class TrainArrivalStateMapper @Inject constructor() : Function1<List<ArrivalData
         return Pair(north, south)
     }
 
-    private fun mapToSortedState(data: List<ArrivalData>): List<TrainArrival> {
-        return if (data.isEmpty()) {
-            listOf(TrainArrival.NoInformation)
-        } else {
-            data.sortedBy { it.info }.map {
-                when (it.stopId) {
-                    SOUTHERN_EOL, NORTHERN_EOL -> TrainArrival.EndOfLine
-                    else -> it.run {
-                        TrainArrival.EstimatedArrival(
-                            info,
-                            trainId,
-                            status,
-                            statusColor,
-                            trackNumber
-                        )
-                    }
+    private fun mapToSortedState(data: List<Arrival>, isEnd: Boolean): List<TrainArrival> {
 
+
+        return when {
+            isEnd -> listOf(TrainArrival.EndOfLine)
+
+            data.isNotEmpty() -> data.sortedBy { it.info }.map {
+                it.run {
+                    TrainArrival.EstimatedArrival(
+                        info,
+                        trainId,
+                        status,
+                        statusColor,
+                        trackNumber
+                    )
                 }
             }
+            else -> listOf(TrainArrival.NoInformation)
+
         }
     }
 }

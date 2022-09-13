@@ -11,7 +11,7 @@ object EtaMockData {
                 "1",
                 listOf(
                     EnRouteInfoDTO(
-                        29,
+                        10,
                         "On Time",
                         "P618",
                         "#39b139",
@@ -20,7 +20,7 @@ object EtaMockData {
                         1
                     ),
                     EnRouteInfoDTO(
-                        89,
+                        7,
                         "On Time",
                         "P620",
                         "#39b139",
@@ -29,13 +29,13 @@ object EtaMockData {
                         1
                     ),
                     EnRouteInfoDTO(
-                        7,
+                        20,
                         "12:22PM",
                         "P609",
                         "#39b139",
-                        2,
+                        1,
                         "South",
-                        1
+                        3
                     )
                 )
             )
@@ -45,5 +45,34 @@ object EtaMockData {
 
     val notAvailable = GetStopEtaResponseDto(
         listOf(StopEtaInfoDTO("1", listOf()))
+    )
+
+
+    val endOfLine = GetStopEtaResponseDto(
+        listOf(
+            StopEtaInfoDTO(
+                "1",
+                listOf(
+                    EnRouteInfoDTO(
+                        10,
+                        "On Time",
+                        "P618",
+                        "#39b139",
+                        1,
+                        "North",
+                        1
+                    ),
+                    EnRouteInfoDTO(
+                        20,
+                        "12:22PM",
+                        "P609",
+                        "#39b139",
+                        1,
+                        "South",
+                        16
+                    )
+                )
+            )
+        )
     )
 }

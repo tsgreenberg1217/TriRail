@@ -6,6 +6,6 @@ object Keys {
 }
 
 object General{
-    const val SOUTHERN_EOL = 1
-    const val NORTHERN_EOL = 16
+    const val NORTHERN_EOL = 1
+    const val SOUTHERN_EOL = 18
 }

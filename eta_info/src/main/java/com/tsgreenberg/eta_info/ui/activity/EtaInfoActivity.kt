@@ -103,7 +103,7 @@ class EtaInfoActivity : ComponentActivity() {
 
                         )
                     ) {
-                        val entry = remember{
+                        val entry = remember("assayed"){
                             triRailNav.navController.getBackStackEntry("stationInfo/{station_id}/{station_info}")
                         }
 
@@ -111,14 +111,15 @@ class EtaInfoActivity : ComponentActivity() {
                         val direction = entry.arguments?.getString("station_info") ?: ""
 
                         val viewModel: TrainScheduleViewModel = hiltViewModel()
-                        remember{
-                            viewModel.getScheduleForStation(id, direction)
-                        }
+
                         UpcomingTrainsScreen(
                             stationName = stationShortName,
                             state = viewModel.state.value
                         ) {
                             navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${stationShortName}")
+                        }
+                        LaunchedEffect(id, direction){
+                            viewModel.getScheduleForStation(id, direction)
                         }
 
                     }

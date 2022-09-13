@@ -84,13 +84,13 @@ open class EtaInfoEndToEndTestBase {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
-//
+    //
 //    @get:Rule(order = 1)
-//    val composeTestRule = createAndroidComposeRule<EtaInfoActivity>()
-
-
     @get:Rule(order = 1)
     val composeTestRule = createEmptyComposeRule()
+
+
+//    val composeTestRule = createAndroidComposeRule<EtaInfoActivity>()
 
 
 //    private val context =

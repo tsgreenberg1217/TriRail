@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.EtaScreenTesting
+package com.tsgreenberg.eta_info.ComponentTesting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

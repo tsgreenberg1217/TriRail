@@ -23,6 +23,8 @@ import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tsgreenberg.eta_info.R
 import com.tsgreenberg.eta_info.models.EtaRefreshState
+import com.tsgreenberg.eta_info.models.Keys.NORTH_KEY
+import com.tsgreenberg.eta_info.models.Keys.SOUTH_KEY
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.utils.TestingTags
@@ -52,7 +54,8 @@ fun EtaScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp),
+                .padding(4.dp)
+                .testTag("root"),
             contentAlignment = Alignment.Center
         ) {
             VerticalPager(
@@ -151,8 +154,8 @@ fun UpcomingArrivalsSection(
             Modifier.weight(4f, true),
             verticalArrangement = Arrangement.Center,
         ) {
-            val northTrains = enRouteMap[NORTH]
-            val southTrains = enRouteMap[SOUTH]
+            val northTrains = enRouteMap[NORTH_KEY]
+            val southTrains = enRouteMap[SOUTH_KEY]
             northTrains?.let {
                 EtaInfoContainer(
                     title = NORTHBOUND_ETA,
@@ -191,13 +194,20 @@ fun UpcomingArrivalsSection(
 
 
 @Composable
-fun RefreshButton(refreshId: Int, etaRefreshState: EtaRefreshState, onRefresh: (Int, Long) -> Unit) {
+fun RefreshButton(
+    refreshId: Int,
+    etaRefreshState: EtaRefreshState,
+    onRefresh: (Int, Long) -> Unit
+) {
     val isEnabled = etaRefreshState is EtaRefreshState.Enabled
     val ctx = LocalContext.current
     TriRailButton(
         onClick = {
             when (etaRefreshState) {
-                is EtaRefreshState.Enabled -> onRefresh(refreshId, Calendar.getInstance().timeInMillis)
+                is EtaRefreshState.Enabled -> onRefresh(
+                    refreshId,
+                    Calendar.getInstance().timeInMillis
+                )
                 is EtaRefreshState.Disabled -> {
                     val secsSinceRequest =
                         (Calendar.getInstance().timeInMillis - etaRefreshState.timeDisabled) / 1000
@@ -228,7 +238,7 @@ fun RefreshButton(refreshId: Int, etaRefreshState: EtaRefreshState, onRefresh: (
 }
 
 @Composable
-fun ArrivalInfoHeader(title:String, arrival:TrainArrival){
+fun ArrivalInfoHeader(title: String, arrival: TrainArrival) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
@@ -247,10 +257,7 @@ fun ArrivalInfoHeader(title:String, arrival:TrainArrival){
                     Text(
                         text = " $status",
                         style = TextStyle(
-                            color = Color(
-                                arrival.statusColor?.let { android.graphics.Color.parseColor(it) }
-                                    ?: 0xFFF
-                            ),
+                            color = Color(android.graphics.Color.parseColor(arrival.statusColor)),
                             fontSize = 12.sp
                         )
                     )
@@ -277,7 +284,9 @@ fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: (String) -> Unit) = wh
             verticalAlignment = Alignment.CenterVertically
         ) {
             TriRailButton(
-                Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
                 onClick = { goToTrainSchedule("S") }
             ) {
                 Text(
@@ -324,7 +333,9 @@ fun EtaInfoContainer(
     goToTrainSchedule: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().testTag(title),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(title),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ArrivalInfoHeader(title, arrival)

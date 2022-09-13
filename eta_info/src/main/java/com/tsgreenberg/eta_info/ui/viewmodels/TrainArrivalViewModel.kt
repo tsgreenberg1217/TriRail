@@ -1,6 +1,5 @@
 package com.tsgreenberg.eta_info.ui.viewmodels
 
-import android.icu.util.Calendar
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
+import com.tsgreenberg.eta_info.models.ArrivalData
 import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.remote_classes.GetEtaForStation
@@ -68,10 +68,13 @@ class TrainArrivalViewModel @Inject constructor(
                     etaProgressBarState = it.progressBarState
                 )
 
-                is DataState.Success -> state.value.copy(
-                    refreshId = id,
-                    arrivalMap = mapper.invoke(it.data)
-                )
+                is DataState.Success -> {
+                    val map = mapper.invoke(it.data)
+                    state.value.copy(
+                        refreshId = id,
+                        arrivalMap = map
+                    )
+                }
 
                 is DataState.Error -> state.value.copy(error = it.msg)
 

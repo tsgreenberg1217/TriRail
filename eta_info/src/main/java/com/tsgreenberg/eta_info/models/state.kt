@@ -27,7 +27,7 @@ sealed class TrainArrival {
         val info: Int,
         val trainId: String,
         val status: String?,
-        val statusColor: String?,
+        val statusColor: String,
         val trackNumber: Int,
     ) : TrainArrival()
 

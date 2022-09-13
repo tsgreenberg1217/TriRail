@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.EtaScreenTesting
+package com.tsgreenberg.eta_info.ComponentTesting
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.SemanticsNodeInteraction

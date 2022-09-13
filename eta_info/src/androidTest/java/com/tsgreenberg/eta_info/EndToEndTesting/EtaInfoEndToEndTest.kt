@@ -46,10 +46,6 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
     @Test
     fun bothTrainsAvailable() {
         composeTestRule.also {
-//            it.onNodeWithTag(ETA_TITLE_SOUTH, useUnmergedTree = true)
-//                .assertTextEquals("Southbound")
-//
-            //
             it.onNodeWithTag(TestingTags.ARRIVAL_INFO_END_OF_LINE)
                 .assertExists()
                 .onChildren()
@@ -89,34 +85,3 @@ class EtaInfoEndToEndTest : EtaInfoEndToEndTestBase() {
     }
 }
 
-//
-//
-//@ExperimentalAnimationApi
-//@ExperimentalComposeUiApi
-//@HiltAndroidTest
-//class EtaInfoEndToEndTestUnAvail : EtaInfoEndToEndTestBase() {
-//    @BindValue
-//    @JvmField
-//    val service: EtaService = MockEtaService(EtaMockData.notAvailable)
-//
-//    @Test
-//    fun bothTrainsNotAvailable() {
-////        composeTestRule.also {
-////
-////            it.onNodeWithTag(ETA_TITLE_SOUTH, useUnmergedTree = true)
-////                .assertTextEquals("Southbound")
-////
-////            it.onNodeWithTag(NO_TRAIN_SOUTH, useUnmergedTree = true)
-////                .assertTextEquals("No upcoming trains for today.")
-////
-////            it.onNodeWithTag(ETA_VIEWPAGER, useUnmergedTree = true)
-////                .performTouchInput { swipeLeft() }
-////
-////            it.onNodeWithTag(ETA_TITLE_NORTH, useUnmergedTree = true)
-////                .assertTextEquals("Northbound")
-////
-////            it.onNodeWithTag(NO_TRAIN_NORTH, useUnmergedTree = true)
-////                .assertTextEquals("No upcoming trains for today.")
-////        }
-//    }
-//}
