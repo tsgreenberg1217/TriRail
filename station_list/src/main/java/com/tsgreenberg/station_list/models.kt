@@ -1,12 +1,14 @@
 package com.tsgreenberg.station_list
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GetStopsResponse(
-    @SerializedName("get_stops") val stops: List<StopDto>
+    val get_stops: List<StopDto>
 )
 
-
+@Serializable
 data class StopDto(
 //    val rid: Int,
     val id: Int,

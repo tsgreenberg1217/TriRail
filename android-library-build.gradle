@@ -148,5 +148,7 @@ dependencies {
     // for both the 7s to work together, we need the dispatcher jar, which is only in 5
 //    androidTestImplementation "io.mockk:mockk:1.12.7"
     androidTestImplementation "io.mockk:mockk-android:1.12.5"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
+
 //    androidTestImplementation "io.mockk:mockk-agent-jvm:1.12.5"
 }

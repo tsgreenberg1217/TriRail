@@ -40,7 +40,7 @@ class GetStops(
             val dbStations: List<Station> = db.selectAll().executeAsList()
 
             val data = if (dbStations.isEmpty()) {
-                val response = service.getStops().stops.map { it.toUiStop() }
+                val response = service.getStops().get_stops.map { it.toUiStop() }
                 db.transaction {
                     response.forEach {
                         db.insertStation(it.id.toLong(), it.name, it.shortName)
