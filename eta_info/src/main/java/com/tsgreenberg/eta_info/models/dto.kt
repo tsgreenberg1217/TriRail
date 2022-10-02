@@ -2,6 +2,7 @@ package com.tsgreenberg.eta_info.models
 
 import com.google.gson.annotations.SerializedName
 import com.tsgreenberg.ui_components.toMinutes
+import kotlinx.serialization.Serializable
 
 data class GetVehicleResponseDto(
     @SerializedName("get_vehicles") val vehicles: List<VehicleDto>
@@ -34,23 +35,26 @@ data class VehicleDto(
 )
 
 
+@Serializable
 data class StopEtaInfoDTO(
     val id: String,
     val enRoute: List<EnRouteInfoDTO>
 )
 
+@Serializable
 data class EnRouteInfoDTO(
     val minutes: Int,
     val status: String,
     val scheduleNumber: String,
-    val statusColor: String?,
+    val statusColor: String? = null,
     val track: Int,
     val direction: String,
-    val stopId:Int,
+    val stopID:Int,
 )
 
+@Serializable
 data class GetStopEtaResponseDto(
-    @SerializedName("get_stop_etas") val etaDTOS: List<StopEtaInfoDTO>
+    val get_stop_etas: List<StopEtaInfoDTO>,
 )
 
 data class TrainScheduleDto(
