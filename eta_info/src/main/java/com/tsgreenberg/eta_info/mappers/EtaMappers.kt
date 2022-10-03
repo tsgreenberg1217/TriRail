@@ -11,7 +11,7 @@ class EtaDtoMapper @Inject constructor() : Function1<GetStopEtaResponseDto, Arri
     override fun invoke(response: GetStopEtaResponseDto): ArrivalData {
 
         return mutableListOf<EnRouteInfoDTO>().apply {
-            response.etaDTOS.forEach { addAll(it.enRoute) }
+            response.get_stop_etas.forEach { addAll(it.enRoute) }
         }.map {
             Arrival(
                 info = it.minutes,
@@ -23,7 +23,7 @@ class EtaDtoMapper @Inject constructor() : Function1<GetStopEtaResponseDto, Arri
             )
         }.let {
             ArrivalData(
-                stopId = response.etaDTOS.first().id.toInt(),
+                stopId = response.get_stop_etas.first().id.toInt(),
                 data = it
             )
         }
