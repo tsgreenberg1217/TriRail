@@ -8,16 +8,19 @@ import com.tsgreenberg.station_list.StationsService
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import javax.inject.Inject
 
 
 class StationServiceImpl(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val builder: HttpRequestBuilder
 ) : StationsService {
     override suspend fun getStops(token: String): GetStopsResponse {
-        return client.get {
+        return client.apply2Builder(builder) {
             url("${BuildConfig.API_URL}/service.php?service=get_stops")
-            parameter("token", "TESTING")
+            method = HttpMethod.Get
         }.body()
     }
 
@@ -25,7 +28,8 @@ class StationServiceImpl(
 
 
 class EtaServiceImpl(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val builder: HttpRequestBuilder
 ) : EtaService {
     override suspend fun getVehicles(
         hasETAData: Int,
@@ -38,11 +42,18 @@ class EtaServiceImpl(
     }
 
     override suspend fun getStopEtas(stopId: Int, token: String): GetStopEtaResponseDto {
-        return client.get {
+        return client.apply2Builder(builder) {
             url("${BuildConfig.API_URL}/service.php?service=get_stop_etas")
-            parameter("token", "TESTING")
             parameter("stopIDs", stopId)
+            method = HttpMethod.Get
         }.body()
     }
+}
 
+
+suspend fun HttpClient.apply2Builder(
+    b: HttpRequestBuilder,
+    block: HttpRequestBuilder.() -> Unit
+): HttpResponse {
+    return request(b.apply(block))
 }
