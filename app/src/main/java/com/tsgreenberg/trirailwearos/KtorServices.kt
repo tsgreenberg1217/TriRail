@@ -11,7 +11,7 @@ import io.ktor.client.request.*
 import javax.inject.Inject
 
 
-class StationServiceKtorImpl(
+class StationServiceImpl(
     private val client: HttpClient
 ) : StationsService {
     override suspend fun getStops(token: String): GetStopsResponse {
@@ -24,7 +24,7 @@ class StationServiceKtorImpl(
 }
 
 
-class EtaServiceKtorImpl(
+class EtaServiceImpl(
     private val client: HttpClient
 ) : EtaService {
     override suspend fun getVehicles(
