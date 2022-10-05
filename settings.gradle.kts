@@ -6,8 +6,10 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "TriRailWearOs"
-include ':app'
-include ':station_list'
-include ':core'
-include ':ui_components'
-include ':eta_info'
+include(
+    ":app",
+    ":station_list",
+    ":core",
+    ":ui_components",
+    ":eta_info"
+)
