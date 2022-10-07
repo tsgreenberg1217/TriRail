@@ -98,21 +98,6 @@ dependencies {
     androidTestImplementation("io.mockk:mockk-android:1.12.7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
     implementation(project(":core"))
-    implementation(project(":ui_components"))
+    implementation("com.google.accompanist:accompanist-pager:0.24.13-rc")
 
-
-
-    implementation(platform("com.google.firebase:firebase-bom:30.4.1"))
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
-    implementation("com.google.accompanist:accompanist-pager:0.26.3-beta")
-
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-
-}
-
-sqldelight {
-    database("TriRailDatabase") { // This will be the name of the generated database class.
-        packageName = "com.tsgreenberg.eta_info"
-    }
 }
