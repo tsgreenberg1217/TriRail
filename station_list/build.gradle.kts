@@ -1,8 +1,8 @@
 plugins{
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
     id("com.squareup.sqldelight")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
 }

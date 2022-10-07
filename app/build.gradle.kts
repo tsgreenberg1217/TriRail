@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
     id("com.squareup.sqldelight")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -133,8 +133,9 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.2")
     implementation("io.ktor:ktor-client-logging:2.1.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
-
-
+}
+kapt {
+    correctErrorTypes = true
 }
 
 sqldelight {
