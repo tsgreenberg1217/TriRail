@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.tsgreenberg.trirailwearos"
         minSdk = 30
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 3
         versionName = "1.1.0"
         buildConfigField("String", "API_URL", "\"https://trirailpublic.etaspot.net\"")
