@@ -3,22 +3,29 @@ apply {
 }
 
 plugins{
-    id("com.squareup.sqldelight")
+    id(Sqldelight.plugin)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
 }
 
 dependencies {
-    "implementation"(project(":core"))
-    "implementation"(project(":ui_components"))
+    Modules.run {
 
+        "implementation"(project(core))
+        "implementation"(project(uiComponents))
+    }
 
+    "implementation"(Sqldelight.driver)
 
-    "implementation"(platform("com.google.firebase:firebase-bom:30.4.1"))
-    "implementation"("com.google.firebase:firebase-firestore-ktx")
-    "implementation" ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
-    "implementation"("com.google.accompanist:accompanist-pager:0.26.3-beta")
-
-    "testImplementation" ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    Firebase.run {
+        "implementation"(platform(bom))
+        "implementation"(firestore)
+    }
+    Coroutines.apply {
+        "implementation"(playServices)
+        "testImplementation"(androidTest)
+    }
+    "implementation"(Accompanist.pager)
+    "implementation"(Ktor.kotlinSerialization)
 
 }
 

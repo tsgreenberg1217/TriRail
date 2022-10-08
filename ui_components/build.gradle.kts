@@ -4,7 +4,7 @@ apply {
 
 dependencies {
 
-    "implementation"(project(":core"))
-    "implementation"("com.google.accompanist:accompanist-pager:0.24.13-rc")
+    "implementation"(project(Modules.core))
+    "implementation"(Accompanist.pager)
 
 }

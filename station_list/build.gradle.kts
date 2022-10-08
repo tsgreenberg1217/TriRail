@@ -3,12 +3,16 @@ apply {
 }
 plugins{
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
-    id("com.squareup.sqldelight")
+    id(Sqldelight.plugin)
 }
 dependencies {
-    "implementation"(project(":core"))
-    "implementation"(project(":ui_components"))
-    "implementation"("androidx.core:core-splashscreen:1.0.0-beta01")
+    Modules.run{
+        "implementation"(project(core))
+        "implementation"(project(uiComponents))
+    }
+    "implementation"(Ktor.kotlinSerialization)
+    "implementation"(Sqldelight.driver)
+    "implementation"(AndroidX.splashScreen)
 }
 
 sqldelight {
