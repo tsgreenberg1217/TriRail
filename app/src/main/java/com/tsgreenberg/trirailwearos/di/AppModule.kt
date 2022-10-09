@@ -36,9 +36,6 @@ class AppModule {
     @Singleton
     fun providesStationListQueries(db: TriRailDatabase): StationQueries = db.stationQueries
 
-    @Provides
-    @Singleton
-    fun providesSchedule(db: TriRailDatabase): TrainScheduleQueries = db.trainScheduleQueries
 
     @Provides
     @Singleton

@@ -1,6 +1,5 @@
 package com.tsgreenberg.station_list
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -36,7 +35,7 @@ fun StopDto.toUiStop():UiStop = UiStop(
 ////
 
 data class GetVehicleResponse(
-    @SerializedName("get_vehicles") val vehicles: List<Vehicle>
+    val vehicles: List<Vehicle>
 )
 
 data class Vehicle(
@@ -61,7 +60,7 @@ data class Vehicle(
     val receiveTime: Long,
     val deadHead: String,
     val aID: String,
-    @SerializedName("directionAbbr") val direction: String,
+    val direction: String,
     val minutesToNextStops: List<StopEtaInfo>
 )
 
@@ -77,12 +76,12 @@ data class StopEtaInfo(
     val scheduleNumber: String,
     val statuscolor: String,
     val track: Int,
-    @SerializedName("directionAbbr") val direction: String,
+    val direction: String,
     val equipmentID: String,
     val routeID: Int
 )
 
 
 data class GetStopEtaResponse(
-    @SerializedName("get_stop_etas") val etas: List<StopEtaInfo>
+    val etas: List<StopEtaInfo>
 )
