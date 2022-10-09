@@ -8,13 +8,22 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "7.3.0" apply false
-    id("com.android.library") version "7.3.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
+    Android.apply {
+        id(application) version gradleVersion apply false
+        id(library) version gradleVersion apply false
+    }
+    Kotlin.apply {
+        id(androidPluginProject) version "1.7.10" apply false
+    }
     Hilt.apply { id(plugin) version version apply false }
-    id("com.squareup.sqldelight") version "1.5.3" apply false
-    id("com.google.gms.google-services") version "4.3.14" apply false
-    id("com.google.firebase.crashlytics") version "2.9.2" apply false
+    Sqldelight.apply {
+        id(plugin) version version apply false
+    }
+    Google.apply { id(servicesPlugin) version version apply false }
+    Firebase.apply {
+        id(crashlyticsPlugin) version crashlyticsVersion apply false
+    }
+
 }
 
 

@@ -1,12 +1,15 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    kotlin("kapt")
+    id(Android.application)
+    Kotlin.apply {
+        id(androidPlugin)
+        kotlin(kapt)
+    }
     id(Hilt.plugin)
     id(Sqldelight.plugin)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
+    id(Google.servicesPlugin)
+    id(Firebase.crashlyticsPlugin)
+    Kotlin.apply { id(kotlinSerializationPlugin) version version }
+
 }
 
 android {

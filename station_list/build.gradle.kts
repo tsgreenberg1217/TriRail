@@ -2,7 +2,8 @@ apply {
     from("$rootDir/android-library-build.gradle")
 }
 plugins{
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
+    Kotlin.apply { id(Kotlin.kotlinSerializationPlugin) version Kotlin.version }
+
     id(Sqldelight.plugin)
 }
 dependencies {
@@ -10,7 +11,7 @@ dependencies {
         "implementation"(project(core))
         "implementation"(project(uiComponents))
     }
-    "implementation"(Ktor.kotlinSerialization)
+    "implementation"(Kotlin.kotlinSerialization)
     "implementation"(Sqldelight.driver)
     "implementation"(AndroidX.splashScreen)
 }
