@@ -6,7 +6,7 @@ data class TrainInfoState(
     val refreshId:Int = -1,
     val etaProgressBarState: ProgressBarState = ProgressBarState.Idle,
     val etaRefreshState: EtaRefreshState = EtaRefreshState.Enabled,
-    val arrivalMap: Map<String, TrainArrival>? = null,
+    val arrivalMap: Map<String, List<TrainArrival>> = mapOf(),
     val error: String? = null
 )
 

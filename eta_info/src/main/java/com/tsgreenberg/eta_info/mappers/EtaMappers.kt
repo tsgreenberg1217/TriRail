@@ -31,15 +31,15 @@ class EtaDtoMapper @Inject constructor() : Function1<GetStopEtaResponseDto, Arri
 }
 
 class TrainArrivalStateMapper @Inject constructor() :
-    Function1<ArrivalData, Map<String, TrainArrival>> {
-    override fun invoke(arrivalData: ArrivalData): Map<String, TrainArrival> {
+    Function1<ArrivalData, Map<String, List<TrainArrival>>> {
+    override  fun invoke(arrivalData: ArrivalData): Map<String, List<TrainArrival>> {
         val (north, south) = splitToNorthAndSouth(arrivalData.data)
 
         val isNorthernEnd = arrivalData.stopId == NORTHERN_EOL
         val isSouthernEnd = arrivalData.stopId == SOUTHERN_EOL
 
-        val northState = mapToSortedState(north, isNorthernEnd).first()
-        val southState = mapToSortedState(south, isSouthernEnd).first()
+        val northState = mapToSortedState(north, isNorthernEnd)
+        val southState = mapToSortedState(south, isSouthernEnd)
 
         return mapOf(
             Keys.NORTH_KEY to northState,
@@ -47,9 +47,6 @@ class TrainArrivalStateMapper @Inject constructor() :
         )
 
     }
-
-    private fun isEndOfLine(arrivalData: ArrivalData, endId: Int) =
-        arrivalData.run { stopId == endId }
 
     private fun splitToNorthAndSouth(data: List<Arrival>): Pair<List<Arrival>, List<Arrival>> {
         val north = mutableListOf<Arrival>()

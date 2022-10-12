@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.utils.TestingTags
 import com.tsgreenberg.eta_info.ui.screens.NORTHBOUND_ETA
-import com.tsgreenberg.eta_info.ui.screens.EtaInfoContainer
+import com.tsgreenberg.eta_info.ui.screens.EtaInfoRow
 import com.tsgreenberg.ui_components.toEtaString
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,7 @@ class RouteInfoTests {
         composeRule.run {
             setContent {
                 Box(Modifier.background(Color.Black)) {
-                    EtaInfoContainer(
+                    EtaInfoRow(
                         title,
                         trainArrival
                     ) {}

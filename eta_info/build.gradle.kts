@@ -26,6 +26,7 @@ dependencies {
         "testImplementation"(androidTest)
     }
     "implementation"(Accompanist.pager)
+    "implementation"(Accompanist.pagerIndicators)
     "implementation"(Kotlin.kotlinSerialization)
 
 }

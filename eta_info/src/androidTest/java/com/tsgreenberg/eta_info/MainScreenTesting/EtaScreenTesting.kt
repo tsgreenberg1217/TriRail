@@ -5,7 +5,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import com.tsgreenberg.core.ProgressBarState
@@ -15,13 +14,10 @@ import com.tsgreenberg.eta_info.di.ActivityModule
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.remote_classes.EtaService
 import com.tsgreenberg.eta_info.ui.screens.EtaScreen
-import com.tsgreenberg.eta_info.ui.viewmodels.TrainArrivalViewModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
