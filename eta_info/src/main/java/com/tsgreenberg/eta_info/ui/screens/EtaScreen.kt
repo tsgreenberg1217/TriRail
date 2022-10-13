@@ -3,12 +3,14 @@ package com.tsgreenberg.eta_info.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -17,8 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.wear.compose.material.HorizontalPageIndicator
-import androidx.wear.compose.material.PageIndicatorState
 import androidx.wear.compose.material.Text
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -75,10 +75,21 @@ const val SB = "Southbound Schedule"
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun EtaInfoContainer(
-    title: String, arrivals: List<TrainArrival>, goToTrainSchedule: (String) -> Unit
+    title: String,
+    arrivals: List<TrainArrival>,
+    animationDelay: Long = 5000,
+    goToTrainSchedule: (String) -> Unit
 ) {
-    Column() {
+    var shouldAnimate by remember { mutableStateOf(true) }
+    Column(Modifier.pointerInput(Unit) {
+        detectTapGestures(
+            onPress = {
+                if (shouldAnimate) shouldAnimate = false
+            },
+        )
+    }) {
         val pagerState = rememberPagerState()
+
         HorizontalPager(count = arrivals.size, state = pagerState) { i ->
             EtaInfoRow(
                 title, arrivals[i], goToTrainSchedule
@@ -91,11 +102,12 @@ fun EtaInfoContainer(
             indicatorWidth = 5.dp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        if (arrivals.size > 1) {
+        if (shouldAnimate) {
             LaunchedEffect(key1 = Unit) {
                 repeat(arrivals.size) {
-                    delay(5000)
+                    delay(animationDelay)
                     pagerState.animateScrollToPage(it + 1)
+                    if (it == arrivals.size - 1) shouldAnimate = false
                 }
             }
         }
@@ -143,7 +155,10 @@ fun UpcomingArrivalsSection(
             )
             southTrains?.let {
                 EtaInfoContainer(
-                    title = SOUTHBOUND_ETA, arrivals = it, goToTrainSchedule = goToTrainSchedule
+                    title = SOUTHBOUND_ETA,
+                    arrivals = it,
+                    animationDelay = 5500,
+                    goToTrainSchedule = goToTrainSchedule
                 )
             }
 
