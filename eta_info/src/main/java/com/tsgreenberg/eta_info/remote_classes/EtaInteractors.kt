@@ -16,7 +16,7 @@ data class EtaInteractors(
         fun build(
             etaService: EtaService,
             trainsServices: TrainScheduleService,
-            etaMapper:EtaDtoMapper
+            etaMapper: EtaDtoMapper
         ): EtaInteractors = EtaInteractors(
             getEtaForStation = GetEtaForStation(etaService, etaMapper),
             getTrainSchedulesForStation = GetTrainSchedulesForStation(trainsServices)
@@ -28,16 +28,16 @@ data class EtaInteractors(
 class GetTrainSchedulesForStation(
     private val trainScheduleService: TrainScheduleService
 ) {
-    fun execute(id: Int, direction: String) = flow {
+    fun execute(id: Int) = flow {
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.Loading))
 
             val response = trainScheduleService.getScheduleForStation(
                 id,
-                direction,
                 Date().isWeekendHours().not()
             )
                 .map { it.toUiTrainSchedule() }
+                .filter { it.timeInMins >= Calendar.getInstance().timeInMillis / 60000 }
                 .sortedBy { it.timeInMins }
 
             emit(DataState.Success(response))

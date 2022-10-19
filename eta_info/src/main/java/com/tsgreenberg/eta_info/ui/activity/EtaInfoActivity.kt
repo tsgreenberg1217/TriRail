@@ -7,10 +7,7 @@ import android.provider.AlarmClock
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.compiler.plugins.kotlin.ComposeFqNames.remember
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -22,9 +19,7 @@ import androidx.navigation.navArgument
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
-import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
-import com.tsgreenberg.eta_info.models.EtaRefreshState
 import com.tsgreenberg.eta_info.ui.screens.EtaScreen
 import com.tsgreenberg.eta_info.ui.screens.SetAlarmScreen
 import com.tsgreenberg.eta_info.ui.screens.UpcomingTrainsScreen
@@ -50,14 +45,14 @@ class EtaInfoActivity : ComponentActivity() {
 
         val stationId =
             intent.extras
-                ?.getInt(TriRailRootAction.StationInfo.intentKey) ?: -1
+                ?.getInt("StationInfo") ?: -1
         val stationShortName =
             intent.extras
-                ?.getString(TriRailRootAction.StationInfo.intentKeyName) ?: ""
+                ?.getString("StationInfo_name") ?: ""
 
-        val setViewModelDirection : (String) -> Unit= {
+        val goToSchedule: () -> Unit = {
             triRailNav.navController.navigate(
-                "stationInfo/$stationId/$it"
+                "stationInfo/$stationId"
             )
         }
         setContent {
@@ -80,16 +75,16 @@ class EtaInfoActivity : ComponentActivity() {
                             shortName = stationShortName,
                             state = viewModel.state.value,
                             refresh = viewModel::initialRefreshRequest,
-                            goToTrainSchedule = setViewModelDirection,
+                            goToTrainSchedule = goToSchedule,
                         )
 
-                        LaunchedEffect(key1 = stationId){
+                        LaunchedEffect(key1 = stationId) {
                             viewModel.getEstTrainArrivals(stationId)
                         }
                     }
 
                     composable(
-                        "stationInfo/{station_id}/{station_info}",
+                        "stationInfo/{station_id}",
 //                        NavConstants.STATION_INFO_ROUTE,
                         arguments = listOf(
                             navArgument("station_info") {
@@ -101,14 +96,13 @@ class EtaInfoActivity : ComponentActivity() {
                                 defaultValue = -1
                             },
 
-                        )
+                            )
                     ) {
-                        val entry = remember("assayed"){
-                            triRailNav.navController.getBackStackEntry("stationInfo/{station_id}/{station_info}")
+                        val entry = remember {
+                            triRailNav.navController.getBackStackEntry("stationInfo/{station_id}")
                         }
 
                         val id = entry.arguments?.getInt("station_id") ?: -1
-                        val direction = entry.arguments?.getString("station_info") ?: ""
 
                         val viewModel: TrainScheduleViewModel = hiltViewModel()
 
@@ -118,9 +112,7 @@ class EtaInfoActivity : ComponentActivity() {
                         ) {
                             navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${stationShortName}")
                         }
-                        LaunchedEffect(id, direction){
-                            viewModel.getScheduleForStation(id, direction)
-                        }
+                        LaunchedEffect(id) { viewModel.getScheduleForStation(id) }
 
                     }
 
@@ -184,8 +176,6 @@ class EtaInfoActivity : ComponentActivity() {
 
     }
 }
-
-
 
 
 //composable{

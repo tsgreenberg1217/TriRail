@@ -2,18 +2,12 @@ package com.tsgreenberg.station_list
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.*
-import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.ui_components.TriRailScaffold
-import com.tsgreenberg.core.navigation.TriRailNavRouteAction
-import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.ui_components.TriRailChip
 import com.tsgreenberg.ui_components.TriRailColors
 
@@ -63,7 +57,7 @@ internal fun ChooseStationList(
                         color = TriRailColors.Blue
                     ) {
                         triRailNav.navigate(
-                            TriRailRootAction.StationInfo(stop.id, stop.shortName)
+                            StationListNavigation.StationEtaInfo(stop.id, stop.shortName)
                         )
                     }
                 }

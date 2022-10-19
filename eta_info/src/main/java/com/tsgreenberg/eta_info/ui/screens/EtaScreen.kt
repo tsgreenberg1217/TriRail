@@ -42,7 +42,7 @@ fun EtaScreen(
     shortName: String = "",
     state: TrainInfoState,
     refresh: (Int, Long) -> Unit,
-    goToTrainSchedule: (String) -> Unit,
+    goToTrainSchedule: () -> Unit,
 ) {
     TriRailScaffold(
         extraText = shortName,
@@ -78,7 +78,7 @@ fun EtaInfoContainer(
     title: String,
     arrivals: List<TrainArrival>,
     animationDelay: Long = 5000,
-    goToTrainSchedule: (String) -> Unit
+    goToTrainSchedule: () -> Unit
 ) {
     var shouldAnimate by remember { mutableStateOf(true) }
     Column(Modifier.pointerInput(Unit) {
@@ -104,10 +104,10 @@ fun EtaInfoContainer(
         )
         if (shouldAnimate) {
             LaunchedEffect(key1 = Unit) {
-                repeat(arrivals.size) {
+                repeat(arrivals.size + 1) {
                     delay(animationDelay)
-                    pagerState.animateScrollToPage(it + 1)
-                    if (it == arrivals.size - 1) shouldAnimate = false
+                    val targetPage = (it % arrivals.size) + 1
+                    pagerState.animateScrollToPage(targetPage)
                 }
             }
         }
@@ -123,7 +123,7 @@ fun UpcomingArrivalsSection(
     refreshId: Int,
     etaRefreshState: EtaRefreshState,
     onRefresh: (Int, Long) -> Unit,
-    goToTrainSchedule: (String) -> Unit
+    goToTrainSchedule: () -> Unit
 ) {
     Column(
         Modifier
@@ -168,10 +168,12 @@ fun UpcomingArrivalsSection(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TriRailButton(modifier = Modifier
-                .size(34.dp)
-                .testTag(TestingTags.REFRESH_BUTTON),
-                onClick = { /*TODO*/ }) {
+            TriRailButton(
+                modifier = Modifier
+                    .size(34.dp)
+                    .testTag(TestingTags.REFRESH_BUTTON),
+                onClick = goToTrainSchedule
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -256,7 +258,7 @@ fun ArrivalInfoHeader(title: String, arrival: TrainArrival) {
 }
 
 @Composable
-fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: (String) -> Unit) = when (arrival) {
+fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: () -> Unit) = when (arrival) {
     is TrainArrival.EstimatedArrival -> {
         EtaInfo(arrival.info.toEtaString(), arrival.trackNumber.toString(), arrival.trainId)
     }
@@ -274,7 +276,7 @@ fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: (String) -> Unit) = wh
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                onClick = { goToTrainSchedule("S") }) {
+                onClick = { goToTrainSchedule() }) {
                 Text(
                     "See all departures", style = TextStyle(
                         color = Color.White, fontSize = 12.sp, textAlign = TextAlign.Center
@@ -308,7 +310,7 @@ const val NO_TRAINS = "No train eta at this time..."
 
 @Composable
 fun EtaInfoRow(
-    title: String, arrival: TrainArrival, goToTrainSchedule: (String) -> Unit
+    title: String, arrival: TrainArrival, goToTrainSchedule: () -> Unit
 ) {
     Column(
         modifier = Modifier

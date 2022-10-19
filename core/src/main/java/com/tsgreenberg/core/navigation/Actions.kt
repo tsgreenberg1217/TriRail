@@ -1,25 +1,6 @@
 package com.tsgreenberg.core.navigation
 
-import com.tsgreenberg.core.navigation.NavConstants.CHOOSE_STATION
-import com.tsgreenberg.core.navigation.NavConstants.ETA
-import com.tsgreenberg.core.navigation.NavConstants.STATION_INFO_ROUTE
-import com.tsgreenberg.core.navigation.NavConstants.STATION_LIST
-
-sealed class TriRailRootAction(val route: String) {
-    data class StationInfo(val station_id: Int, val shortName:String) : TriRailRootAction(STATION_INFO_ROUTE) {
-        companion object {
-            const val intentKey = "StationInfo"
-            const val intentKeyName = "StationInfo_name"
-        }
-    }
-
-    object StationList : TriRailRootAction(STATION_LIST)
-}
-
-sealed class TriRailNavRouteAction(val route: String) {
-    object Eta : TriRailNavRouteAction(ETA)
-    object ChooseStation : TriRailNavRouteAction(CHOOSE_STATION)
-}
+abstract class TriRailRootAction(val route: String)
 
 object NavConstants {
     const val STATION_ID = "station_id"
