@@ -1,8 +1,8 @@
 package com.tsgreenberg.trirailwearos.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.schedule.TrainScheduleService
+import com.tsgreenberg.fm_eta.remote_classes.EtaService
+import com.tsgreenberg.schedule.remote.TrainScheduleService
 import com.tsgreenberg.station_list.StationsService
 import com.tsgreenberg.trirailwearos.EtaServiceImpl
 import com.tsgreenberg.trirailwearos.StationServiceImpl

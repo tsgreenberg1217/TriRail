@@ -14,9 +14,9 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/eta_info" />
-            <option value="$PROJECT_DIR$/schedule" />
-            <option value="$PROJECT_DIR$/station_list" />
+            <option value="$PROJECT_DIR$/fm_eta" />
+            <option value="$PROJECT_DIR$/fm_schedule" />
+            <option value="$PROJECT_DIR$/fm_stations" />
             <option value="$PROJECT_DIR$/ui_components" />
           </set>
         </option>

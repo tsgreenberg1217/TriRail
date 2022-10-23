@@ -2,17 +2,17 @@ package com.tsgreenberg.trirailwearos
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tsgreenberg.eta_info.models.GetStopEtaResponseDto
-import com.tsgreenberg.eta_info.models.GetVehicleResponseDto
-import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.schedule.TrainScheduleDto
+import com.tsgreenberg.fm_eta.models.GetStopEtaResponseDto
+import com.tsgreenberg.fm_eta.models.GetVehicleResponseDto
+import com.tsgreenberg.fm_eta.remote_classes.EtaService
+import com.tsgreenberg.schedule.models.TrainScheduleDto
 import com.tsgreenberg.station_list.GetStopsResponse
 import com.tsgreenberg.station_list.StationsService
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.tasks.await
-import com.tsgreenberg.schedule.TrainScheduleService
+import com.tsgreenberg.schedule.remote.TrainScheduleService
 
 
 class StationServiceImpl(

@@ -125,7 +125,6 @@ kapt {
 sqldelight {
     database("TriRailDatabase") { // This will be the name of the generated database class.
         packageName = "com.tsgreenberg.trirailwearos"
-        dependency(project(":station_list"))
-//        dependency project(":eta_info")
+        dependency(project(Modules.stationList))
     }
 }

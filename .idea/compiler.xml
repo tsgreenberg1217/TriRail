@@ -10,9 +10,9 @@
       <module name="TriRailWearOs.buildSrc" target="11" />
       <module name="TriRailWearOs.buildSrc.main" target="11" />
       <module name="TriRailWearOs.buildSrc.test" target="11" />
-      <module name="TriRailWearOs.eta_info" target="11" />
-      <module name="TriRailWearOs.schedule" target="11" />
-      <module name="TriRailWearOs.station_list" target="11" />
+      <module name="TriRailWearOs.fm_eta" target="11" />
+      <module name="TriRailWearOs.fm_schedule" target="11" />
+      <module name="TriRailWearOs.fm_stations" target="11" />
       <module name="TriRailWearOs.ui_components" target="11" />
     </bytecodeTargetLevel>
   </component>
