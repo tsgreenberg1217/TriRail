@@ -1,6 +1,6 @@
 package com.tsgreenberg.fm_eta.di
 
-import com.tsgreenberg.fm_eta.mappers.EtaDtoMapper
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.fm_eta.remote_classes.*
 import dagger.Module
 import dagger.Provides

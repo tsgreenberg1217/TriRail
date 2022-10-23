@@ -3,7 +3,7 @@ package com.tsgreenberg.fm_eta.viewmodelTests
 import android.util.Log
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
-import com.tsgreenberg.fm_eta.mappers.TrainArrivalStateMapper
+import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.fm_eta.models.ArrivalData
 import com.tsgreenberg.fm_eta.models.EtaRefreshState
 import com.tsgreenberg.fm_eta.models.TrainArrival

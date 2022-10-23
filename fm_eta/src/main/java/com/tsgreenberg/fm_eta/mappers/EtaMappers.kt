@@ -1,4 +1,4 @@
-package com.tsgreenberg.fm_eta.mappers
+package com.tsgreenberg.eta_info.mappers
 
 import com.tsgreenberg.fm_eta.models.*
 import com.tsgreenberg.fm_eta.models.General.NORTHERN_EOL

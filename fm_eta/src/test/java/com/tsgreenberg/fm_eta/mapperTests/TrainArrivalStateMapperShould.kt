@@ -1,6 +1,6 @@
 package com.tsgreenberg.fm_eta.mapperTests
 
-import com.tsgreenberg.fm_eta.mappers.TrainArrivalStateMapper
+import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.fm_eta.models.ArrivalData
 import com.tsgreenberg.fm_eta.models.Keys
 import com.tsgreenberg.fm_eta.models.TrainArrival

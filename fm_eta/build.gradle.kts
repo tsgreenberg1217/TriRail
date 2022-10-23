@@ -10,7 +10,6 @@ plugins{
 
 dependencies {
     Modules.run {
-
         "implementation"(project(core))
         "implementation"(project(uiComponents))
     }

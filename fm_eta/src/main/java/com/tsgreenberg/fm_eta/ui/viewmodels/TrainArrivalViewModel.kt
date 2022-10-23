@@ -6,8 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
-import com.tsgreenberg.fm_eta.mappers.TrainArrivalStateMapper
-import com.tsgreenberg.fm_eta.models.ArrivalData
+import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.fm_eta.models.EtaRefreshState
 import com.tsgreenberg.fm_eta.models.TrainInfoState
 import com.tsgreenberg.fm_eta.remote_classes.GetEtaForStation

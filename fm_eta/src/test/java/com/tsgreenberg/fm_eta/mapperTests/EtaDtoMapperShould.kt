@@ -1,6 +1,6 @@
 package com.tsgreenberg.fm_eta.mapperTests
 
-import com.tsgreenberg.fm_eta.mappers.EtaDtoMapper
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.fm_eta.models.*
 import org.junit.Assert
 import org.junit.Test

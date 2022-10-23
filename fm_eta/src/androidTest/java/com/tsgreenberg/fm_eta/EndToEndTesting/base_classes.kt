@@ -12,7 +12,7 @@ import com.tsgreenberg.fm_eta.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.fm_eta.models.TrainScheduleDto
 import com.tsgreenberg.fm_eta.remote_classes.*
 import com.tsgreenberg.fm_eta.MockNavigation
-import com.tsgreenberg.fm_eta.mappers.EtaDtoMapper
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import com.tsgreenberg.fm_eta.ui.activity.EtaInfoActivity
 import dagger.Binds
 import dagger.Module

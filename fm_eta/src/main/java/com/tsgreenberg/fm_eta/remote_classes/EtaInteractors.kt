@@ -2,7 +2,7 @@ package com.tsgreenberg.fm_eta.remote_classes
 
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
-import com.tsgreenberg.fm_eta.mappers.EtaDtoMapper
+import com.tsgreenberg.eta_info.mappers.EtaDtoMapper
 import kotlinx.coroutines.flow.flow
 
 data class EtaInteractors(
