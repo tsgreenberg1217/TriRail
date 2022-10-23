@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.NavConstants
-import com.tsgreenberg.schedule.viewmodels.TrainScheduleViewModel
+import com.tsgreenberg.fm_schedule.viewmodels.TrainScheduleViewModel
 import com.tsgreenberg.schedule.ui.screens.SetAlarmScreen
 import com.tsgreenberg.schedule.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.ui_components.toFullStationName

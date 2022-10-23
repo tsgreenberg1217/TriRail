@@ -1,6 +1,7 @@
-package com.tsgreenberg.schedule.di
+package com.tsgreenberg.fm_schedule.di
 
-import com.tsgreenberg.schedule.remote.GetTrainSchedulesForStation
+import com.tsgreenberg.fm_schedule.mappers.TrainScheduleStateMapper
+import com.tsgreenberg.fm_schedule.use_cases.GetTrainSchedulesForStation
 import com.tsgreenberg.schedule.remote.TrainScheduleService
 import dagger.Module
 import dagger.Provides
@@ -12,20 +13,15 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class ActivityModule {
-//
-//    @Provides
-//    @ActivityRetainedScoped
-//    fun providesGetEtaInteractors(
-//        etaService: EtaService,
-//        trainServices: com.tsgreenberg.schedule.remote.TrainScheduleService,
-//        etaDtoMapper: EtaDtoMapper
-//    ): EtaInteractors = EtaInteractors.build(etaService, trainServices, etaDtoMapper)
-
 
     @Provides
     @ActivityRetainedScoped
     fun providesGetSchedulesForStation(
         service: TrainScheduleService
     ): GetTrainSchedulesForStation = GetTrainSchedulesForStation(service)
+
+    @Provides
+    @ActivityRetainedScoped
+    fun providesTrainScheduleStateMapper() = TrainScheduleStateMapper()
 
 }
