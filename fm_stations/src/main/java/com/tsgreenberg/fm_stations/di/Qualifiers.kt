@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_list.di
+package com.tsgreenberg.fm_stations.di
 
 import javax.inject.Qualifier
 

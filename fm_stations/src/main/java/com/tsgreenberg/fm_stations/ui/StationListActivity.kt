@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,21 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.core.navigation.TriRailNav
-import com.tsgreenberg.core.navigation.TriRailNavImplementor
-import com.tsgreenberg.station_list.di.StationListNavigationQualifier
+import com.tsgreenberg.fm_stations.viewmodels.StationViewModel
+import com.tsgreenberg.fm_stations.di.StationListNavigationQualifier
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint

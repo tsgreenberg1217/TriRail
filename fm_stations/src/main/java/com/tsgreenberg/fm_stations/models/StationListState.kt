@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.models
 
 import com.tsgreenberg.core.ProgressBarState
 

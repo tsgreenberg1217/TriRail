@@ -1,8 +1,8 @@
-package com.tsgreenberg.station_list.di
+package com.tsgreenberg.fm_stations.di
 
-import com.tsgreenberg.station_list.GetStops
-import com.tsgreenberg.station_list.StationInteractors
-import com.tsgreenberg.station_list.StationsService
+import com.tsgreenberg.fm_stations.interactors.StationInteractors
+import com.tsgreenberg.fm_stations.remote.StationsService
+import com.tsgreenberg.fm_stations.use_cases.GetStops
 import com.tsgreenberg.stationlist.StationQueries
 import dagger.Module
 import dagger.Provides

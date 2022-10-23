@@ -1,31 +1,15 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.use_cases
 
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
+import com.tsgreenberg.fm_stations.models.UiStop
+import com.tsgreenberg.fm_stations.models.toUiStop
+import com.tsgreenberg.fm_stations.remote.StationsService
 import com.tsgreenberg.stationlist.Station
 import com.tsgreenberg.stationlist.StationQueries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-
-data class StationInteractors(
-    val getStops: GetStops,
-) {
-    companion object Factory {
-        fun build(
-            stationService: StationsService,
-            queries: StationQueries
-        ): StationInteractors {
-            return StationInteractors(
-                getStops = GetStops(stationService, queries)
-            )
-        }
-    }
-}
-
-fun List<Station>.toUiStop(): List<UiStop> = map {
-    UiStop(id = it.id.toInt(), name = it.name, shortName = it.short_name)
-}
 
 class GetStops(
     private val service: StationsService,

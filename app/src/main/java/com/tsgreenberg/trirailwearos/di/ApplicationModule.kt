@@ -1,10 +1,8 @@
 package com.tsgreenberg.trirailwearos.di
 
-import androidx.navigation.NavHostController
 import com.tsgreenberg.core.navigation.TriRailNav
-import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.fm_eta.di.EtaInfoNavigationQualifier
-import com.tsgreenberg.station_list.di.StationListNavigationQualifier
+import com.tsgreenberg.fm_stations.di.StationListNavigationQualifier
 import com.tsgreenberg.trirailwearos.EtaInfoNavigator
 import com.tsgreenberg.trirailwearos.StationListNavigator
 import dagger.Binds

@@ -1,10 +1,12 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.fm_stations.use_cases.GetStops
+import com.tsgreenberg.fm_stations.models.StationListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

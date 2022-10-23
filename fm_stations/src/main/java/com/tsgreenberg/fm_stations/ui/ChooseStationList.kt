@@ -1,4 +1,4 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -7,6 +7,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.tsgreenberg.core.navigation.TriRailNav
+import com.tsgreenberg.fm_stations.models.StationListState
+import com.tsgreenberg.fm_stations.navigation.StationListNavigation
 import com.tsgreenberg.ui_components.TriRailScaffold
 import com.tsgreenberg.ui_components.TriRailChip
 import com.tsgreenberg.ui_components.TriRailColors

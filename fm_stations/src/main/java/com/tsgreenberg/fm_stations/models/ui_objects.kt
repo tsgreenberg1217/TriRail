@@ -1,38 +1,11 @@
-package com.tsgreenberg.station_list
+package com.tsgreenberg.fm_stations.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class GetStopsResponse(
-    val get_stops: List<StopDto>
-)
-
-@Serializable
-data class StopDto(
-//    val rid: Int,
-    val id: Int,
-    val name: String,
-//    val lat: Double,
-//    val lng: Double,
-//    val extID: String,
-    val shortName: String
-)
 
 data class UiStop(
     val id: Int,
     val name: String,
     val shortName: String
 )
-
-fun StopDto.toUiStop():UiStop = UiStop(
-    id = this.id,
-    name = this.name.replace("Station","").trim(),
-    shortName = this.shortName
-)
-
-
-
-////
 
 data class GetVehicleResponse(
     val vehicles: List<Vehicle>

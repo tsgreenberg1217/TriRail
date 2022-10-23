@@ -5,9 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.tsgreenberg.fm_eta.models.GetStopEtaResponseDto
 import com.tsgreenberg.fm_eta.models.GetVehicleResponseDto
 import com.tsgreenberg.fm_eta.remote_classes.EtaService
+import com.tsgreenberg.fm_stations.models.GetStopsResponse
 import com.tsgreenberg.schedule.models.TrainScheduleDto
-import com.tsgreenberg.station_list.GetStopsResponse
-import com.tsgreenberg.station_list.StationsService
+import com.tsgreenberg.fm_stations.remote.StationsService
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
