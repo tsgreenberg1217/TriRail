@@ -30,7 +30,6 @@ import com.tsgreenberg.fm_eta.models.Keys.SOUTH_KEY
 import com.tsgreenberg.fm_eta.models.TrainArrival
 import com.tsgreenberg.fm_eta.models.TrainInfoState
 import com.tsgreenberg.fm_eta.utils.TestingTags
-import com.tsgreenberg.ui_components.TrackArrow
 import com.tsgreenberg.ui_components.*
 import kotlinx.coroutines.delay
 import java.util.*
@@ -55,7 +54,7 @@ fun EtaScreen(
                 .testTag("root"),
             contentAlignment = Alignment.Center
         ) {
-            UpcomingArrivalsSection(
+            EtaContentScreen(
                 state.arrivalMap,
                 state.refreshId,
                 state.etaRefreshState,
@@ -77,7 +76,6 @@ fun EtaInfoContainer(
     title: String,
     arrivals: List<TrainArrival>,
     animationDelay: Long = 5000,
-    goToTrainSchedule: () -> Unit
 ) {
     var shouldAnimate by remember { mutableStateOf(true) }
     Column(Modifier.pointerInput(Unit) {
@@ -91,22 +89,25 @@ fun EtaInfoContainer(
 
         HorizontalPager(count = arrivals.size, state = pagerState) { i ->
             EtaInfoRow(
-                title, arrivals[i], goToTrainSchedule
+                title, arrivals[i]
             )
         }
-        HorizontalPagerIndicator(
-            pagerState,
-            activeColor = Color.White,
-            indicatorHeight = 5.dp,
-            indicatorWidth = 5.dp,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        if (shouldAnimate) {
-            LaunchedEffect(key1 = Unit) {
-                repeat(arrivals.size + 1) {
-                    delay(animationDelay)
-                    val targetPage = it % arrivals.size
-                    pagerState.animateScrollToPage(targetPage)
+
+        if (arrivals.size > 1) {
+            HorizontalPagerIndicator(
+                pagerState,
+                activeColor = Color.White,
+                indicatorHeight = 5.dp,
+                indicatorWidth = 5.dp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            if (shouldAnimate) {
+                LaunchedEffect(key1 = Unit) {
+                    repeat(arrivals.size + 1) {
+                        delay(animationDelay)
+                        val targetPage = it % arrivals.size
+                        pagerState.animateScrollToPage(targetPage)
+                    }
                 }
             }
         }
@@ -116,8 +117,11 @@ fun EtaInfoContainer(
 const val SOUTHBOUND_ETA = "Southbound ETA"
 const val NORTHBOUND_ETA = "Northbound ETA"
 
+fun List<TrainArrival>.canShow(): Boolean = isNotEmpty() && first() is TrainArrival.EstimatedArrival
+
+
 @Composable
-fun UpcomingArrivalsSection(
+fun EtaContentScreen(
     enRouteMap: Map<String, List<TrainArrival>>,
     refreshId: Int,
     etaRefreshState: EtaRefreshState,
@@ -137,29 +141,15 @@ fun UpcomingArrivalsSection(
         ) {
             val northTrains = enRouteMap[NORTH_KEY]
             val southTrains = enRouteMap[SOUTH_KEY]
-            northTrains?.let {
-                EtaInfoContainer(
-                    title = NORTHBOUND_ETA, arrivals = it, goToTrainSchedule = goToTrainSchedule
-                )
+
+            if (northTrains != null && southTrains != null) {
+                if (northTrains.canShow() || southTrains.canShow()) {
+                    EstimatedArrivalScreen(northTrains, southTrains)
+                } else {
+                    Text(text = "No information available")
+                }
             }
 
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 4.dp)
-                    .height(1.dp)
-                    .width(40.dp)
-                    .background(color = Color.White)
-
-            )
-            southTrains?.let {
-                EtaInfoContainer(
-                    title = SOUTHBOUND_ETA,
-                    arrivals = it,
-                    animationDelay = 5500,
-                    goToTrainSchedule = goToTrainSchedule
-                )
-            }
 
         }
         Row(
@@ -186,6 +176,38 @@ fun UpcomingArrivalsSection(
             Spacer(modifier = Modifier.size(4.dp))
             RefreshButton(refreshId, etaRefreshState, onRefresh = onRefresh)
         }
+    }
+}
+
+@Composable
+fun ColumnScope.EstimatedArrivalScreen(
+    northTrains: List<TrainArrival>,
+    southTrains: List<TrainArrival>
+) {
+    if (northTrains.canShow()) {
+        EtaInfoContainer(
+            title = NORTHBOUND_ETA,
+            arrivals = northTrains,
+        )
+    }
+
+    if (northTrains.canShow() && southTrains.canShow()) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 4.dp)
+                .height(1.dp)
+                .width(40.dp)
+                .background(color = Color.White)
+        )
+    }
+
+    if (southTrains.canShow()) {
+        EtaInfoContainer(
+            title = SOUTHBOUND_ETA,
+            arrivals = southTrains,
+            animationDelay = 5500,
+        )
     }
 }
 
@@ -257,32 +279,13 @@ fun ArrivalInfoHeader(title: String, arrival: TrainArrival) {
 }
 
 @Composable
-fun ArrivalInfo(arrival: TrainArrival, goToTrainSchedule: () -> Unit) = when (arrival) {
+fun ArrivalInfo(arrival: TrainArrival) = when (arrival) {
     is TrainArrival.EstimatedArrival -> {
         EtaInfo(arrival.info.toEtaString(), arrival.trackNumber.toString(), arrival.trainId)
     }
 
     is TrainArrival.EndOfLine -> {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .testTag(TestingTags.ARRIVAL_INFO_END_OF_LINE),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TriRailButton(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                onClick = { goToTrainSchedule() }) {
-                Text(
-                    "See all departures", style = TextStyle(
-                        color = Color.White, fontSize = 12.sp, textAlign = TextAlign.Center
-                    ), modifier = Modifier.padding(horizontal = 4.dp)
-                )
-            }
-        }
+        // nothing at the moment
     }
 
     is TrainArrival.NoInformation -> {
@@ -309,7 +312,7 @@ const val NO_TRAINS = "No train eta at this time..."
 
 @Composable
 fun EtaInfoRow(
-    title: String, arrival: TrainArrival, goToTrainSchedule: () -> Unit
+    title: String, arrival: TrainArrival
 ) {
     Column(
         modifier = Modifier
@@ -319,7 +322,7 @@ fun EtaInfoRow(
     ) {
         ArrivalInfoHeader(title, arrival)
         Spacer(modifier = Modifier.padding(vertical = 2.dp))
-        ArrivalInfo(arrival, goToTrainSchedule)
+        ArrivalInfo(arrival)
     }
 
 }
