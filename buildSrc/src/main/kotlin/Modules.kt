@@ -1,6 +1,7 @@
 object Modules {
-    val etaInfo = ":eta_info"
+    val etaInfo = ":fm_eta"
     val core = ":core"
     val uiComponents = ":ui_components"
-    val stationList = ":station_list"
+    val stationList = ":fm_stations"
+    val schedule = ":fm_schedule"
 }

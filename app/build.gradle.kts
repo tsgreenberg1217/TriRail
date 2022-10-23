@@ -64,6 +64,7 @@ dependencies {
         implementation(project(etaInfo))
         implementation(project(uiComponents))
         implementation(project(core))
+        implementation(project(schedule))
     }
 
     Compose.run {
@@ -103,6 +104,11 @@ dependencies {
         implementation(firestore)
     }
 
+    Coroutines.apply {
+        implementation(playServices)
+        testImplementation(androidTest)
+    }
+
 
     Ktor.run {
         implementation(client)
@@ -119,7 +125,6 @@ kapt {
 sqldelight {
     database("TriRailDatabase") { // This will be the name of the generated database class.
         packageName = "com.tsgreenberg.trirailwearos"
-        dependency(project(":station_list"))
-//        dependency project(":eta_info")
+        dependency(project(Modules.stationList))
     }
 }

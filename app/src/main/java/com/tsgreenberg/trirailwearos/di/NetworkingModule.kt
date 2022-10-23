@@ -1,12 +1,17 @@
 package com.tsgreenberg.trirailwearos.di
 
-import com.tsgreenberg.eta_info.remote_classes.EtaService
-import com.tsgreenberg.station_list.StationsService
+import com.google.firebase.firestore.FirebaseFirestore
+import com.tsgreenberg.fm_eta.remote_classes.EtaService
+import com.tsgreenberg.schedule.remote.TrainScheduleService
+import com.tsgreenberg.fm_stations.remote.StationsService
 import com.tsgreenberg.trirailwearos.EtaServiceImpl
 import com.tsgreenberg.trirailwearos.StationServiceImpl
+import com.tsgreenberg.trirailwearos.TrainScheduleServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -20,15 +25,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkingModule {
-
-    @Provides
-    @Singleton
-    fun getStationsService(client: HttpClient): StationsService =
-        StationServiceImpl(client)
-
-    @Provides
-    @Singleton
-    fun getEtaService(client: HttpClient): EtaService = EtaServiceImpl(client)
 
 
     @Provides
@@ -50,6 +46,23 @@ object NetworkingModule {
             }
         }
     }
+}
 
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+object NetworkImplModule {
+    @Provides
+    @ActivityRetainedScoped
+    fun getStationsService(client: HttpClient): StationsService =
+        StationServiceImpl(client)
 
+    @Provides
+    @ActivityRetainedScoped
+    fun getEtaService(client: HttpClient): EtaService = EtaServiceImpl(client)
+
+    @Provides
+    @ActivityRetainedScoped
+    fun providesTrainScheduleService(
+        fireStore: FirebaseFirestore
+    ): TrainScheduleService = TrainScheduleServiceImpl(fireStore)
 }

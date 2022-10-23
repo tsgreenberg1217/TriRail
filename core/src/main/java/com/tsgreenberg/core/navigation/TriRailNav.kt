@@ -6,7 +6,7 @@ abstract class TriRailNavImplementor<T> : TriRailNav {
 }
 
 interface TriRailNav {
-    fun navigate(routeAction: TriRailRootAction)
+    fun navigate(action: TriRailRootAction)
 //    fun <T : Any> getArgsFromBackstack(route: String, key: String): T
 }
 

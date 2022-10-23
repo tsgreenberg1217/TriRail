@@ -24,29 +24,26 @@ fun TriRailScaffold(
     extraText: String = "",
     content: @Composable () -> Unit
 ) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        positionIndicator = scalingLazyListState?.let {
-            {
-                if (it.isScrollInProgress) PositionIndicator(scalingLazyListState = scalingLazyListState)
-            }
-        },
-        timeText = {
-            CustomTimeText(
-                extraText,
-                visible = isVisible && (scalingLazyListState?.isScrollInProgress?.not() ?: true),
-            )
-        },
-        vignette = {
-            Vignette(vignettePosition = VignettePosition(0))
+    Scaffold(modifier = Modifier.fillMaxSize(), positionIndicator = scalingLazyListState?.let {
+        {
+            if (it.isScrollInProgress) PositionIndicator(scalingLazyListState = scalingLazyListState)
         }
-    ) {
+    }, timeText = {
+        CustomTimeText(
+            extraText,
+            visible = isVisible && (scalingLazyListState?.isScrollInProgress?.not() ?: true),
+        )
+    }, vignette = {
+        Vignette(vignettePosition = VignettePosition(0))
+    }) {
 
         when {
-            progressBarState is ProgressBarState.Loading -> TriRailLoadingSpinner()
+            progressBarState is ProgressBarState.Loading || progressBarState is ProgressBarState.Start -> {
+                TriRailLoadingSpinner()
+            }
             error != null -> TriRailErrorScreen(error)
+            else -> content()
         }
-        if (error == null) content()
 
     }
 }
@@ -54,7 +51,9 @@ fun TriRailScaffold(
 @Composable
 internal fun TriRailLoadingSpinner() {
     Box(
-        modifier = Modifier.fillMaxSize().testTag("loading_spinner_test"),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("loading_spinner_test"),
         contentAlignment = Alignment.Center
     ) {
         val colors = remember {
@@ -84,16 +83,12 @@ internal fun TriRailErrorScreen(errorMsg: String) {
     ) {
         Text(
             text = "Error", style = TextStyle(
-                fontSize = 18.sp,
-                color = TriRailColors.Orange,
-                textAlign = TextAlign.Center
+                fontSize = 18.sp, color = TriRailColors.Orange, textAlign = TextAlign.Center
             )
         )
         Text(
             text = errorMsg, style = TextStyle(
-                fontSize = 18.sp,
-                color = Color.White,
-                textAlign = TextAlign.Center
+                fontSize = 18.sp, color = Color.White, textAlign = TextAlign.Center
             )
         )
 

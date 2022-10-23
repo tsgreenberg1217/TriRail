@@ -15,8 +15,9 @@ dependencyResolutionManagement {
 rootProject.name = "TriRailWearOs"
 include(
     ":app",
-    ":station_list",
+    ":fm_stations",
     ":core",
     ":ui_components",
-    ":eta_info"
+    ":fm_eta",
+    ":fm_schedule"
 )

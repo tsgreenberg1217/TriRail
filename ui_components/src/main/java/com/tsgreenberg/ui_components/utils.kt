@@ -75,10 +75,33 @@ fun String.toFullStationName(): String {
         "POM" -> "Pompano Beach"
         "SHE" -> "Sheridan Street"
         "WPB" -> "West Palm Beach"
-        else -> ""
+        else -> "Unknown"
 
     }
+}
+fun Int.toShortStationName():String{
+    return when (this) {
+        1 -> "MAN"
+        2 -> "WPB"
+        3 -> "LAK"
+        4 -> "BOY"
+        5 -> "DEL"
+        6 -> "BOC"
+        7 -> "DFB"
+        8 -> "POM"
+        9 -> "CYP"
+        10 -> "FTL"
+        11 -> "FLA"
+        12 -> "SHE"
+        13 -> "HOL"
+        14 -> "GOL"
+        15 -> "OPL"
+        16 -> "MET"
+        17 -> "HIA"
+        18 -> "MIA"
+        else -> "???"
 
+    }
 }
 
 fun Int.toEtaString(): String = if (this > 59) {
