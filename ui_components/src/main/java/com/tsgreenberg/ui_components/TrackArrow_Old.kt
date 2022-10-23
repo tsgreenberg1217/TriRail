@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.ui.components//package com.tsgreenberg.eta_info.ui
+package com.tsgreenberg.ui_components//package com.tsgreenberg.eta_info.ui
 //
 //import android.content.res.Resources
 //import android.graphics.Paint

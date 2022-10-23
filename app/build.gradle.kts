@@ -64,6 +64,7 @@ dependencies {
         implementation(project(etaInfo))
         implementation(project(uiComponents))
         implementation(project(core))
+        implementation(project(schedule))
     }
 
     Compose.run {
@@ -101,6 +102,11 @@ dependencies {
         implementation(crashlytics)
         implementation(analytics)
         implementation(firestore)
+    }
+
+    Coroutines.apply {
+        implementation(playServices)
+        testImplementation(androidTest)
     }
 
 

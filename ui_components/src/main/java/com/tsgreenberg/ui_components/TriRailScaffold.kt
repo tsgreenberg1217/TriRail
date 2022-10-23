@@ -45,9 +45,8 @@ fun TriRailScaffold(
         when {
             progressBarState is ProgressBarState.Loading -> TriRailLoadingSpinner()
             error != null -> TriRailErrorScreen(error)
+            else -> content()
         }
-        if (error == null) content()
-
     }
 }
 

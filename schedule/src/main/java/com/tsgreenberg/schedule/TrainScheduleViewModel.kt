@@ -1,13 +1,10 @@
-package com.tsgreenberg.eta_info.ui.viewmodels
+package com.tsgreenberg.schedule
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
-import com.tsgreenberg.eta_info.models.TrainScheduleState
-import com.tsgreenberg.eta_info.models.UiTrainSchedule
-import com.tsgreenberg.eta_info.remote_classes.GetTrainSchedulesForStation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

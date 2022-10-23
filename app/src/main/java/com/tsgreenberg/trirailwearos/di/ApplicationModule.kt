@@ -1,6 +1,7 @@
 package com.tsgreenberg.trirailwearos.di
 
 import androidx.navigation.NavHostController
+import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.core.navigation.TriRailNavImplementor
 import com.tsgreenberg.eta_info.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.station_list.di.StationListNavigationQualifier
@@ -21,13 +22,13 @@ abstract class ApplicationModule {
     @StationListNavigationQualifier
     abstract fun bindsStationListNavigator(
         stationListNavigation: StationListNavigator
-    ): TriRailNavImplementor<NavHostController>
+    ): TriRailNav
 
     @Binds
     @ActivityRetainedScoped
     @EtaInfoNavigationQualifier
     abstract fun bindsEtaInfoNavigator(
         etaInfoNavigator: EtaInfoNavigator
-    ): TriRailNavImplementor<NavHostController>
+    ): TriRailNav
 
 }

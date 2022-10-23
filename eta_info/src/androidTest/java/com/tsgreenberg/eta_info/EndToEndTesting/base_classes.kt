@@ -26,7 +26,7 @@ import org.junit.Before
 import org.junit.Rule
 
 
-class TestScheduleService : TrainScheduleService {
+class TestScheduleService : com.tsgreenberg.schedule.TrainScheduleService {
     override suspend fun getScheduleForStation(
         stationId: Int,
         direction: String,
@@ -69,7 +69,7 @@ open class EtaInfoEndToEndTestBase {
         @ActivityRetainedScoped
         fun providesGetEtaInteractors(
             etaService: EtaService,
-            trainServices: TrainScheduleService,
+            trainServices: com.tsgreenberg.schedule.TrainScheduleService,
             etaMapper: EtaDtoMapper
         ): EtaInteractors {
             return EtaInteractors.build(etaService, trainServices, etaMapper)
@@ -78,7 +78,7 @@ open class EtaInfoEndToEndTestBase {
 
         @Provides
         @ActivityRetainedScoped
-        fun getDatabase(): TrainScheduleService = TestScheduleService()
+        fun getDatabase(): com.tsgreenberg.schedule.TrainScheduleService = TestScheduleService()
 
     }
 

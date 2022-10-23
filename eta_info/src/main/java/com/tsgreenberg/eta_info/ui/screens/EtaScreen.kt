@@ -7,7 +7,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -31,7 +30,7 @@ import com.tsgreenberg.eta_info.models.Keys.SOUTH_KEY
 import com.tsgreenberg.eta_info.models.TrainArrival
 import com.tsgreenberg.eta_info.models.TrainInfoState
 import com.tsgreenberg.eta_info.utils.TestingTags
-import com.tsgreenberg.eta_info.ui.components.TrackArrow
+import com.tsgreenberg.ui_components.TrackArrow
 import com.tsgreenberg.ui_components.*
 import kotlinx.coroutines.delay
 import java.util.*
@@ -106,7 +105,7 @@ fun EtaInfoContainer(
             LaunchedEffect(key1 = Unit) {
                 repeat(arrivals.size + 1) {
                     delay(animationDelay)
-                    val targetPage = (it % arrivals.size) + 1
+                    val targetPage = it % arrivals.size
                     pagerState.animateScrollToPage(targetPage)
                 }
             }

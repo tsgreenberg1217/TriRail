@@ -1,6 +1,6 @@
 package com.tsgreenberg.core.navigation
 
-abstract class TriRailRootAction(val route: String)
+abstract class TriRailRootAction
 
 object NavConstants {
     const val STATION_ID = "station_id"

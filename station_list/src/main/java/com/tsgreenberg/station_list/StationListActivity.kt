@@ -28,7 +28,7 @@ class StationListActivity : ComponentActivity() {
 
     @Inject
     @StationListNavigationQualifier
-    lateinit var triRailNav: TriRailNavImplementor<NavHostController>
+    lateinit var triRailNav: TriRailNav
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition { false }
@@ -37,9 +37,8 @@ class StationListActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 val navController = rememberNavController()
-                triRailNav.navController = navController
                 NavHost(
-                    navController = triRailNav.navController,
+                    navController = navController,
                     startDestination = NavConstants.STATION_LIST
                 ) {
                     getStationList(triRailNav)

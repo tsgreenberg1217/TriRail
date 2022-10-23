@@ -1,4 +1,4 @@
-package com.tsgreenberg.eta_info.ui.components
+package com.tsgreenberg.ui_components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

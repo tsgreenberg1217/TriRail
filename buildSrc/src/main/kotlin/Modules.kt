@@ -3,4 +3,5 @@ object Modules {
     val core = ":core"
     val uiComponents = ":ui_components"
     val stationList = ":station_list"
+    val schedule = ":schedule"
 }

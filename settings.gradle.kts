@@ -18,5 +18,6 @@ include(
     ":station_list",
     ":core",
     ":ui_components",
-    ":eta_info"
+    ":eta_info",
+    ":schedule"
 )

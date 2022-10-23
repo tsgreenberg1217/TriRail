@@ -3,7 +3,6 @@ apply {
 }
 
 plugins{
-    id(Sqldelight.plugin)
     Kotlin.apply { id(kotlinSerializationPlugin) version version }
 
 }
@@ -15,16 +14,8 @@ dependencies {
         "implementation"(project(uiComponents))
     }
 
-    "implementation"(Sqldelight.driver)
-
     "implementation"(Accompanist.pager)
     "implementation"(Accompanist.pagerIndicators)
     "implementation"(Kotlin.kotlinSerialization)
 
-}
-
-sqldelight {
-    database("TriRailDatabase") { // This will be the name of the generated database class.
-        packageName = "com.tsgreenberg.eta_info"
-    }
 }

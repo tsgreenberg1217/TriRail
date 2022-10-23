@@ -55,20 +55,3 @@ data class EnRouteInfoDTO(
 data class GetStopEtaResponseDto(
     val get_stop_etas: List<StopEtaInfoDTO>,
 )
-
-data class TrainScheduleDto(
-    val stationId: Int,
-    val trainId: Int,
-    val direction: String,
-    val time: String,
-    val isWeekday: Boolean
-)
-
-fun TrainScheduleDto.toUiTrainSchedule(): UiTrainSchedule = UiTrainSchedule(
-    stationId = stationId,
-    trainId = trainId,
-    direction = direction,
-    timeString = time,
-    timeInMins = time.toMinutes(),
-    isWeekday = isWeekday
-)

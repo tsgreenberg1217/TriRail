@@ -16,11 +16,6 @@ sealed class EtaRefreshState {
 
 }
 
-data class TrainScheduleState(
-    val progressBarState: ProgressBarState = ProgressBarState.Idle,
-    val trainSchedule: Map<String,List<UiTrainSchedule>> = mapOf(),
-    val error: String? = null
-)
 
 sealed class TrainArrival {
     data class EstimatedArrival(
