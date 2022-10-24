@@ -1,8 +1,8 @@
 package com.tsgreenberg.fm_schedule.di
 
 import com.tsgreenberg.fm_schedule.mappers.TrainScheduleStateMapper
+import com.tsgreenberg.fm_schedule.remote.TrainScheduleService
 import com.tsgreenberg.fm_schedule.use_cases.GetTrainSchedulesForStation
-import com.tsgreenberg.schedule.remote.TrainScheduleService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

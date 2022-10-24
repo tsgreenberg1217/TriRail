@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.ui.components
+package com.tsgreenberg.fm_schedule.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
+import com.tsgreenberg.fm_schedule.models.TrainSchedule
 import com.tsgreenberg.schedule.R
-import com.tsgreenberg.schedule.models.TrainSchedule
 import com.tsgreenberg.ui_components.TrackArrow
 import com.tsgreenberg.ui_components.TriRailButton
 

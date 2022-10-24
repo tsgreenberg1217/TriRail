@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.fm_schedule.mappers.TrainScheduleStateMapper
 import com.tsgreenberg.fm_schedule.use_cases.GetTrainSchedulesForStation
-import com.tsgreenberg.schedule.models.TrainScheduleState
+import com.tsgreenberg.fm_schedule.models.TrainScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

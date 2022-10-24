@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.ui.activities
+package com.tsgreenberg.fm_schedule.ui.activities
 
 import android.content.Intent
 import android.icu.util.Calendar
@@ -15,9 +15,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.NavConstants
+import com.tsgreenberg.fm_schedule.ui.screens.SetAlarmScreen
+import com.tsgreenberg.fm_schedule.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.fm_schedule.viewmodels.TrainScheduleViewModel
-import com.tsgreenberg.schedule.ui.screens.SetAlarmScreen
-import com.tsgreenberg.schedule.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
 import com.tsgreenberg.ui_components.toShortStationName

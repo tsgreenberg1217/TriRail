@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.ui.screens
+package com.tsgreenberg.fm_schedule.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

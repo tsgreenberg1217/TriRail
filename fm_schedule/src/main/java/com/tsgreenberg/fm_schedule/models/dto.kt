@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.models
+package com.tsgreenberg.fm_schedule.models
 
 import com.tsgreenberg.ui_components.toMinutes
 

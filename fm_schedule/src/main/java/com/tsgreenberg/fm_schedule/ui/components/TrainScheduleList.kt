@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.ui.components
+package com.tsgreenberg.fm_schedule.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import com.tsgreenberg.schedule.models.TrainSchedule
+import com.tsgreenberg.fm_schedule.models.TrainSchedule
 
 @Composable
 fun TrainScheduleList(trainSchedules: List<TrainSchedule>, onTimeSelect: (String) -> Unit) {

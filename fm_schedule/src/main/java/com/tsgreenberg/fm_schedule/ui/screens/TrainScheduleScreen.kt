@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.ui.screens
+package com.tsgreenberg.fm_schedule.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Tab
@@ -14,8 +14,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import com.tsgreenberg.schedule.models.TrainScheduleState
-import com.tsgreenberg.schedule.ui.components.TrainScheduleList
+import com.tsgreenberg.fm_schedule.models.TrainScheduleState
+import com.tsgreenberg.fm_schedule.ui.components.TrainScheduleList
 import com.tsgreenberg.ui_components.TriRailColors
 import com.tsgreenberg.ui_components.TriRailScaffold
 

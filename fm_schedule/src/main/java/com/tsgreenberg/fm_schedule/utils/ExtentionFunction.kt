@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.utils
+package com.tsgreenberg.fm_schedule.utils
 
 import java.util.*
 

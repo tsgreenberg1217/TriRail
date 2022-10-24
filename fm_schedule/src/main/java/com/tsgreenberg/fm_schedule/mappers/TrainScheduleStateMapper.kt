@@ -1,6 +1,6 @@
 package com.tsgreenberg.fm_schedule.mappers
 
-import com.tsgreenberg.schedule.models.TrainSchedule
+import com.tsgreenberg.fm_schedule.models.TrainSchedule
 
 class TrainScheduleStateMapper : Function1<List<TrainSchedule>, Map<String, List<TrainSchedule>>> {
     override operator fun invoke(schedules: List<TrainSchedule>): Map<String, List<TrainSchedule>> =

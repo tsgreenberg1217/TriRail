@@ -1,4 +1,4 @@
-package com.tsgreenberg.schedule.models
+package com.tsgreenberg.fm_schedule.models
 
 data class TrainSchedule(
     val stationId: Int,
