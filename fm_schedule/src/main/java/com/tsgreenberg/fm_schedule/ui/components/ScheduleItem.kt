@@ -32,7 +32,7 @@ import com.tsgreenberg.ui_components.TriRailButton
             Text(schedule.timeString, fontSize = 18.sp)
         }
         TriRailButton(
-            modifier = Modifier.size(44.dp),
+            modifier = Modifier.size(34.dp),
             onClick = {
                 onTimeSelect(schedule.timeString)
             },
@@ -41,7 +41,7 @@ import com.tsgreenberg.ui_components.TriRailButton
                 painter = painterResource(id = R.drawable.ic_alarm_add_black_24dp),
                 contentDescription = "set alarm",
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(18.dp)
                     .wrapContentSize(align = Alignment.Center),
                 tint = Color.White
             )
