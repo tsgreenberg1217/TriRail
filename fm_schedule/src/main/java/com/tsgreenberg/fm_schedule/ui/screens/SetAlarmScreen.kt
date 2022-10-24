@@ -16,9 +16,7 @@ import com.tsgreenberg.ui_components.toMinutes
 import java.util.*
 
 @Composable
-fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int) -> Unit) {
-    val nowInMins = Date().toMinutes()
-    val currentDelta = etaInMins - nowInMins
+fun SetAlarmScreen(stationName: String = "", onAlarmSelect: (Int) -> Unit) {
     val minAllowedTime = 15
     TriRailScaffold(extraText = stationName) {
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
@@ -37,14 +35,14 @@ fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val buttonModifier = Modifier.height(40.dp)
+                val buttonModifier = Modifier.height(34.dp)
 
                 TriRailButton(
                     buttonModifier,
                     onClick = { onAlarmSelect(15) },
                 ) {
                     Text(
-                        text = "${minAllowedTime}min",
+                        text = "${minAllowedTime} min",
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center,
                     )
@@ -55,7 +53,7 @@ fun SetAlarmScreen(stationName: String = "", etaInMins: Int, onAlarmSelect: (Int
                     color = TriRailColors.Green,
                 ) {
                     Text(
-                        text = "30min",
+                        text = "30 min",
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center,
                     )
