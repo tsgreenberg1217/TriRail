@@ -24,7 +24,6 @@ class TrainScheduleViewModel @Inject constructor(
 
     val state: MutableState<TrainScheduleState> = mutableStateOf(TrainScheduleState())
 
-
     init {
         val id = savedStateHandle.get<Int>(NavConstants.STATION_ID) ?: -1
         getScheduleForStation(id)

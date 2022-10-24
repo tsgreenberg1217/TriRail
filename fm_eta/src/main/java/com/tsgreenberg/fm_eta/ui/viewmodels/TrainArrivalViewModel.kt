@@ -3,9 +3,11 @@ package com.tsgreenberg.fm_eta.ui.viewmodels
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.eta_info.mappers.TrainArrivalStateMapper
 import com.tsgreenberg.fm_eta.models.EtaRefreshState
 import com.tsgreenberg.fm_eta.models.TrainInfoState
@@ -20,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrainArrivalViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getEtaForStation: GetEtaForStation,
     private val mapper: TrainArrivalStateMapper
 ) : ViewModel() {
@@ -27,6 +30,11 @@ class TrainArrivalViewModel @Inject constructor(
     private val refreshTime = 60
 
     val state: MutableState<TrainInfoState> = mutableStateOf(TrainInfoState())
+
+    init {
+        val id = savedStateHandle.get<Int>(NavConstants.STATION_ID) ?: -1
+        getEstTrainArrivals(id)
+    }
 
 
     fun initialRefreshRequest(id: Int, timeRequested: Long) {

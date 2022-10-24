@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.wear.compose.material.MaterialTheme
+import com.tsgreenberg.core.navigation.NavConstants
+import com.tsgreenberg.core.navigation.NavConstants.STATION_INFO_ROUTE
 import com.tsgreenberg.core.navigation.TriRailNav
 import com.tsgreenberg.fm_eta.di.EtaInfoNavigationQualifier
 import com.tsgreenberg.fm_eta.navigation.EtaNavigationAction
 import com.tsgreenberg.fm_eta.ui.screens.EtaScreen
 import com.tsgreenberg.fm_eta.ui.viewmodels.TrainArrivalViewModel
+import com.tsgreenberg.ui_components.toShortStationName
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -40,37 +47,30 @@ class EtaInfoActivity : ComponentActivity() {
 
         navAction = EtaNavigationAction.GoToStationSchedule(stationId)
 
-        val stationShortName =
-            intent.extras
-                ?.getString("StationInfo_name") ?: ""
-
         setContent {
             MaterialTheme {
-                val viewModel: TrainArrivalViewModel = hiltViewModel()
-                EtaScreen(
-                    shortName = stationShortName,
-                    state = viewModel.state.value,
-                    refresh = viewModel::initialRefreshRequest,
-                    goToTrainSchedule = ::goToSchedule,
-                )
-
-                LaunchedEffect(key1 = stationId) {
-                    viewModel.getEstTrainArrivals(stationId)
+                NavHost(
+                    navController = rememberNavController(),
+                    startDestination = STATION_INFO_ROUTE
+                ) {
+                    composable(
+                        STATION_INFO_ROUTE, listOf(navArgument(NavConstants.STATION_ID) {
+                            type = NavType.IntType
+                            defaultValue = stationId
+                        })
+                    ) {
+                        val viewModel: TrainArrivalViewModel = hiltViewModel()
+                        EtaScreen(
+                            shortName = stationId.toShortStationName(),
+                            state = viewModel.state.value,
+                            refresh = viewModel::initialRefreshRequest,
+                            goToTrainSchedule = ::goToSchedule,
+                        )
+                    }
                 }
-
-
             }
         }
     }
 
 
-
 }
-
-
-//composable{
-//            val entry = remember{
-//                triRailNav.navController.getBackStackEntry(NavConstants.STATION_INFO_ROUTE)
-//            }
-//            val id = entry.arguments?.getString("station_id") ?: "0"
-//}
