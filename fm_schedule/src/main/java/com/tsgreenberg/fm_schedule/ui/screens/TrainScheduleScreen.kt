@@ -27,10 +27,7 @@ fun UpcomingTrainsScreen(
 ) {
     val scrollState = rememberScalingLazyListState()
 
-    Box(
-        Modifier
-            .fillMaxSize()
-    ) {
+    Box(Modifier.fillMaxSize()) {
         TriRailScaffold(
             extraText = stationName,
             progressBarState = state.progressBarState,
@@ -47,8 +44,7 @@ fun UpcomingTrainsScreen(
                     backgroundColor = Color.Transparent,
                     indicator = { tabPositions ->
                         TabRowDefaults.Indicator(
-                            Modifier
-                                .pagerTabIndicatorOffset(pagerState, tabPositions),
+                            Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
                             color = TriRailColors.Orange
                         )
                     },
@@ -66,13 +62,11 @@ fun UpcomingTrainsScreen(
                 }
                 val schedules = state.trainSchedule
                 HorizontalPager(
-                    state = pagerState,
-                    count = state.trainSchedule.size
+                    state = pagerState, count = state.trainSchedule.size
                 ) { page ->
                     schedules[if (page == 0) "North" else "South"]?.let {
                         TrainScheduleList(
-                            trainSchedules = it,
-                            onTimeSelect = onTimeSelect
+                            trainSchedules = it, onTimeSelect = onTimeSelect
                         )
                     }
                 }

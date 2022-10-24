@@ -8,7 +8,7 @@ import com.tsgreenberg.core.navigation.TriRailRootAction
 import com.tsgreenberg.fm_eta.navigation.EtaNavigationAction
 import com.tsgreenberg.fm_eta.navigation.EtaNavigationAction.Companion.stationId
 import com.tsgreenberg.fm_eta.ui.activity.EtaInfoActivity
-import com.tsgreenberg.schedule.ui.activities.ScheduleActivity
+import com.tsgreenberg.fm_schedule.ui.activities.ScheduleActivity
 import com.tsgreenberg.fm_stations.navigation.StationListNavigation
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

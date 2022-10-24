@@ -42,7 +42,7 @@
             android:theme="@android:style/Theme.DeviceDefault"
             />
         <activity
-            android:name="com.tsgreenberg.schedule.ui.activities.ScheduleActivity"
+            android:name="com.tsgreenberg.fm_schedule.ui.activities.ScheduleActivity"
             android:theme="@android:style/Theme.DeviceDefault"
             />
     </application>

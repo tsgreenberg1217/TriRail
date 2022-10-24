@@ -2,9 +2,11 @@ package com.tsgreenberg.fm_schedule.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsgreenberg.core.DataState
+import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.fm_schedule.mappers.TrainScheduleStateMapper
 import com.tsgreenberg.fm_schedule.use_cases.GetTrainSchedulesForStation
 import com.tsgreenberg.fm_schedule.models.TrainScheduleState
@@ -15,11 +17,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrainScheduleViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getTrainSchedulesForStation: GetTrainSchedulesForStation,
     private val stateMapper: TrainScheduleStateMapper
 ) : ViewModel() {
 
     val state: MutableState<TrainScheduleState> = mutableStateOf(TrainScheduleState())
+
+
+    init {
+        val id = savedStateHandle.get<Int>(NavConstants.STATION_ID) ?: -1
+        getScheduleForStation(id)
+    }
 
     fun getScheduleForStation(id: Int) {
         getTrainSchedulesForStation.execute(id).onEach {

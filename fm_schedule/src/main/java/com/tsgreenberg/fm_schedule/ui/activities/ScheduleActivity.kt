@@ -15,6 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.wear.compose.material.MaterialTheme
 import com.tsgreenberg.core.navigation.NavConstants
+import com.tsgreenberg.fm_schedule.ui.components.navigateToAlarm
+import com.tsgreenberg.fm_schedule.ui.components.navigateToSchedule
 import com.tsgreenberg.fm_schedule.ui.screens.SetAlarmScreen
 import com.tsgreenberg.fm_schedule.ui.screens.UpcomingTrainsScreen
 import com.tsgreenberg.fm_schedule.viewmodels.TrainScheduleViewModel
@@ -26,88 +28,25 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScheduleActivity : ComponentActivity() {
 
+    fun launchActivity(intent: Intent) {
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val stationId = intent.extras?.getInt("stationId") ?: -1
-        val stationShortName = stationId.toShortStationName()
         setContent {
             val navController = rememberNavController()
             MaterialTheme {
                 NavHost(
-                    navController = navController,
-                    startDestination = NavConstants.TRAIN_SCHEDULE
+                    navController = navController, startDestination = NavConstants.TRAIN_SCHEDULE
                 ) {
-                    composable(
-                        NavConstants.TRAIN_SCHEDULE,
-                    ) {
-
-                        val viewModel: TrainScheduleViewModel = hiltViewModel()
-
-                        UpcomingTrainsScreen(
-                            state = viewModel.state.value
-                        ) {
-                            navController.navigate("${NavConstants.SET_TRAIN_ALARM}/$it/${stationShortName}")
-                        }
-                        LaunchedEffect(id) { viewModel.getScheduleForStation(stationId) }
-
-                    }
-
-                    composable(
-                        NavConstants.SET_TRAIN_ALARM_ROUTE,
-                        arguments = listOf(
-                            navArgument(NavConstants.SET_TRAIN_ALARM_TIME) {
-                                type = NavType.StringType
-                            },
-                            navArgument(NavConstants.SET_TRAIN_ALARM_STATION) {
-                                type = NavType.StringType
-                            }
-                        )
-                    ) { backStackEntry ->
-
-                        val (stationName, time) = backStackEntry.arguments?.run {
-                            Pair(
-                                getString(NavConstants.SET_TRAIN_ALARM_STATION) ?: "",
-                                getString(NavConstants.SET_TRAIN_ALARM_TIME) ?: ""
-                            )
-                        } ?: Pair("", "")
-                        val totalMinutes = time.toMinutes()
-                        val hours = totalMinutes.floorDiv(60)
-                        val minutes = totalMinutes % 60
-                        SetAlarmScreen(
-                            stationName = stationShortName,
-                            totalMinutes
-                        ) {
-                            val alarmTime = Calendar.getInstance().apply {
-                                set(Calendar.HOUR_OF_DAY, hours)
-                                set(Calendar.MINUTE, minutes)
-                                add(Calendar.MINUTE, -it)
-                            }
-                            launchAlarmIntent(
-                                alarmTime,
-                                "${stationName.toFullStationName()} departure"
-                            )
-
-                        }
-                    }
+                    navigateToSchedule(navController, intent)
+                    navigateToAlarm(::launchActivity)
                 }
             }
         }
 
     }
 
-    private fun launchAlarmIntent(alarmTime: Calendar, msg: String) {
-        val i = Intent(AlarmClock.ACTION_SET_ALARM).apply {
-            putExtra(AlarmClock.EXTRA_MESSAGE, msg)
-            putExtra(
-                AlarmClock.EXTRA_HOUR,
-                alarmTime.get(Calendar.HOUR_OF_DAY)
-            )
-            putExtra(
-                AlarmClock.EXTRA_MINUTES,
-                alarmTime.get(Calendar.MINUTE)
-            )
-        }
-        startActivity(i)
 
-    }
 }
