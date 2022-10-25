@@ -22,6 +22,7 @@ fun TrainScheduleList(trainSchedules: List<TrainSchedule>, onTimeSelect: (String
             state = rememberLazyListState(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            item { Spacer(modifier = Modifier) }
             items(trainSchedules) { schedule ->
                 ScheduleItem(
                     schedule = schedule,

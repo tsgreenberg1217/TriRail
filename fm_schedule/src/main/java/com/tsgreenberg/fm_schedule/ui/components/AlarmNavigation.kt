@@ -11,6 +11,7 @@ import com.tsgreenberg.core.navigation.NavConstants
 import com.tsgreenberg.fm_schedule.ui.screens.SetAlarmScreen
 import com.tsgreenberg.ui_components.toFullStationName
 import com.tsgreenberg.ui_components.toMinutes
+import com.tsgreenberg.ui_components.toShortStationName
 
 fun NavGraphBuilder.navigateToAlarm(launchAlarmIntent: (Intent) -> Unit) {
     composable(
@@ -19,32 +20,32 @@ fun NavGraphBuilder.navigateToAlarm(launchAlarmIntent: (Intent) -> Unit) {
             navArgument(NavConstants.SET_TRAIN_ALARM_TIME) {
                 type = NavType.StringType
             },
-            navArgument(NavConstants.SET_TRAIN_ALARM_STATION) {
-                type = NavType.StringType
+            navArgument(NavConstants.STATION_ID) {
+                type = NavType.IntType
             }
         )
     ) { backStackEntry ->
 
-        val (stationName, time) = backStackEntry.arguments?.run {
+        val (stationId, time) = backStackEntry.arguments?.run {
             Pair(
-                getString(NavConstants.SET_TRAIN_ALARM_STATION) ?: "",
+                getInt(NavConstants.STATION_ID),
                 getString(NavConstants.SET_TRAIN_ALARM_TIME) ?: ""
             )
-        } ?: Pair("", "")
+        } ?: Pair(-1, "")
+
+        val stationShortName = stationId.toShortStationName()
         val totalMinutes = time.toMinutes()
         val hours = totalMinutes.floorDiv(60)
         val minutes = totalMinutes % 60
-        SetAlarmScreen(
-            etaInMins = totalMinutes
-        ) {
+        SetAlarmScreen(stationShortName) {
             val alarmTime = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, hours)
                 set(Calendar.MINUTE, minutes)
                 add(Calendar.MINUTE, -it)
             }
-            val i = createlarmIntent(
+            val i = createAlarmIntent(
                 alarmTime,
-                "${stationName.toFullStationName()} departure"
+                "${stationShortName.toFullStationName()} departure"
             )
 
             launchAlarmIntent(i)
@@ -53,7 +54,7 @@ fun NavGraphBuilder.navigateToAlarm(launchAlarmIntent: (Intent) -> Unit) {
     }
 }
 
-fun createlarmIntent(alarmTime: Calendar, msg: String): Intent {
+fun createAlarmIntent(alarmTime: Calendar, msg: String): Intent {
     return Intent(AlarmClock.ACTION_SET_ALARM).apply {
         putExtra(AlarmClock.EXTRA_MESSAGE, msg)
         putExtra(
