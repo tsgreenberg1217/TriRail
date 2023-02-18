@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8">
+    <bytecodeTargetLevel target="11">
       <module name="TestWearOs.app" target="11" />
       <module name="TestWearOs.eta_info" target="11" />
       <module name="TestWearOs.station_list" target="11" />
       <module name="TestWearOs.ui_components" target="11" />
-      <module name="TriRailWearOs.app" target="11" />
-      <module name="TriRailWearOs.buildSrc" target="11" />
-      <module name="TriRailWearOs.buildSrc.main" target="11" />
-      <module name="TriRailWearOs.buildSrc.test" target="11" />
-      <module name="TriRailWearOs.fm_eta" target="11" />
-      <module name="TriRailWearOs.fm_schedule" target="11" />
-      <module name="TriRailWearOs.fm_stations" target="11" />
-      <module name="TriRailWearOs.ui_components" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

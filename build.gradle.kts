@@ -5,6 +5,9 @@ buildscript {
         google()
         mavenCentral()
     }
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.4.1")
+    }
 }
 
 plugins {
@@ -13,7 +16,7 @@ plugins {
         id(library) version gradleVersion apply false
     }
     Kotlin.apply {
-        id(androidPluginProject) version "1.7.10" apply false
+        id(androidPluginProject) version version apply false
     }
     Hilt.apply { id(plugin) version version apply false }
     Sqldelight.apply {
