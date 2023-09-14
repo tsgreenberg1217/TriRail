@@ -4,11 +4,11 @@ apply plugin: Kotlin.kaptPlugin
 apply plugin: Hilt.plugin
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 30
-        targetSdk 33
+        targetSdk 34
         versionCode 3
         versionName "1.1.0"
     }
@@ -47,8 +47,6 @@ android {
             includeAndroidResources = true
         }
     }
-
-
 
 }
 
