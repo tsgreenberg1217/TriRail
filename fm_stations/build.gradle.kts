@@ -10,7 +10,7 @@ plugins {
 
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = "com.tsgreenberg.station_list"
 
     defaultConfig {

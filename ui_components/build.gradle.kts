@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.tsgreenberg.ui_components"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 30
