@@ -32,12 +32,12 @@ internal fun Date.isWeekend(): Boolean = Calendar.getInstance().let {
     }
 }
 
-// HOLIDAYS 2023
+// HOLIDAYS 2024
 internal const val NEW_YEARS = "1/1"
-internal const val MEMORIAL_DAY = "5/29"
+internal const val MEMORIAL_DAY = "5/27"
 internal const val FOURTH_OF_JULY = "7/4"
-internal const val LABOR_DAY = "9/4"
-internal const val THANKSGIVING = "11/23"
+internal const val LABOR_DAY = "9/2"
+internal const val THANKSGIVING = "11/28"
 internal const val CHRISTMAS = "12/25"
 
 internal fun Date.isHoliday(): Boolean = Calendar.getInstance().let {
