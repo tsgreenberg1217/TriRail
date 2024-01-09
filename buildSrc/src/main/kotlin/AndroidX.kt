@@ -7,5 +7,5 @@ object AndroidX{
     const val testRules = "androidx.test:rules:1.5.0"
     const val testOrchestrator = "androidx.test:orchestrator:1.4.2"
     const val androidTest = "androidx.test.ext:junit-ktx:1.1.5"
-    const val splashScreen = "androidx.core:core-splashscreen:1.0.0-beta01"
+    const val splashScreen = "androidx.core:core-splashscreen:1.1.0-alpha02"
 }

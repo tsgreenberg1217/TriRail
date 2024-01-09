@@ -41,17 +41,11 @@ internal fun ChooseStationList(
         state.stops?.let {
             ScalingLazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                autoCentering = AutoCenteringParams(itemIndex = 0),
                 state = scrollState
             ) {
-                item {
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(text = "Stations", textAlign = TextAlign.Center)
-                    }
-                }
+                item { ListHeader { Text("Stations") } }
+
                 items(it) { stop ->
                     TriRailChip(
                         Modifier.fillMaxWidth(),

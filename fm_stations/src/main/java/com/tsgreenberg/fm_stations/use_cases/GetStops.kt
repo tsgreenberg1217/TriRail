@@ -1,5 +1,6 @@
 package com.tsgreenberg.fm_stations.use_cases
 
+import android.util.Log
 import com.tsgreenberg.core.DataState
 import com.tsgreenberg.core.ProgressBarState
 import com.tsgreenberg.fm_stations.models.UiStop
@@ -22,7 +23,7 @@ class GetStops(
             )
 
             val dbStations: List<Station> = db.selectAll().executeAsList()
-
+            Log.d("LOAD ISSUE", "fetching stations ${dbStations.isEmpty()}")
             val data = if (dbStations.isEmpty()) {
                 val response = service.getStops().get_stops.map { it.toUiStop() }
                 db.transaction {

@@ -12,8 +12,8 @@
 <!--    </item>-->
 
     <item
-        android:width="96dp"
-        android:height="96dp"
+        android:width="40dp"
+        android:height="40dp"
         android:drawable="@drawable/ic_tri_rail"
         android:gravity="center" />
 
