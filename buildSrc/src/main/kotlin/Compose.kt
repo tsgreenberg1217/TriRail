@@ -1,9 +1,9 @@
 object Compose {
     val compiler = "androidx.compose.compiler:compiler:${Kotlin.complilerVersion}"
-    val uiTooling = "androidx.compose.ui:ui-tooling-preview:1.3.3"
-    val activity = "androidx.activity:activity-compose:1.6.1"
+    val uiTooling = "androidx.compose.ui:ui-tooling-preview:1.5.4"
+    val activity = "androidx.activity:activity-compose:1.8.2"
     val navigation = "androidx.navigation:navigation-compose:2.5.3"
-    private val wearVersion = "1.1.2"
+    private val wearVersion = "1.2.1"
     val wearMaterial = "androidx.wear.compose:compose-material:$wearVersion"
     val wearFoundation = "androidx.wear.compose:compose-foundation:$wearVersion"
     val uiTest = "androidx.compose.ui:ui-test-manifest:1.3.3"
